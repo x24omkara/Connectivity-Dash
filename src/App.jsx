@@ -1,5 +1,5 @@
 // Data & Constants
-import { useState, useMemo, useRef, useEffect } from "react";
+import React, { useState, useMemo, useRef, useEffect } from "react";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend, PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
 
 // ═══════════════════════════════════════════════════════════════════════════
