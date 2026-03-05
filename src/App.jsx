@@ -70,7 +70,7 @@ const khavdaConnectivity = [
   { developer:"Adani Green Energy Ltd.", group:"Adani Group", mw:1965, voltage:"400kV", substation:"Khavda PS-V", bay:"Not specified in CTUIL source", bess:false },
 ];
 
-<<<<<<< HEAD
+
 const TIMELINE = [
   { date:"Jan 2025", event:"KPS-I Section-II (4×1500 MVA, 765/400kV ICTs) SCOD", station:"Khavda PS-I", status:"commissioned", source:"TNDI India / CTUIL IE reports" },
   { date:"Mar 2025", event:"Khavda Phase-II Parts A–D SCOD (PGCIL, 4.5 GW)", station:"Khavda PS-II", status:"commissioned", source:"CERC Order, Mercom India" },
@@ -172,7 +172,7 @@ function PSKeyPanel({psKey}){
       })}
     </div>
   </div>);
-=======
+  
   return (
     <>
       <div>
@@ -198,7 +198,7 @@ function PSKeyPanel({psKey}){
       </p>
     </>
   )
->>>>>>> 0f0899a (update dashboard title)
+
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
