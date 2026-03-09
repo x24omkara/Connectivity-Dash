@@ -1,1406 +1,1595 @@
-// Data & Constants
-import React, { useState, useMemo, useRef, useEffect } from "react";
-import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend, PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
+import React, { useState, useMemo, useEffect, useRef } from "react";
+import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell, PieChart, Pie } from "recharts";
 
-// ═══════════════════════════════════════════════════════════════════════════
+// ══════════════════════════════════════════════════════════════
 // DATA
-// ═══════════════════════════════════════════════════════════════════════════
-const khavdaConnectivity = [
+// ══════════════════════════════════════════════════════════════
 
-/* ---------------- KHAVDA PS-I ---------------- */
-/* Section-A */
-
-{ developer:"Adani Renewable Energy Holding Four Ltd.", group:"Adani Group", mw:2500, voltage:"400kV", substation:"Khavda PS-I", bay:"401", bess:false },
-
-{ developer:"Adani Renewable Energy Holding Four Ltd.", group:"Adani Group", mw:1000, voltage:"400kV", substation:"Khavda PS-I", bay:"404", bess:false },
-
-{ developer:"Adani Green Energy Ltd.", group:"Adani Group", mw:1050, voltage:"400kV", substation:"Khavda PS-I", bay:"412", bess:false },
-
-/* Section-B */
-
-{ developer:"Adani Green Energy Ltd.", group:"Adani Group", mw:1650, voltage:"400kV", substation:"Khavda PS-I", bay:"421", bess:false },
-
-{ developer:"Adani Green Energy Ltd.", group:"Adani Group", mw:1160, voltage:"400kV", substation:"Khavda PS-I", bay:"424", bess:false },
-
-{ developer:"Adani Green Energy Ltd.", group:"Adani Group", mw:1300, voltage:"400kV", substation:"Khavda PS-I", bay:"7", bess:false },
-
-{ developer:"Sarjan Realties Pvt. Ltd.", group:"Sarjan Group", mw:1150, voltage:"400kV", substation:"Khavda PS-I", bay:"8", bess:false },
-
-{ developer:"Reliance Industries Limited", group:"Reliance Group", mw:690, voltage:"400kV", substation:"Khavda PS-I", bay:"9", bess:false },
-
-
-/* ---------------- KHAVDA PS-II ---------------- */
-/* Section-A */
-
-{ developer:"Gujarat State Electricity Corporation Ltd.", group:"GSECL", mw:1964, voltage:"400kV", substation:"Khavda PS-II", bay:"421", bess:false },
-
-{ developer:"Gujarat Industries Power Company", group:"GIPCL", mw:1200, voltage:"400kV", substation:"Khavda PS-II", bay:"418", bess:false },
-
-{ developer:"NTPC REL", group:"NTPC Group", mw:1995, voltage:"400kV", substation:"Khavda PS-II", bay:"4", bess:false },
-
-/* Section-B */
-
-{ developer:"NTPC Renewable Energy Ltd.", group:"NTPC Group", mw:1555, voltage:"400kV", substation:"Khavda PS-II", bay:"429", bess:false },
-
-{ developer:"Gujarat State Electricity Corporation Ltd.", group:"GSECL", mw:1361, voltage:"400kV", substation:"Khavda PS-II", bay:"7", bess:false },
-
-{ developer:"Gujarat Industries Power Corporation Ltd.", group:"GIPCL", mw:1175, voltage:"400kV", substation:"Khavda PS-II", bay:"8", bess:false },
-
-
-/* ---------------- KHAVDA PS-III ---------------- */
-
-{ developer:"Adani Green Energy Ltd.", group:"Adani Group", mw:1050, voltage:"400kV", substation:"Khavda PS-III", bay:"406", bess:false },
-
-{ developer:"NTPC Renewable Energy Ltd.", group:"NTPC Group", mw:1200, voltage:"400kV", substation:"Khavda PS-III", bay:"403", bess:false },
-
-{ developer:"Sarjan Realties Pvt. Ltd.", group:"Sarjan Group", mw:1250, voltage:"400kV", substation:"Khavda PS-III", bay:"412", bess:false },
-
-{ developer:"Sarjan Realties Pvt. Ltd.", group:"Sarjan Group", mw:1100, voltage:"400kV", substation:"Khavda PS-III", bay:"4", bess:false },
-
-{ developer:"Sarjan Realties Pvt. Ltd.", group:"Sarjan Group", mw:1250, voltage:"400kV", substation:"Khavda PS-III", bay:"5", bess:false },
-
-{ developer:"NHPC Ltd.", group:"NHPC", mw:600, voltage:"400kV", substation:"Khavda PS-III", bay:"6", bess:false },
-
-{ developer:"Adani Green Energy Ltd.", group:"Adani Group", mw:1325, voltage:"400kV", substation:"Khavda PS-III", bay:"7", bess:false },
-
-{ developer:"Adani Green Energy Ltd.", group:"Adani Group", mw:1160, voltage:"400kV", substation:"Khavda PS-III", bay:"8", bess:false },
-
-
-/* ---------------- KHAVDA PS-IV ---------------- */
-
-{ developer:"Adani Power Limited", group:"Adani Group", mw:1250, voltage:"400kV", substation:"Khavda PS-IV", bay:"1", bess:false },
-
-{ developer:"Adani Power Limited", group:"Adani Group", mw:1250, voltage:"400kV", substation:"Khavda PS-IV", bay:"2", bess:false },
-
-{ developer:"Adani Power Limited", group:"Adani Group", mw:1250, voltage:"400kV", substation:"Khavda PS-IV", bay:"3", bess:false },
-
-{ developer:"Adani Power Limited", group:"Adani Group", mw:625, voltage:"400kV", substation:"Khavda PS-IV", bay:"4", bess:false },
-
-{ developer:"Adani Power Limited", group:"Adani Group", mw:625, voltage:"400kV", substation:"Khavda PS-IV", bay:"5", bess:false },
-
-{ developer:"Adani Power Limited", group:"Adani Group", mw:1250, voltage:"400kV", substation:"Khavda PS-IV", bay:"6", bess:false },
-
-{ developer:"Adani Power Limited", group:"Adani Group", mw:1250, voltage:"400kV", substation:"Khavda PS-IV", bay:"7", bess:false },
-
-{ developer:"Adani Power Limited", group:"Adani Group", mw:1250, voltage:"400kV", substation:"Khavda PS-IV", bay:"8", bess:false },
-
-
-/* ---------------- KHAVDA PS-V ---------------- */
-
-{ developer:"Adani Power Limited", group:"Adani Group", mw:1250, voltage:"400kV", substation:"Khavda PS-V", bay:"1", bess:false },
-
-{ developer:"Adani Power Limited", group:"Adani Group", mw:1250, voltage:"400kV", substation:"Khavda PS-V", bay:"2", bess:false },
-
-{ developer:"Adani Power Limited", group:"Adani Group", mw:1250, voltage:"400kV", substation:"Khavda PS-V", bay:"3", bess:false }
-
+// --- TRANSMISSION PHASES (verified from CERC, PGCIL, CTUIL sources) ---
+const PHASES = [
+  {
+    id: "ph1", label: "Phase I", gw: 3,
+    color: "#22c55e", status: "commissioned",
+    period: "2021–Mar 2025",
+    description: "Initial pooling station infrastructure + first 765kV HVAC backbone",
+    parts: [
+      { id:"ph1a", name:"KPS-1 Initial (Sec-A)", spv:"Khavda Bhuj Transmission Ltd", developer:"AESL", scope:"765/400kV GIS KPS-1, 3×1500 MVA (Sec-A); 41 ckm KPS1–KPS2 D/C line", scod:"Jan 2025", doco:"Mar 2025", cost:"~₹880 cr", status:"commissioned", delay:"~2 months" },
+      { id:"ph1b", name:"KPS-1 Augmentation (Sec-B)", spv:"KPS1 Transmission Ltd", developer:"AESL (acq. from MEIL, Apr 2023)", scope:"4×1500 MVA ICTs at KPS-1 Sec-B + 1×1500 MVA RTM Sec-A", scod:"Feb 2025", doco:"Mar 2025", cost:"~₹800 cr", status:"commissioned", delay:"~1 month" },
+      { id:"ph1c", name:"KPS-2 Initial", spv:"Powergrid KPS2 Transmission System Ltd", developer:"PGCIL", scope:"765/400kV GIS KPS-2, 4×1500 MVA (2 each Sec-A & B)", scod:"Dec 2024", doco:"Apr 2025", cost:"~₹880 cr", status:"commissioned", delay:"~4 months" },
+      { id:"ph1d", name:"KPS-3 Establishment", spv:"Powergrid KPS3 Transmission Ltd", developer:"PGCIL", scope:"765/400kV GIS KPS-3, 3×1500 MVA; 30 ckm KPS3–KPS2 D/C line", scod:"Dec 2024", doco:"Aug 2025", cost:"₹789 cr", status:"commissioned", delay:"~8 months" },
+    ]
+  },
+  {
+    id: "ph2", label: "Phase II", gw: 4.5,
+    color: "#3b82f6", status: "commissioned",
+    period: "Mar 2023–Feb 2026",
+    description: "4.5 GW evacuation via 765kV D/C lines from KPS-2 to Navsari (Maharashtra border)",
+    parts: [
+      { id:"ph2a", name:"Part A: KPS2 → Lakadia", spv:"Khavda II-A Transmission Ltd", developer:"AESL", scope:"355 ckm 765kV D/C line, KPS2 to Lakadia PS. No substation.", scod:"Mar 2025", doco:"Mar 2025", cost:"~₹1,100 cr", status:"commissioned", delay:"On schedule" },
+      { id:"ph2b", name:"Part B: Lakadia → Ahmedabad", spv:"Powergrid Khavda II-B Transmission Ltd", developer:"PGCIL", scope:"368 ckm 765kV D/C line, Lakadia PS to Ahmedabad.", scod:"Mar 2025", doco:"Dec 2025", cost:"₹1,238 cr (tariff ₹1,106 M/yr)", status:"commissioned", delay:"~9 months (RoW, forest)" },
+      { id:"ph2c", name:"Part C: Ahmedabad → Navsari", spv:"Powergrid Khavda II-C Transmission Ltd", developer:"PGCIL", scope:"590 ckm 765kV D/C line + new 765/400kV 3×1500 MVA Ahmedabad (New) substation.", scod:"Mar 2025", doco:"Feb 2, 2026", cost:"₹2,821 cr", status:"commissioned", delay:"~10 months (forest clearance)" },
+      { id:"ph2d", name:"Part D: LILO at Ahmedabad", spv:"Torrent Power Grid Ltd (TGPL)", developer:"Torrent/PGCIL JV (74:26)", scope:"LILO of 400kV Pirana–Pirana line at Ahmedabad (New) SS.", scod:"—", doco:"Jan 2026", cost:"—", status:"commissioned", delay:"—" },
+    ]
+  },
+  {
+    id: "ph3", label: "Phase III", gw: 7,
+    color: "#f59e0b", status: "commissioned",
+    period: "Mar 2023–Aug 2025",
+    description: "7 GW: Banaskantha–Ahmedabad 765kV corridor + KPS-2 augmentation to 4+4 ICTs",
+    parts: [
+      { id:"ph3a", name:"Banaskantha → Ahmedabad 765kV", spv:"Powergrid Khavda RE Transmission System Ltd", developer:"PGCIL", scope:"270 ckm 765kV D/C line, Banaskantha (Raghanesda) GIS to Ahmedabad.", scod:"Mar 2025", doco:"Jul 2025", cost:"₹953 cr", status:"commissioned", delay:"~4 months" },
+      { id:"ph3b", name:"KPS-2 Augmentation (4 ICTs)", spv:"Powergrid KPS2 Transmission System Ltd", developer:"PGCIL", scope:"4×1500 MVA 765/400kV ICTs at KPS-2 (2 each Sec-A & B). KPS-2 → 8 ICTs total.", scod:"Dec 2024", doco:"Apr 2025", cost:"~₹880 cr", status:"commissioned", delay:"~4 months" },
+    ]
+  },
+  {
+    id: "ph4", label: "Phase IV", gw: 7,
+    color: "#f97316", status: "under-construction",
+    period: "Aug 2024–Nov 2026",
+    description: "7 GW HVAC expansion: 8 parts covering new KPS-3 Sec-B, South Olpad GIS, Boisar-II, and KPS augmentation",
+    parts: [
+      { id:"ph4a", name:"Part A: KPS-3 Sec-B + Lines", spv:"Khavda IV-A Power Transmission Ltd", developer:"AESL (Aug 2024)", scope:"KPS-3 765kV Bus Sec-II; 298 ckm 765kV D/C KPS3→Lakadia & KPS3→Bhuj; 3×1500 MVA; 300 MVAr STATCOM.", scod:"Aug 2026", doco:"—", cost:"₹4,100 cr (tariff ₹5,090 M/yr)", status:"under-construction", delay:"SCOD Aug 2026" },
+      { id:"ph4b", name:"Part B: South Olpad GIS + Lines", spv:"Powergrid Khavda IV-B Transmission Ltd", developer:"PGCIL (Sep 2024)", scope:"765/400/220kV GIS substation at South Olpad, Gujarat; 765kV + 400kV D/C lines.", scod:"Sep 2026", doco:"—", cost:"~₹4,766 cr (tariff ₹5,567 M/yr)", status:"under-construction", delay:"SCOD Sep 2026" },
+      { id:"ph4c", name:"Part C: South Olpad → Boisar-II", spv:"Khavda IV-C Power Transmission Ltd", developer:"Sterlite Power (Aug 2024)", scope:"258 ckm 765kV D/C South Olpad→Boisar-II; Boisar-II 6,000 MVA 765/400/220kV GIS; 162 ckm LILO lines.", scod:"Aug 2026", doco:"—", cost:"₹5,340 cr NCT → revised ~₹12,000 cr; tariff ₹13,148 M/yr (record)", status:"under-construction", delay:"SCOD ~Aug 2026" },
+      { id:"ph4d", name:"Part D: Pune Area Infrastructure", spv:"Pune-III Transmission Ltd", developer:"AESL (Nov 2024)", scope:"Transmission infrastructure serving Pune / Maharashtra corridor.", scod:"Nov 2026", doco:"—", cost:"~₹5,892 M tariff/yr", status:"under-construction", delay:"SCOD Nov 2026" },
+      { id:"ph4e2", name:"Part E2: KPS-1 & KPS-2 ICT Augmentation", spv:"Powergrid Khavda IV-E2 Power Transmission Ltd", developer:"PGCIL (May 2024)", scope:"2×1500 MVA ICTs each at KPS-1 Sec-B and KPS-2 (making KPS-1: 9 ICTs, KPS-2: 8+1).", scod:"Feb 2026", doco:"—", cost:"₹679 cr (tariff ₹990 M/yr)", status:"under-construction", delay:"SCOD Feb 2026" },
+      { id:"ph4e1", name:"Part E1 (RTM): KPS-1 Augmentation", spv:"AESL RTM subsidiary", developer:"AESL (RTM)", scope:"KPS-1 augmentation (minor). Augments KPS-1 transformation.", scod:"~2026", doco:"—", cost:"<₹500 cr", status:"under-construction", delay:"RTM – minor works" },
+      { id:"ph4e3", name:"Part E3 (RTM): KPS-3 Augmentation", spv:"PGCIL RTM subsidiary", developer:"PGCIL (RTM)", scope:"KPS-3 augmentation works.", scod:"~2026", doco:"—", cost:"<₹500 cr", status:"under-construction", delay:"RTM – minor works" },
+      { id:"ph4e4", name:"Part E4 (RTM): Padghe GIS Augmentation", spv:"PGCIL direct", developer:"PGCIL (RTM)", scope:"Augmentation of Padghe GIS substation in Maharashtra.", scod:"~2026", doco:"—", cost:"<₹500 cr", status:"under-construction", delay:"RTM – minor works" },
+    ]
+  },
+  {
+    id: "ph5", label: "Phase V", gw: 8,
+    color: "#8b5cf6", status: "awarded",
+    period: "Nov 2024–May 2029",
+    description: "8 GW: India's first HVDC-TBCB projects — ±800kV LCC (6 GW) + ±500kV VSC (2.5 GW) + KPS augmentations",
+    parts: [
+      { id:"ph5a", name:"Part A: ±800kV HVDC LCC — KPS2 to Nagpur", spv:"Khavda V-A Power Transmission Ltd", developer:"PGCIL (Nov 2024) — FIRST EVER HVDC-TBCB", scope:"±800kV 6,000 MW LCC bipole (Hexa Lapwing), 1,200 km KPS-2 HVDC terminal → Nagpur HVDC terminal. 6×1500 MVA ICTs at Nagpur. Lines: KEC International + Jyoti Structures. Terminals: BHEL + Hitachi Energy India.", scod:"Pole 1: Nov 2028 / Pole 2: May 2029", doco:"—", cost:"₹24,819 cr (tariff ₹40,829 M/yr — record)", status:"awarded", delay:"54-month completion. Land acquisition at Nagpur pending." },
+      { id:"ph5c", name:"Part C: ±500kV HVDC VSC — KPS3 to South Olpad", spv:"KPS III HVDC Transmission Ltd", developer:"AESL (Dec 2025)", scope:"±500kV 2,500 MW VSC bipole, 600 km. KPS-3 HVDC terminal to South Olpad HVDC terminal, both in Gujarat. GE Vernova T&D India awarded HVDC terminal contract.", scod:"Dec 2029 (48 months from Dec 2025)", doco:"—", cost:"₹12,000 cr NCT est. (tariff ~₹2,300 cr/yr)", status:"awarded", delay:"48-month completion. Under early engineering." },
+      { id:"ph5b1b2", name:"Part B1/B2: KPS-1 & KPS-2 ICT Augmentation", spv:"Powergrid KPS 1 and 2 Augmentation Transmission Ltd", developer:"PGCIL (Feb 2025)", scope:"1×1500 MVA ICT at KPS-1 Sec-B + 1×1500 MVA at KPS-2 Sec-I (9th ICT each).", scod:"Feb 2027", doco:"—", cost:"₹466 cr (tariff ₹699 M/yr)", status:"awarded", delay:"SCOD Feb 2027" },
+      { id:"ph5b3", name:"Part B3 (RTM): KPS-3 ICT Augmentation", spv:"Khavda IV-A (AESL RTM subsidiary)", developer:"AESL (RTM, ~2025)", scope:"1×1500 MVA ICT at KPS-3 Sec-B (8th ICT at KPS-3).", scod:"~2026–27", doco:"—", cost:"₹252 cr", status:"awarded", delay:"RTM" },
+      { id:"ph5stat", name:"STATCOM at KPS-1 & KPS-3", spv:"Powergrid Khavda PS1 and 3 Transmission Ltd", developer:"PGCIL (Sep 2024)", scope:"±300 MVAr STATCOM + 1×125 MVAr MSC + 2×125 MVAr MSR at KPS-1 Bus-1&2 and KPS-3 Bus-1.", scod:"Nov 2026", doco:"—", cost:"₹501 cr", status:"awarded", delay:"SCOD Nov 2026" },
+    ]
+  }
 ];
 
-
-const TIMELINE = [
-  { date:"Jan 2025", event:"KPS-I Section-II (4×1500 MVA, 765/400kV ICTs) SCOD", station:"Khavda PS-I", status:"commissioned", source:"TNDI India / CTUIL IE reports" },
-  { date:"Mar 2025", event:"Khavda Phase-II Parts A–D SCOD (PGCIL, 4.5 GW)", station:"Khavda PS-II", status:"commissioned", source:"CERC Order, Mercom India" },
-  { date:"Jul 2025", event:"Banaskantha–Ahmedabad 765kV D/C ~270 ckm commissioned", station:"Corridor", status:"commissioned", source:"TNDI India, Aug 2025" },
-  { date:"Aug 2025", event:"KPS-3 commissioned (DOCO 18 Aug 2025, PGCIL)", station:"Khavda PS-III", status:"commissioned", source:"Wire & Cable India, Aug 2025" },
-  { date:"Jan 2026", event:"Ahmedabad–Navsari 765kV D/C ~590 ckm commissioned", station:"Corridor", status:"commissioned", source:"PGCIL stock filing, Feb 2026" },
-  { date:"Aug 2026", event:"Khavda IV-A SCOD – 765kV bus Sec-II at KPS3 (AESL)", station:"Khavda PS-III", status:"planned", source:"CERC Licence Order, Jan 2025" },
-  { date:"Dec 2026", event:"GSECL 2.3 GW Khavda Solar Park full commissioning target", station:"Khavda PS-II", status:"planned", source:"PV Tech / Vikram Solar, May 2025" },
-  { date:"Dec 2026–Mar 2027", event:"Khavda Phase-V (4 GW HVDC, KPS-III HVDC TSA)", station:"Khavda PS-III", status:"planned", source:"PV Tech / CTUIL Phase-V TSA, 2024" },
-  { date:"2026–2027", event:"Adani Green 5 GW MSEDCL PPA staggered delivery", station:"Khavda PS-II/IV", status:"planned", source:"Adani / MSEDCL LOI, Sep 2024" },
-  { date:"Beyond 2027", event:"Khavda Phase-VI 4 GW HVDC upgrade + 765kV", station:"All Stations", status:"future", source:"PV Tech / CTUIL Phase-VI Planning" },
+// --- BAY ALLOCATION DATA ---
+const BAY_DATA = [
+  // KPS-I
+  { ps:"KPS-I", bay:"401", section:"A", developer:"Adani Renewable Energy Holding Four Ltd.", group:"Adani Group", mw:2500, margin:0 },
+  { ps:"KPS-I", bay:"404", section:"A", developer:"Adani Renewable Energy Holding Four Ltd.", group:"Adani Group", mw:1000, margin:0 },
+  { ps:"KPS-I", bay:"412", section:"A", developer:"Adani Green Energy Ltd.", group:"Adani Group", mw:1050, margin:0 },
+  { ps:"KPS-I", bay:"421", section:"B", developer:"Adani Green Energy Ltd.", group:"Adani Group", mw:1650, margin:0 },
+  { ps:"KPS-I", bay:"424", section:"B", developer:"Adani Green Energy Ltd.", group:"Adani Group", mw:1160, margin:0 },
+  { ps:"KPS-I", bay:"7",   section:"B", developer:"Adani Green Energy Ltd.", group:"Adani Group", mw:1300, margin:0 },
+  { ps:"KPS-I", bay:"8",   section:"B", developer:"Sarjan Realties Pvt. Ltd.", group:"Sarjan (Suzlon)", mw:1150, margin:0 },
+  { ps:"KPS-I", bay:"9",   section:"B", developer:"Reliance Industries Limited", group:"Reliance", mw:690, margin:0 },
+  // KPS-II
+  { ps:"KPS-II", bay:"421", section:"A", developer:"Gujarat State Electricity Corporation Ltd.", group:"GSECL", mw:1964, margin:0 },
+  { ps:"KPS-II", bay:"418", section:"A", developer:"Gujarat Industries Power Company", group:"GIPCL", mw:1200, margin:0 },
+  { ps:"KPS-II", bay:"4",   section:"A", developer:"NTPC REL", group:"NTPC Group", mw:1995, margin:0 },
+  { ps:"KPS-II", bay:"429", section:"B", developer:"NTPC Renewable Energy Ltd.", group:"NTPC Group", mw:1555, margin:0 },
+  { ps:"KPS-II", bay:"7",   section:"B", developer:"Gujarat State Electricity Corporation Ltd.", group:"GSECL", mw:1361, margin:0 },
+  { ps:"KPS-II", bay:"8",   section:"B", developer:"Gujarat Industries Power Corporation Ltd.", group:"GIPCL", mw:1175, margin:0 },
+  // KPS-III
+  { ps:"KPS-III", bay:"406", section:"A", developer:"Adani Green Energy Ltd.", group:"Adani Group", mw:1050, margin:0 },
+  { ps:"KPS-III", bay:"403", section:"A", developer:"NTPC Renewable Energy Ltd.", group:"NTPC Group", mw:1200, margin:0 },
+  { ps:"KPS-III", bay:"412", section:"A", developer:"Sarjan Realties Pvt. Ltd.", group:"Sarjan (Suzlon)", mw:1250, margin:0 },
+  { ps:"KPS-III", bay:"4",   section:"B", developer:"Sarjan Realties Pvt. Ltd.", group:"Sarjan (Suzlon)", mw:1100, margin:0 },
+  { ps:"KPS-III", bay:"5",   section:"B", developer:"Sarjan Realties Pvt. Ltd.", group:"Sarjan (Suzlon)", mw:1250, margin:0 },
+  { ps:"KPS-III", bay:"6",   section:"B", developer:"NHPC Ltd.", group:"NHPC", mw:600, margin:0 },
+  { ps:"KPS-III", bay:"7",   section:"B", developer:"Adani Green Energy Ltd.", group:"Adani Group", mw:1325, margin:0 },
+  { ps:"KPS-III", bay:"8",   section:"B", developer:"Adani Green Energy Ltd.", group:"Adani Group", mw:1160, margin:0 },
+  // KPS-IV (Adani Power — separate section, likely Adani Power thermal/storage offtake bays)
+  { ps:"KPS-IV", bay:"1", section:"—", developer:"Adani Power Limited", group:"Adani Power", mw:1250, margin:0 },
+  { ps:"KPS-IV", bay:"2", section:"—", developer:"Adani Power Limited", group:"Adani Power", mw:1250, margin:0 },
+  { ps:"KPS-IV", bay:"3", section:"—", developer:"Adani Power Limited", group:"Adani Power", mw:1250, margin:0 },
+  { ps:"KPS-IV", bay:"4", section:"—", developer:"Adani Power Limited", group:"Adani Power", mw:625, margin:0 },
+  { ps:"KPS-IV", bay:"5", section:"—", developer:"Adani Power Limited", group:"Adani Power", mw:625, margin:0 },
+  { ps:"KPS-IV", bay:"6", section:"—", developer:"Adani Power Limited", group:"Adani Power", mw:1250, margin:0 },
+  { ps:"KPS-IV", bay:"7", section:"—", developer:"Adani Power Limited", group:"Adani Power", mw:1250, margin:0 },
+  { ps:"KPS-IV", bay:"8", section:"—", developer:"Adani Power Limited", group:"Adani Power", mw:1250, margin:0 },
+  // KPS-V
+  { ps:"KPS-V", bay:"1", section:"—", developer:"Adani Power Limited", group:"Adani Power", mw:1250, margin:0 },
+  { ps:"KPS-V", bay:"2", section:"—", developer:"Adani Power Limited", group:"Adani Power", mw:1250, margin:0 },
+  { ps:"KPS-V", bay:"3", section:"—", developer:"Adani Power Limited", group:"Adani Power", mw:1250, margin:0 },
 ];
 
-// ═══════════════════════════════════════════════════════════════════════════
-// TRANSMISSION MAP DATA
-// ═══════════════════════════════════════════════════════════════════════════
-const MAP_BOUNDS = { lonMin:68.2, lonMax:75.5, latMin:18.8, latMax:25.8 };
-const MW=820, MH=560;
-function project(lon,lat){
-  const x=((lon-MAP_BOUNDS.lonMin)/(MAP_BOUNDS.lonMax-MAP_BOUNDS.lonMin))*MW;
-  const y=MH-((lat-MAP_BOUNDS.latMin)/(MAP_BOUNDS.latMax-MAP_BOUNDS.latMin))*MH;
-  return [x,y];
-}
-const MAP_NODES = {
-  kps1: {id:"kps1",label:"KPS-1",lon:69.142,lat:23.374,type:"kps",voltage:"765/400/220kV",tso:"AESL",status:"commissioned",capacity:"~3 GW Phase-I",psKey:"Khavda PS-I"},
-  kps2: {id:"kps2",label:"KPS-2",lon:69.158,lat:23.365,type:"kps",voltage:"765/400/220kV",tso:"PGCIL",status:"commissioned",capacity:"~19.7 GW",psKey:"Khavda PS-II"},
-  kps3: {id:"kps3",label:"KPS-3",lon:69.494,lat:24.208,type:"kps",voltage:"765/400/220kV",tso:"PGCIL",status:"commissioned Aug 2025",capacity:"~7.8 GW",psKey:"Khavda PS-III"},
-  kps4: {id:"kps4",label:"KPS-4",lon:71.403,lat:24.449,type:"kps",voltage:"765/400kV",tso:"AESL (SCOD Aug 2026)",status:"planned",capacity:"~13.8 GW",psKey:"Khavda PS-IV"},
-  kps5: {id:"kps5",label:"KPS-5",lon:71.487,lat:24.453,type:"kps",voltage:"765/400/220kV",tso:"Under planning",status:"planned",capacity:"~6.1 GW",psKey:"Khavda PS-V"},
-  bhuj: {id:"bhuj",label:"Bhuj PS",lon:69.671,lat:23.243,type:"hub",voltage:"765/400kV",tso:"PGCIL/AESL",status:"commissioned",capacity:"Junction hub"},
-  bhuj2:{id:"bhuj2",label:"Bhuj-II",lon:69.563,lat:23.374,type:"hub",voltage:"765/400/220kV",tso:"PGCIL",status:"commissioned",capacity:""},
-  lak:  {id:"lak",label:"Lakadia",lon:70.598,lat:23.393,type:"hub",voltage:"765/400kV",tso:"PGCIL/AESL",status:"commissioned",capacity:"Intermediate hub"},
-  banas:{id:"banas",label:"Banaskantha",lon:71.450,lat:24.230,type:"hub",voltage:"400/220kV GIS",tso:"PGCIL",status:"commissioned",capacity:"Radhanesda GIS"},
-  vad:  {id:"vad",label:"Vadodara",lon:73.183,lat:22.307,type:"hub",voltage:"765/400kV",tso:"PGCIL",status:"commissioned",capacity:"WR key node"},
-  ahm:  {id:"ahm",label:"Ahmedabad (new)",lon:72.585,lat:23.033,type:"hub",voltage:"765/400kV",tso:"PGCIL",status:"commissioned Mar 2025",capacity:"3×1500 MVA"},
-  nav:  {id:"nav",label:"Navsari (Digital)",lon:72.952,lat:20.950,type:"hub",voltage:"765/400kV",tso:"PGCIL",status:"commissioned Jan 2026",capacity:"World's 1st digital 765kV SS"},
-  jkh:  {id:"jkh",label:"Jam Khambhaliya",lon:70.046,lat:22.200,type:"hub",voltage:"400/220kV GIS",tso:"PGCIL/AESL",status:"commissioned",capacity:""},
-  padghe:{id:"padghe",label:"Padghe (MH)",lon:73.060,lat:19.370,type:"load",voltage:"765/400kV",tso:"MSETCL",status:"operational",capacity:"MH import point"},
-  mumbai:{id:"mumbai",label:"Mumbai",lon:72.870,lat:19.078,type:"load",voltage:"400/220kV",tso:"MSETCL/TPC",status:"operational",capacity:"~4,000 MW demand"},
-  pune:  {id:"pune",label:"Pune",lon:73.348,lat:18.620,type:"load",voltage:"400kV",tso:"MSETCL",status:"operational",capacity:"MH load centre"},
-};
-const MAP_LINES = [
-  {id:"kps1-kps2",from:"kps1",to:"kps2",kv:765,ckm:5,tso:"AESL",status:"commissioned",phase:"Phase-I",label:"KPS1–KPS2 765kV D/C"},
-  {id:"kps1-bhuj2",from:"kps1",to:"bhuj2",kv:765,ckm:30,tso:"AESL",status:"commissioned",phase:"Phase-I",label:"KPS1–Bhuj-II 765kV LILO"},
-  {id:"kps2-bhuj",from:"kps2",to:"bhuj",kv:765,ckm:217,tso:"AESL",status:"commissioned",phase:"Phase-I",label:"KPS1/2–Bhuj 765kV D/C 217 ckm"},
-  {id:"kps2-lak",from:"kps2",to:"lak",kv:765,ckm:140,tso:"AESL",status:"commissioned",phase:"Phase-II",label:"KPS2–Lakadia 765kV D/C"},
-  {id:"lak-bhuj",from:"lak",to:"bhuj",kv:765,ckm:85,tso:"AESL",status:"commissioned",phase:"Phase-I",label:"Bhuj–Lakadia 765kV D/C"},
-  {id:"lak-vad",from:"lak",to:"vad",kv:765,ckm:180,tso:"PGCIL",status:"commissioned",phase:"Phase-I",label:"Lakadia–Vadodara 765kV D/C"},
-  {id:"kps3-banas",from:"kps3",to:"banas",kv:400,ckm:30,tso:"PGCIL",status:"commissioned",phase:"Phase-III",label:"KPS3–Banaskantha 400kV"},
-  {id:"banas-ahm",from:"banas",to:"ahm",kv:765,ckm:270,tso:"PGCIL",status:"commissioned",phase:"Phase-III",label:"Banaskantha–Ahmedabad 765kV D/C 270 ckm"},
-  {id:"ahm-nav",from:"ahm",to:"nav",kv:765,ckm:590,tso:"PGCIL",status:"commissioned",phase:"Phase-II Part C",label:"Ahmedabad–Navsari 765kV D/C 590 ckm"},
-  {id:"ahm-vad",from:"ahm",to:"vad",kv:765,ckm:100,tso:"PGCIL",status:"commissioned",phase:"existing",label:"Ahmedabad–Vadodara 765kV"},
-  {id:"nav-padghe",from:"nav",to:"padghe",kv:765,ckm:145,tso:"PGCIL/MSETCL",status:"commissioned",phase:"Phase-II Part C",label:"Navsari–Padghe 765kV D/C (MH corridor)"},
-  {id:"padghe-mum",from:"padghe",to:"mumbai",kv:400,ckm:70,tso:"MSETCL/TPC",status:"operational",phase:"existing",label:"Padghe–Mumbai 400kV"},
-  {id:"padghe-pune",from:"padghe",to:"pune",kv:400,ckm:90,tso:"MSETCL",status:"operational",phase:"existing",label:"Padghe–Pune 400kV"},
-  {id:"kps4-banas",from:"kps4",to:"banas",kv:400,ckm:10,tso:"PGCIL",status:"planned",phase:"Phase-IV",label:"KPS4–Banaskantha 400kV"},
-  {id:"kps5-kps4",from:"kps5",to:"kps4",kv:400,ckm:8,tso:"PGCIL",status:"planned",phase:"Phase-IV",label:"KPS5–KPS4 400kV"},
-  {id:"jkh-lak",from:"jkh",to:"lak",kv:400,ckm:95,tso:"PGCIL",status:"commissioned",phase:"existing",label:"Jam Khambhaliya–Lakadia 400kV"},
-  {id:"bhuj-jkh",from:"bhuj",to:"jkh",kv:765,ckm:80,tso:"PGCIL",status:"commissioned",phase:"existing",label:"Bhuj–Jam Khambhaliya 765kV"},
+// --- KPS STATION PROFILES ---
+const KPS_PROFILES = [
+  {
+    id:"KPS-I", owner:"AESL",
+    voltage:"765/400kV GIS",
+    status:"commissioned",
+    coords:"24°04'N 69°31'E",
+    icts_commissioned: 8,
+    icts_planned: 1, // Ph V-B1
+    icts_total: 9,
+    mva_each: 1500,
+    sec_a_icts: 4, sec_b_icts: 5,
+    capacity_commissioned_mva: 12000,
+    capacity_total_mva: 13500,
+    hvdc: false,
+    color:"#22c55e",
+    notes:"AESL-built. 4 ICTs Sec-A (Khavda Bhuj Transmission) + 4 ICTs Sec-B (KPS1 Transmission) + 1 RTM ICT. 9th ICT via Ph V-B1 (SCOD Feb 2027).",
+    margin_note: "Bays fully allocated to Adani Group (all three sections). No open bays.",
+    margin_mw: 0,
+  },
+  {
+    id:"KPS-II", owner:"PGCIL",
+    voltage:"765/400kV GIS",
+    status:"commissioned",
+    coords:"24°04'N 69°31'E",
+    icts_commissioned: 8,
+    icts_planned: 1, // Ph V-B2
+    icts_total: 9,
+    mva_each: 1500,
+    sec_a_icts: 4, sec_b_icts: 4,
+    capacity_commissioned_mva: 12000,
+    capacity_total_mva: 13500,
+    hvdc: true,
+    hvdc_note:"±800kV LCC HVDC terminal (6,000 MW) under construction — KPS-2 to Nagpur, PGCIL, SCOD Nov 2028",
+    color:"#3b82f6",
+    notes:"PGCIL-built. 4 ICTs via Powergrid KPS2 Transmission System Ltd + 4 ICTs via Khavda IV-E2 = 8 ICTs. 9th ICT via Ph V-B2 (SCOD Feb 2027). HVDC terminal under construction alongside AC.",
+    margin_note: "Bays fully allocated — GSECL, GIPCL, NTPC. No open bays.",
+    margin_mw: 0,
+  },
+  {
+    id:"KPS-III", owner:"PGCIL",
+    voltage:"765/400kV GIS",
+    status:"commissioned Aug 2025",
+    coords:"24°20'N 69°50'E (approx)",
+    icts_commissioned: 3,
+    icts_planned: 5, // Ph IV-A adds 3 ICTs + RTM + Ph V-B3
+    icts_total: 8,
+    mva_each: 1500,
+    sec_a_icts: 3, sec_b_icts: 0,
+    capacity_commissioned_mva: 4500,
+    capacity_total_mva: 12000,
+    hvdc: true,
+    hvdc_note:"±500kV VSC HVDC terminal (2,500 MW) under construction — KPS-3 to South Olpad, AESL, SCOD Dec 2029",
+    color:"#f59e0b",
+    notes:"Initially 3×1500 MVA (PGCIL). Ph IV-A adding 765kV Bus Sec-II + 3×1500 MVA ICTs (AESL, SCOD Aug 2026). Ph V-B3 adds 8th ICT. Sec-B bays being activated by Phase IV-A.",
+    margin_note: "Sec-A bays allocated. Sec-B bays partially allocated — some capacity for new developers via Phase IV-A expansion.",
+    margin_mw: 500,
+  },
+  {
+    id:"KPS-IV", owner:"AESL (SCOD Aug 2026)",
+    voltage:"765/400kV",
+    status:"under-construction",
+    coords:"24°20'N 71°29'E",
+    icts_commissioned: 0,
+    icts_planned: 3,
+    icts_total: 3,
+    mva_each: 1500,
+    capacity_commissioned_mva: 0,
+    capacity_total_mva: 4500,
+    hvdc: false,
+    color:"#f97316",
+    notes:"Being developed under Phase IV-B (PGCIL, South Olpad GIS). Current CTUIL allocation shows Adani Power Limited holding 8,750 MW across 8 bays at this station.",
+    margin_note: "Primarily Adani Power bays. Limited open capacity for third-party RE developers in current allocation.",
+    margin_mw: 250,
+  },
+  {
+    id:"KPS-V", owner:"Phase V planning",
+    voltage:"765/400kV",
+    status:"planned",
+    coords:"24°27'N 71°24'E",
+    icts_commissioned: 0,
+    icts_planned: 0,
+    icts_total: 0,
+    mva_each: 1500,
+    capacity_commissioned_mva: 0,
+    capacity_total_mva: 0,
+    hvdc: false,
+    color:"#8b5cf6",
+    notes:"Planning stage. CTUIL connectivity register shows 3 bays allocated — all to Adani Power Limited (1,250 + 1,250 + 1,250 MW). Station not yet formally awarded.",
+    margin_note: "Station under planning. No formal tender yet. Connectivity applications may be accepted as Phase V progresses.",
+    margin_mw: 1500,
+  },
 ];
 
-const VKV_COLORS={765:"#fbbf24",400:"#f97316",220:"#06b6d4"};
-const STATUS_DASH={"commissioned":"none","commissioned Jul 2025":"none","commissioned Jan 2026":"none","commissioned Mar 2025":"none","commissioned Aug 2025":"none","planned":"8,5","operational":"none"};
-const STATUS_OPACITY={"commissioned":1,"commissioned Jul 2025":1,"commissioned Jan 2026":1,"commissioned Mar 2025":1,"commissioned Aug 2025":1,"planned":0.4,"operational":0.7};
-const NODE_COLORS={kps:"#3b82f6",hub:"#10b981",load:"#ef4444",nr:"#8b5cf6"};
-const NODE_R={kps:11,hub:7,load:6,nr:5};
+// --- HVDC PROJECTS ---
+const HVDC_PROJECTS = [
+  {
+    id:"va",
+    name:"Khavda V-A: KPS2 → Nagpur",
+    label:"±800 kV LCC",
+    capacity_mw: 6000,
+    technology:"LCC (Line Commutated Converter)",
+    route:"KPS-2 (Gujarat) → Nagpur (Maharashtra)",
+    length_km: 1200,
+    ckm: 2412,
+    developer:"PGCIL",
+    spv:"Khavda V-A Power Transmission Ltd",
+    awarded:"Nov 19, 2024",
+    cost_cr: 24819,
+    tariff_m_yr: 40829, // CERC-approved: Rs.40,828.67 M/yr
+    pole1_scod:"Nov 2028",
+    pole2_scod:"May 2029",
+    status:"under-construction",
+    color:"#a78bfa",
+    packages:[
+      { name:"HVDC Terminal Stations (KPS2 + Nagpur)", contractor:"BHEL + Hitachi Energy India (consortium)", value:"Undisclosed", note:"±800kV, 4×1500 MW each terminal. Thyristor valves from BHEL Bengaluru. Converter transformers, shunt reactors from BHEL Bhopal." },
+      { name:"HVDC Bipole Line — Package 01", contractor:"Jyoti Structures Ltd", value:"₹741 cr", note:"Hexa Lapwing conductor. First package of multi-package award." },
+      { name:"HVDC Bipole Line — Package (KEC)", contractor:"KEC International", value:"Undisclosed (~140 km)", note:"Part of multi-package line award." },
+    ],
+    constraints:[
+      "Nagpur land acquisition: 405 acres of private land pending — application submitted Dec 2024 to District Magistrate.",
+      "Engineering & survey under progress across 2,412 ckm route.",
+      "6×1500 MVA ICTs at Nagpur substation also part of scope.",
+    ],
+    significance:"India's first HVDC project under TBCB. Largest ISTS-TBCB scheme ever by capital outlay and annual tariff. SPV renamed to 'Powergrid West Central Transmission Ltd' by PGCIL. Removes reactive power limitations of long HVAC corridors for 6 GW transfer from Gujarat to Maharashtra.",
+  },
+  {
+    id:"vc",
+    name:"KPS III HVDC: KPS3 → South Olpad",
+    label:"±500 kV VSC",
+    capacity_mw: 2500,
+    technology:"VSC (Voltage Source Converter)",
+    route:"KPS-3 (Gujarat) → South Olpad (Gujarat)",
+    length_km: 600,
+    ckm: 600,
+    developer:"AESL",
+    spv:"KPS III HVDC Transmission Ltd",
+    awarded:"Dec 12, 2025",
+    cost_cr: 12000,
+    tariff_m_yr: 23920,
+    pole1_scod:"Dec 2029",
+    pole2_scod:"Dec 2029",
+    status:"awarded",
+    color:"#f472b6",
+    packages:[
+      { name:"HVDC VSC Terminal Stations (KPS3 + South Olpad)", contractor:"GE Vernova T&D India", value:"Undisclosed (multi-year)", note:"2×1250 MW, ±500kV VSC terminals. Both located in Gujarat — intra-state HVDC route." },
+    ],
+    constraints:[
+      "48-month completion schedule from Dec 2025 → target Dec 2029.",
+      "GE Vernova awarded terminals contract; line contracts pending.",
+      "VSC technology chosen for flexibility and reactive power control.",
+    ],
+    significance:"India's third HVDC-TBCB project (after V-A by PGCIL Nov 2024, Rajasthan Part-I by AESL Jan 2025). First VSC-based HVDC under TBCB. Intra-Gujarat route both terminals in Gujarat — feeds South Olpad which has Phase IV-B 765kV HVAC. GE Vernova contract signed Dec 20, 2025.",
+  },
+];
 
-// ═══════════════════════════════════════════════════════════════════════════
+// ══════════════════════════════════════════════════════════════
 // HELPERS
-// ═══════════════════════════════════════════════════════════════════════════
-const PALETTE=["#3b82f6","#10b981","#f59e0b","#ef4444","#8b5cf6","#06b6d4","#f97316","#84cc16","#ec4899","#6366f1","#14b8a6","#a855f7","#fb923c","#22d3ee","#d946ef","#4ade80","#facc15","#f87171","#60a5fa","#34d399"];
-const PS_COLORS={"Khavda PS-I":"#3b82f6","Khavda PS-II":"#10b981","Khavda PS-III":"#f59e0b","Khavda PS-IV":"#ef4444","Khavda PS-V":"#8b5cf6"};
-const V_COLORS={"220kV":"#06b6d4","400kV":"#f97316"};
-function sumBy(arr,key){return arr.reduce((s,r)=>s+(r[key]||0),0);}
-function consolidate(data){const m={};data.forEach(r=>{m[r.developer]=(m[r.developer]||0)+r.mw;});return Object.entries(m).map(([developer,mw])=>({developer,mw})).sort((a,b)=>b.mw-a.mw);}
-function ptStr(pts){return pts.map(([x,y])=>`${x.toFixed(1)},${y.toFixed(1)}`).join(" ");}
-function linePath([x1,y1],[x2,y2],c=0){if(!c)return`M${x1},${y1}L${x2},${y2}`;const mx=(x1+x2)/2+c,my=(y1+y2)/2-Math.abs(c)*0.3;return`M${x1},${y1}Q${mx},${my}${x2},${y2}`;}
+// ══════════════════════════════════════════════════════════════
+const STATUS_COLORS = {
+  "commissioned":"#22c55e",
+  "under-construction":"#f97316",
+  "awarded":"#8b5cf6",
+  "planned":"#6b7280",
+};
+const STATUS_BG = {
+  "commissioned":"#052e16",
+  "under-construction":"#431407",
+  "awarded":"#2e1065",
+  "planned":"#111827",
+};
+const STATUS_LABEL = {
+  "commissioned":"Commissioned",
+  "under-construction":"Under Construction",
+  "awarded":"Awarded",
+  "planned":"Planned",
+};
 
-// ═══════════════════════════════════════════════════════════════════════════
-// SMALL SVG HELPER (avoids IIFE-in-JSX transpiler issues)
-
-
-// ─── KhavdaREZone + PSKeyPanel ───
-function KhavdaREZone(){
-  const[x1,y1]=project(68.8,23.8);
-  const[x2,y2]=project(70.0,22.9);
-  return(<g><rect x={Math.min(x1,x2)} y={Math.min(y1,y2)} width={Math.abs(x2-x1)} height={Math.abs(y2-y1)} fill="#1a3030" stroke="#3b82f6" strokeWidth="1.5" strokeDasharray="7,4" rx="5" opacity="0.7"/><text x={(x1+x2)/2} y={Math.min(y1,y2)-5} fill="#60a5fa" fontSize="9" fontWeight="700" textAnchor="middle">Khavda RE Zone (30 GW)</text></g>);
-}
-function PSKeyPanel({psKey}){
-  const rows=khavdaConnectivity.filter(r=>r.substation===psKey);
-  const total=Math.round(sumBy(rows,"mw"));
-  const devs=[...new Set(rows.map(r=>r.developer))];
-  return(<div className="mt-2 pt-2 border-t border-gray-800">
-    <div className="text-xs text-gray-400 mb-1">CTUIL Allocation: <span className="text-white font-bold">{total.toLocaleString()} MW</span> · {devs.length} entries</div>
-    <div className="max-h-32 overflow-y-auto space-y-0.5">
-      {devs.map((d,i)=>{
-        const dmw=sumBy(rows.filter(r=>r.developer===d),"mw");
-        return(<div key={i} className="flex justify-between text-xs py-0.5 border-b border-gray-800"><span className="text-gray-400 truncate pr-2" style={{maxWidth:165}}>{d}</span><span className="text-white font-mono shrink-0">{Math.round(dmw)}</span></div>);
-      })}
-    </div>
-  </div>);
-  
+function Badge({ status }) {
   return (
-    <>
-      <div>
-        <h1>Connectivity Dashboard</h1>
-               <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-
+    <span className="text-xs font-bold px-2 py-0.5 rounded"
+      style={{ background: STATUS_BG[status], color: STATUS_COLORS[status] }}>
+      {STATUS_LABEL[status]}
+    </span>
+  );
 }
 
-// ═══════════════════════════════════════════════════════════════════════════
-// TRANSMISSION MAP COMPONENT
-// ═══════════════════════════════════════════════════════════════════════════
+const GROUP_COLORS = {
+  "Adani Group": "#3b82f6",
+  "Adani Power": "#60a5fa",
+  "NTPC Group": "#10b981",
+  "GSECL": "#22d3ee",
+  "GIPCL": "#a78bfa",
+  "Sarjan (Suzlon)": "#f59e0b",
+  "NHPC": "#34d399",
+  "Reliance": "#f87171",
+};
 
+const PS_COLORS = { "KPS-I":"#22c55e", "KPS-II":"#3b82f6", "KPS-III":"#f59e0b", "KPS-IV":"#f97316", "KPS-V":"#8b5cf6" };
 
-// ─── Transmission Map ───
-function TransmissionMap(){
-  const [hovNode,setHovNode]=useState(null);
-  const [selNode,setSelNode]=useState(null);
-  const [hovLine,setHovLine]=useState(null);
-  const [filters,setFilters]=useState({kv765:true,kv400:true,planned:true});
-  const [zoom,setZoom]=useState(1);
-  const [pan,setPan]=useState({x:0,y:0});
-  const [dragging,setDragging]=useState(false);
-  const [dragStart,setDragStart]=useState(null);
-  const [viewMode,setViewMode]=useState("geo");
+// ══════════════════════════════════════════════════════════════
+// SECTION 1: TRANSMISSION PHASES TIMELINE
+// ══════════════════════════════════════════════════════════════
+function PhaseTimeline() {
+  const [selPhase, setSelPhase] = useState("ph4");
+  const [selPart, setSelPart] = useState(null);
 
-  const nodePos={};
-  Object.values(MAP_NODES).forEach(n=>{nodePos[n.id]=project(n.lon,n.lat);});
+  const phase = PHASES.find(p => p.id === selPhase);
+  const part = selPart ? phase?.parts.find(p => p.id === selPart) : null;
 
-  // Schematic: hand-placed to eliminate all overlaps
-  const SCHEM={
-    kps1:[90,220], kps2:[90,290], kps3:[90,145], kps4:[90,72], kps5:[90,360],
-    bhuj:[230,300], bhuj2:[230,220],
-    lak:[370,265], banas:[310,100],
-    ahm:[500,170], vad:[500,310],
-    jkh:[310,390],
-    nav:[630,240], padghe:[740,380], mumbai:[740,445], pune:[740,490],
-  };
-
-  const getPos=id=>viewMode==="schematic"?(SCHEM[id]||[0,0]):(nodePos[id]||[0,0]);
-
-  const visLines=MAP_LINES.filter(l=>{
-    if(!filters.kv765&&l.kv===765)return false;
-    if(!filters.kv400&&l.kv===400)return false;
-    if(!filters.planned&&l.status==="planned")return false;
-    return true;
-  });
-
-  const svgRef=useRef(null);
-  const onWheel=e=>{
-    if(viewMode!=="geo")return;
-    e.preventDefault();
-    const factor=e.deltaY>0?0.85:1.18;
-    const newZoom=Math.max(0.5,Math.min(5,zoom*factor));
-    // zoom toward cursor position
-    const rect=svgRef.current?.getBoundingClientRect();
-    if(rect){
-      const cx=e.clientX-rect.left;
-      const cy=e.clientY-rect.top;
-      const scaleRatio=newZoom/zoom;
-      setPan(p=>({x:cx-(cx-p.x)*scaleRatio, y:cy-(cy-p.y)*scaleRatio}));
-    }
-    setZoom(newZoom);
-  };
-  const onMouseDown=e=>{
-    if(viewMode!=="geo")return;
-    setDragging(true);
-    setDragStart({x:e.clientX-pan.x,y:e.clientY-pan.y});
-  };
-  const onMouseMove=e=>{if(!dragging||!dragStart)return;setPan({x:e.clientX-dragStart.x,y:e.clientY-dragStart.y});};
-  const onMouseUp=()=>{setDragging(false);setDragStart(null);};
-
-  const gujaratBorder=[[68.2,24.7],[68.8,24.7],[69.8,24.2],[70.5,24.6],[71.5,24.7],[72.1,24.4],[73.0,24.0],[74.0,23.3],[74.5,22.5],[74.4,21.5],[73.8,20.6],[73.2,20.2],[72.6,20.8],[72.0,21.1],[71.2,21.0],[70.5,21.3],[70.0,22.0],[69.2,22.3],[68.7,23.0],[68.2,23.5],[68.2,24.7]].map(([lo,la])=>project(lo,la));
-  const mhBorder=[[72.6,20.2],[73.2,20.0],[73.8,19.8],[74.2,19.0],[74.5,18.5],[73.8,18.0],[73.0,18.2],[72.5,18.6],[72.0,19.2],[71.5,19.8],[72.0,20.2],[72.6,20.2]].map(([lo,la])=>project(lo,la));
-  const rann=[[68.8,23.4],[70.5,23.8],[71.5,24.1],[72.0,23.9],[71.8,23.5],[70.5,23.2],[69.2,23.0],[68.8,23.4]].map(([lo,la])=>project(lo,la));
-
-  const sel=selNode?MAP_NODES[selNode]:null;
-  const selLine=hovLine?MAP_LINES.find(l=>l.id===hovLine):null;
-
-  return(
-    <div className="relative rounded-xl overflow-hidden border border-gray-700" style={{height:560}}>
-      {/* Controls top-left */}
-      <div className="absolute top-3 left-3 z-10 flex flex-wrap gap-2 items-center">
-        {[{k:"kv765",l:"765 kV",c:"#fbbf24"},{k:"kv400",l:"400 kV",c:"#f97316"},{k:"planned",l:"Planned",c:"#6b7280"}].map(f=>(
-          <button key={f.k} onClick={()=>setFilters(p=>({...p,[f.k]:!p[f.k]}))}
-            className="text-xs px-2.5 py-1 rounded-full border font-medium transition-all"
-            style={filters[f.k]?{background:f.c+"28",borderColor:f.c,color:f.c}:{background:"#1f2937",borderColor:"#374151",color:"#6b7280"}}>
-            {f.l}
-          </button>
-        ))}
-        {viewMode==="geo"&&(
-          <div className="flex gap-1 ml-1">
-            <button onClick={()=>setZoom(z=>Math.min(5,z*1.3))} className="bg-gray-800 hover:bg-gray-700 text-white w-7 h-7 rounded text-sm font-bold flex items-center justify-center">+</button>
-            <button onClick={()=>setZoom(z=>Math.max(0.5,z*0.77))} className="bg-gray-800 hover:bg-gray-700 text-white w-7 h-7 rounded text-sm font-bold flex items-center justify-center">&#8722;</button>
-            <button onClick={()=>{setZoom(1);setPan({x:0,y:0});}} className="bg-gray-800 hover:bg-gray-700 text-gray-400 px-2 h-7 rounded text-xs">&#8635;</button>
-          </div>
-        )}
+  return (
+    <div className="space-y-5">
+      {/* Phase selector strip */}
+      <div className="flex gap-0 overflow-x-auto">
+        {PHASES.map((ph, i) => {
+          const isActive = selPhase === ph.id;
+          return (
+            <button key={ph.id}
+              onClick={() => { setSelPhase(ph.id); setSelPart(null); }}
+              className="flex-1 min-w-40 text-center py-3 px-2 border-b-2 transition-all relative"
+              style={{
+                borderBottomColor: isActive ? ph.color : "transparent",
+                background: isActive ? ph.color + "15" : "transparent",
+              }}>
+              <div className="text-sm font-bold" style={{ color: isActive ? ph.color : "#6b7280" }}>
+                {ph.label}
+              </div>
+              <div className="text-xs font-bold mt-0.5" style={{ color: isActive ? "white" : "#4b5563" }}>
+                {ph.gw} GW
+              </div>
+              <div className="text-xs mt-0.5" style={{ color: isActive ? ph.color : "#374151" }}>
+                {ph.period}
+              </div>
+              <div className="mt-1.5 flex justify-center">
+                <Badge status={ph.status} />
+              </div>
+            </button>
+          );
+        })}
       </div>
 
-      {/* View toggle top-right */}
-      <div className="absolute top-3 right-3 z-10 flex rounded-lg overflow-hidden border border-gray-600">
-        {[{v:"geo",l:"Geographic"},{v:"schematic",l:"Schematic"}].map(opt=>(
-          <button key={opt.v}
-            onClick={()=>{setViewMode(opt.v);setZoom(1);setPan({x:0,y:0});setSelNode(null);}}
-            className="text-xs px-3 py-1.5 font-medium transition-colors"
-            style={viewMode===opt.v?{background:"#3b82f6",color:"white"}:{background:"#1f2937",color:"#6b7280"}}>
-            {opt.l}
-          </button>
-        ))}
-      </div>
+      {phase && (
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
+          {/* Left: phase summary */}
+          <div className="lg:col-span-1 space-y-3">
+            <div className="rounded-xl border p-4" style={{ borderColor: phase.color + "40", background: phase.color + "08" }}>
+              <div className="text-2xl font-black" style={{ color: phase.color }}>{phase.label}</div>
+              <div className="text-3xl font-black text-white mt-1">{phase.gw} GW</div>
+              <div className="text-gray-400 text-sm mt-2 leading-relaxed">{phase.description}</div>
+              <div className="mt-3 flex flex-wrap gap-1.5">
+                <Badge status={phase.status} />
+                <span className="text-xs text-gray-500 px-2 py-0.5 bg-gray-800 rounded">{phase.period}</span>
+                <span className="text-xs text-gray-500 px-2 py-0.5 bg-gray-800 rounded">{phase.parts.length} parts</span>
+              </div>
+            </div>
 
-      <svg ref={svgRef} width="100%" height="100%" viewBox={`0 0 ${MW} ${MH}`}
-        style={{cursor:viewMode==="geo"?(dragging?"grabbing":"grab"):"default",background:"#0a1020",display:"block"}}
-        onMouseDown={onMouseDown} onMouseMove={onMouseMove} onMouseUp={onMouseUp}
-        onMouseLeave={onMouseUp} onWheel={onWheel}>
-
-        {viewMode==="geo"?(
-          <g transform={`translate(${pan.x},${pan.y}) scale(${zoom}) translate(${(1/zoom-1)*MW/2},${(1/zoom-1)*MH/2})`}>
-            <rect x="-200" y="-200" width={MW+400} height={MH+400} fill="#0a1020"/>
-            <polygon points={ptStr(gujaratBorder)} fill="#131f2e" stroke="#1e3a2f" strokeWidth="1.5"/>
-            <polygon points={ptStr(rann)} fill="#1a2a1a" opacity="0.7"/>
-            <text x={project(70.0,23.55)[0]} y={project(70.0,23.55)[1]} fill="#1f3525" fontSize="10" textAnchor="middle">Rann of Kutch</text>
-            <polygon points={ptStr(mhBorder)} fill="#0f1c2e" stroke="#1e2a3f" strokeWidth="1"/>
-            <text x={project(71.5,23.1)[0]} y={project(71.5,23.1)[1]} fill="#1e3a4a" fontSize="18" fontWeight="700" textAnchor="middle" opacity="0.4">GUJARAT</text>
-            <text x={project(73.2,19.2)[0]} y={project(73.2,19.2)[1]} fill="#1e2a3a" fontSize="14" fontWeight="700" textAnchor="middle" opacity="0.35">MAHARASHTRA</text>
-            <KhavdaREZone/>
-            {visLines.map(line=>{
-              const[x1,y1]=nodePos[line.from]||[0,0];
-              const[x2,y2]=nodePos[line.to]||[0,0];
-              const color=VKV_COLORS[line.kv]||"#6b7280";
-              const dash=STATUS_DASH[line.status]||"8,5";
-              const opacity=STATUS_OPACITY[line.status]||0.4;
-              const isHov=hovLine===line.id;
-              const w=line.kv===765?(isHov?4.5:2.5):(isHov?3:1.8);
-              const curve=line.id==="lak-bhuj"?18:line.id==="kps2-lak"?-14:0;
-              return(
-                <g key={line.id}>
-                  <path d={linePath([x1,y1],[x2,y2],curve)} fill="none" stroke="transparent" strokeWidth="14" style={{cursor:"pointer"}} onMouseEnter={()=>setHovLine(line.id)} onMouseLeave={()=>setHovLine(null)}/>
-                  <path d={linePath([x1,y1],[x2,y2],curve)} fill="none" stroke={color} strokeWidth={w} strokeDasharray={dash} opacity={opacity} style={{pointerEvents:"none"}}/>
-                </g>
-              );
-            })}
-            {Object.values(MAP_NODES).map(node=>{
-              const[x,y]=nodePos[node.id];
-              const r=NODE_R[node.type];
-              const color=NODE_COLORS[node.type];
-              const isSel=selNode===node.id;
-              const isHov=hovNode===node.id;
-              const isKps=node.type==="kps";
-              return(
-                <g key={node.id} style={{cursor:"pointer"}} onMouseEnter={()=>setHovNode(node.id)} onMouseLeave={()=>setHovNode(null)} onClick={()=>setSelNode(selNode===node.id?null:node.id)}>
-                  {(isSel||isHov)&&<circle cx={x} cy={y} r={r+10} fill={color} opacity="0.15"/>}
-                  <circle cx={x} cy={y} r={r+4} fill={color} opacity={isSel?0.3:0.1}/>
-                  <circle cx={x} cy={y} r={r} fill={color} stroke={isSel?"white":"rgba(255,255,255,0.25)"} strokeWidth={isSel?2:1}/>
-                  {isKps&&<text x={x} y={y+3.5} fill="white" fontSize="8" fontWeight="800" textAnchor="middle">{node.label.replace("KPS-","")}</text>}
-                  {(isKps||isHov||isSel)&&<text x={x} y={y-r-5} fill={isKps?"#93c5fd":node.type==="load"?"#fca5a5":"#a7f3d0"} fontSize={isKps?"9.5":"8"} fontWeight={isKps?"700":"500"} textAnchor="middle">{node.label}</text>}
-                  {!isKps&&!isHov&&!isSel&&<text x={x+r+3} y={y+3} fill="#6b7280" fontSize="7">{node.label.split(" ")[0]}</text>}
-                </g>
-              );
-            })}
-            <g transform={`translate(16,${MH-130})`}>
-              <rect x={0} y={0} width={185} height={125} rx="6" fill="#0d1117" stroke="#1f2937" strokeWidth="1" opacity="0.92"/>
-              <text x={10} y={17} fill="#6b7280" fontSize="8" fontWeight="700" letterSpacing="1">LEGEND</text>
-              {[{c:"#fbbf24",l:"765 kV ISTS (commissioned)",d:"none",y:32},{c:"#fbbf24",l:"765 kV ISTS (planned)",d:"8,4",y:47},{c:"#f97316",l:"400 kV ISTS Line",d:"none",y:62},{c:"#3b82f6",l:"Khavda Pooling Station",dot:true,y:77},{c:"#10b981",l:"Intermediate Substation",dot:true,y:92},{c:"#ef4444",l:"Load Centre (MH)",dot:true,y:107}].map((l,i)=>(
-                <g key={i}>{l.dot?<circle cx={17} cy={l.y-3} r={5} fill={l.c}/>:<line x1={7} y1={l.y-3} x2={27} y2={l.y-3} stroke={l.c} strokeWidth={2.5} strokeDasharray={l.d}/>}<text x={32} y={l.y} fill="#d1d5db" fontSize="8">{l.l}</text></g>
-              ))}
-            </g>
-            <g transform={`translate(${MW-36},32)`}>
-              <circle r={14} fill="#0d1117" stroke="#374151" strokeWidth="1"/>
-              <polygon points="0,-10 -3,5 0,2 3,5" fill="#9ca3af"/>
-              <text x={0} y={-12} fill="#9ca3af" fontSize="7.5" textAnchor="middle" fontWeight="700">N</text>
-            </g>
-          </g>
-        ):(
-          <g>
-            <rect width={MW} height={MH} fill="#08111e"/>
-            {/* Zone bands */}
-            <rect x={30}  y={40} width={120} height={MH-80} rx="8" fill="#3b82f6" fillOpacity="0.04" stroke="#3b82f6" strokeWidth="0.5" strokeOpacity="0.25"/>
-            <rect x={160} y={40} width={290} height={MH-80} rx="8" fill="#fbbf24" fillOpacity="0.03" stroke="#fbbf24" strokeWidth="0.5" strokeOpacity="0.2"/>
-            <rect x={460} y={40} width={175} height={MH-80} rx="8" fill="#fbbf24" fillOpacity="0.025" stroke="#fbbf24" strokeWidth="0.5" strokeOpacity="0.15"/>
-            <rect x={645} y={40} width={160} height={MH-80} rx="8" fill="#f97316" fillOpacity="0.03" stroke="#f97316" strokeWidth="0.5" strokeOpacity="0.2"/>
-            {[
-              {label:"Khavda Cluster",sub:"5 Pooling Stations",x:90,c:"#3b82f6"},
-              {label:"Gujarat Backbone",sub:"765 kV HVAC",x:305,c:"#fbbf24"},
-              {label:"Gujarat Grid",sub:"Ahm · Vadodara",x:547,c:"#fbbf24"},
-              {label:"Maharashtra",sub:"Padghe · Mumbai · Pune",x:725,c:"#f97316"},
-            ].map((z,i)=>(
-              <g key={i}>
-                <text x={z.x} y={56} fill={z.c} fontSize="8.5" fontWeight="700" textAnchor="middle" opacity="0.7">{z.label}</text>
-                <text x={z.x} y={67} fill="#374151" fontSize="6.5" textAnchor="middle">{z.sub}</text>
-              </g>
-            ))}
-            {/* Lines */}
-            {visLines.map(line=>{
-              const p1=SCHEM[line.from],p2=SCHEM[line.to];
-              if(!p1||!p2)return null;
-              const[x1,y1]=p1,[x2,y2]=p2;
-              const mx=(x1+x2)/2;
-              const d=`M${x1},${y1}L${mx},${y1}L${mx},${y2}L${x2},${y2}`;
-              const color=VKV_COLORS[line.kv]||"#6b7280";
-              const isHov=hovLine===line.id;
-              const w=line.kv===765?(isHov?5:3):(isHov?3.5:2);
-              return(
-                <g key={line.id}>
-                  <path d={d} fill="none" stroke="transparent" strokeWidth="16" style={{cursor:"pointer"}} onMouseEnter={()=>setHovLine(line.id)} onMouseLeave={()=>setHovLine(null)}/>
-                  {isHov&&<path d={d} fill="none" stroke={color} strokeWidth={w+6} opacity="0.12" strokeLinejoin="round"/>}
-                  <path d={d} fill="none" stroke={color} strokeWidth={w}
-                    strokeDasharray={STATUS_DASH[line.status]||"8,5"}
-                    opacity={isHov?1:STATUS_OPACITY[line.status]||0.5} strokeLinejoin="round"/>
-                  {isHov&&<text x={(x1+x2)/2} y={Math.min(y1,y2)-6} fill={color} fontSize="8" textAnchor="middle" fontWeight="600">{line.ckm} ckm</text>}
-                </g>
-              );
-            })}
-            {/* Nodes */}
-            {Object.values(MAP_NODES).map(node=>{
-              const sp=SCHEM[node.id];
-              if(!sp)return null;
-              const[x,y]=sp;
-              const isKps=node.type==="kps";
-              const isLoad=node.type==="load";
-              const color=NODE_COLORS[node.type];
-              const r=isKps?13:isLoad?9:8;
-              const isSel=selNode===node.id;
-              const isHov=hovNode===node.id;
-              const isPlanned=node.status==="planned";
-              return(
-                <g key={node.id} style={{cursor:"pointer"}} onMouseEnter={()=>setHovNode(node.id)} onMouseLeave={()=>setHovNode(null)} onClick={()=>setSelNode(selNode===node.id?null:node.id)}>
-                  {(isSel||isHov)&&<circle cx={x} cy={y} r={r+12} fill={color} opacity="0.1"/>}
-                  {isKps?(
-                    <rect x={x-r} y={y-r} width={r*2} height={r*2} rx="4"
-                      fill={color} opacity={isSel?0.4:0.18}
-                      stroke={isSel?"white":isPlanned?"#4b5563":color}
-                      strokeWidth={isSel?2:1.5}
-                      strokeDasharray={isPlanned?"5,3":"none"}/>
-                  ):(
-                    <circle cx={x} cy={y} r={r}
-                      fill={color} opacity={isSel?0.45:0.18}
-                      stroke={isSel?"white":isPlanned?"#4b5563":color}
-                      strokeWidth={isSel?2:1.5}
-                      strokeDasharray={isPlanned?"4,2":"none"}/>
-                  )}
-                  {isKps&&<text x={x} y={y+4} fill="white" fontSize="8.5" fontWeight="800" textAnchor="middle">{node.label.replace("KPS-","")}</text>}
-                  <text x={x} y={y-r-7} fill={isKps?"#93c5fd":isLoad?"#fca5a5":"#a7f3d0"} fontSize={isKps?"9":"8"} fontWeight={isKps?"700":"500"} textAnchor="middle">{node.label}</text>
-                  <text x={x} y={y+r+11} fill="#374151" fontSize="6.5" textAnchor="middle">{node.voltage.split("/")[0]}</text>
-                  {isPlanned&&<text x={x} y={y+r+20} fill="#92400e" fontSize="6" textAnchor="middle">planned</text>}
-                </g>
-              );
-            })}
-            {/* Schematic legend */}
-            <g transform={`translate(12,${MH-96})`}>
-              <rect x={0} y={0} width={196} height={84} rx="5" fill="#08111e" stroke="#1e293b" strokeWidth="1" opacity="0.95"/>
-              <text x={8} y={14} fill="#4b5563" fontSize="7.5" fontWeight="700" letterSpacing="1">LEGEND</text>
-              {[
-                {c:"#fbbf24",l:"765 kV commissioned",d:"none",y:28,lw:2.5},
-                {c:"#f97316",l:"400 kV commissioned",d:"none",y:43,lw:2},
-                {c:"#6b7280",l:"Planned line",d:"7,4",y:58,lw:2},
-                {c:"#3b82f6",l:"Pooling station (KPS)",rect:true,y:73},
-                {c:"#10b981",l:"Hub substation",dot:true,y:73},
-              ].map((l,i)=>{
-                const xoff=i>=3?(i===4?108:8):8;
-                return(
-                  <g key={i} transform={`translate(${xoff},0)`}>
-                    {l.rect?<rect x={0} y={l.y-8} width={18} height={10} rx="2" fill={l.c} opacity="0.25" stroke={l.c} strokeWidth="1"/>
-                    :l.dot?<circle cx={9} cy={l.y-3} r={5} fill={l.c} opacity="0.35" stroke={l.c} strokeWidth="1"/>
-                    :<line x1={0} y1={l.y-3} x2={18} y2={l.y-3} stroke={l.c} strokeWidth={l.lw||2} strokeDasharray={l.d}/>}
-                    <text x={24} y={l.y} fill="#9ca3af" fontSize="7.5">{l.l}</text>
-                  </g>
+            {/* Cumulative context */}
+            <div className="bg-gray-800 border border-gray-700 rounded-xl p-4">
+              <div className="text-xs text-gray-500 uppercase tracking-wider mb-3">Cumulative RE Evacuation Capacity</div>
+              {PHASES.map((ph, i) => {
+                const cumGW = PHASES.slice(0, i + 1).reduce((s, p) => s + p.gw, 0);
+                const isThis = ph.id === phase.id;
+                return (
+                  <div key={ph.id} className="flex items-center gap-2 mb-2 last:mb-0">
+                    <div className="w-16 text-xs font-bold" style={{ color: ph.color }}>{ph.label}</div>
+                    <div className="flex-1 h-5 bg-gray-900 rounded-sm overflow-hidden">
+                      <div className="h-full rounded-sm transition-all"
+                        style={{ width: `${(cumGW / 30) * 100}%`, background: ph.color, opacity: isThis ? 1 : 0.45 }} />
+                    </div>
+                    <div className="w-12 text-right text-xs font-mono text-gray-400">{cumGW} GW</div>
+                  </div>
                 );
               })}
-            </g>
-            <text x={MW/2} y={MH-8} fill="#1e293b" fontSize="8" textAnchor="middle">Schematic — nodes de-overlapped for clarity. Click any node for details.</text>
-          </g>
-        )}
-      </svg>
-
-      {/* Node detail panel — same in both modes */}
-      {sel&&(
-        <div className="absolute top-12 right-3 bg-gray-900 border border-gray-700 rounded-xl p-4 shadow-2xl z-20" style={{width:256,maxHeight:360,overflowY:"auto"}}>
-          <div className="flex justify-between items-start mb-2">
-            <div className="font-bold text-white text-sm leading-tight">{sel.label}</div>
-            <button onClick={()=>setSelNode(null)} className="text-gray-500 hover:text-white ml-2 shrink-0 text-sm">&#10005;</button>
-          </div>
-          {[{k:"Voltage",v:sel.voltage},{k:"TSO",v:sel.tso},{k:"Status",v:sel.status},{k:"Note",v:sel.capacity||"—"},{k:"Coords",v:`${sel.lat.toFixed(3)}N, ${sel.lon.toFixed(3)}E`}].map(({k,v})=>(
-            <div key={k} className="flex gap-2 text-xs mb-1">
-              <span className="text-gray-500 w-14 shrink-0">{k}</span>
-              <span className={v.includes("commission")?"text-green-400":v.includes("planned")?"text-yellow-400":"text-gray-300"}>{v}</span>
-            </div>
-          ))}
-          {sel.psKey&&<PSKeyPanel psKey={sel.psKey}/>}
-          {visLines.filter(l=>l.from===sel.id||l.to===sel.id).length>0&&(
-            <div className="mt-2 pt-2 border-t border-gray-800">
-              <div className="text-xs text-gray-500 mb-1">Connected lines</div>
-              {visLines.filter(l=>l.from===sel.id||l.to===sel.id).map(l=>(
-                <div key={l.id} className="flex items-center gap-1.5 text-xs py-0.5">
-                  <div className="w-2 h-2 rounded-sm shrink-0" style={{background:VKV_COLORS[l.kv]}}/>
-                  <span className="text-gray-400 truncate">{l.label}</span>
-                  <span className="text-gray-600 ml-auto shrink-0">{l.ckm} ckm</span>
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
-      )}
-
-      {/* Line hover tooltip */}
-      {selLine&&!sel&&(
-        <div className="absolute bottom-4 left-3 bg-gray-900 border rounded-lg px-3 py-2 text-xs shadow-xl pointer-events-none z-20" style={{borderColor:VKV_COLORS[selLine.kv]}}>
-          <div className="font-semibold text-white mb-0.5">{selLine.label}</div>
-          <div className="flex gap-4 text-gray-400">
-            <span>TSO: <span className="text-gray-200">{selLine.tso}</span></span>
-            <span>~{selLine.ckm} ckm</span>
-            <span>{selLine.phase}</span>
-          </div>
-          <div className={`mt-0.5 font-medium text-xs ${selLine.status.includes("commission")?"text-green-400":selLine.status==="planned"?"text-yellow-400":"text-blue-400"}`}>{selLine.status}</div>
-        </div>
-      )}
-
-      {/* Geo zoom hint */}
-      {viewMode==="geo"&&zoom===1&&(
-        <div className="absolute bottom-4 right-3 text-xs text-gray-700 pointer-events-none">Scroll to zoom &middot; drag to pan</div>
-      )}
-    </div>
-  );
-}
-
-
-// ─── Charts & Helpers ───
-function MetricCard({label,value,sub,color}){
-  return(<div className="bg-gray-800 border rounded-lg p-4 flex flex-col gap-1" style={{borderColor:color||"#374151",borderTopColor:color,borderTopWidth:color?3:1}}>
-    <div className="text-gray-400 text-xs uppercase tracking-wider">{label}</div>
-    <div className="text-2xl font-bold text-white">{value}</div>
-    {sub&&<div className="text-gray-500 text-xs">{sub}</div>}
-  </div>);
-}
-function SectionHeader({title,subtitle}){
-  return(<div className="mb-4"><h2 className="text-lg font-semibold text-white">{title}</h2>{subtitle&&<p className="text-gray-400 text-sm">{subtitle}</p>}</div>);
-}
-
-// ═══════════════════════════════════════════════════════════════════════════
-// SANKEY
-// ═══════════════════════════════════════════════════════════════════════════
-function SankeyDiagram({data}){
-  const topDevs=useMemo(()=>{const c={};data.forEach(r=>{c[r.developer]=(c[r.developer]||0)+r.mw;});return Object.entries(c).sort((a,b)=>b[1]-a[1]).slice(0,7).map(([d])=>d);},[data]);
-  const stations=Object.keys(PS_COLORS);
-  const W2=700,H2=340,BAR=12,col1x=10,col2x=270,col3x=530;
-  const totalMW=data.reduce((s,r)=>s+r.mw,0);
-  const scale=v=>Math.max(4,v/totalMW*(H2-60));
-  const devMWs=topDevs.map(d=>data.filter(r=>r.developer===d).reduce((s,r)=>s+r.mw,0));
-  const devH=devMWs.map(scale);
-  const devGap=(H2-40-devH.reduce((s,h)=>s+h,0))/(topDevs.length+1);
-  const devY=[];let cy=20;devH.forEach(h=>{cy+=devGap;devY.push(cy);cy+=h;});
-  const psMWs=stations.map(ps=>data.filter(r=>r.substation===ps).reduce((s,r)=>s+r.mw,0));
-  const psH=psMWs.map(scale);
-  const psGap=(H2-40-psH.reduce((s,h)=>s+h,0))/(stations.length+1);
-  const psY=[];cy=20;psH.forEach(h=>{cy+=psGap;psY.push(cy);cy+=h;});
-  const vMWs=["220kV","400kV"].map(v=>data.filter(r=>r.voltage===v).reduce((s,r)=>s+r.mw,0));
-  const vH=vMWs.map(scale);
-  const vGap=(H2-40-vH.reduce((s,h)=>s+h,0))/3;
-  const vY=[20+vGap,20+vGap+vH[0]+vGap];
-  const devOut=Object.fromEntries(topDevs.map((d,i)=>[d,devY[i]]));
-  const psIn=Object.fromEntries(stations.map((ps,i)=>[ps,psY[i]]));
-  const psOut=Object.fromEntries(stations.map((ps,i)=>[ps,psY[i]]));
-  const vIn={"220 kV":vY[0],"400 kV":vY[1]};
-  const dpFlows=[];topDevs.forEach(dev=>stations.forEach(ps=>{const val=data.filter(r=>r.developer===dev&&r.substation===ps).reduce((s,r)=>s+r.mw,0);if(val>0)dpFlows.push({dev,ps,val});}));
-  const pvFlows=[];stations.forEach(ps=>["220kV","400kV"].forEach(v=>{const val=data.filter(r=>r.substation===ps&&r.voltage===v).reduce((s,r)=>s+r.mw,0);if(val>0)pvFlows.push({ps,v:v.replace("V"," V"),val});}));
-  const PSC=Object.values(PS_COLORS);
-  const VC=["#06b6d4","#f97316"];
-  return(<div className="overflow-x-auto"><svg width={W2} height={H2} viewBox={`0 0 ${W2} ${H2}`} className="w-full" style={{maxHeight:340}}>
-    {dpFlows.map(({dev,ps,val},i)=>{
-      const di=topDevs.indexOf(dev);
-      const h=scale(val);
-      const sy=devOut[dev];devOut[dev]+=h;
-      const ty=psIn[ps];psIn[ps]+=h;
-      const x1=col1x+BAR,x2=col2x,mx=(x1+x2)/2;
-      return <path key={`dp${i}`} d={`M${x1},${sy}C${mx},${sy}${mx},${ty}${x2},${ty}L${x2},${ty+h}C${mx},${ty+h}${mx},${sy+h}${x1},${sy+h}Z`} fill={PALETTE[di%PALETTE.length]} opacity="0.35"/>;
-    })}
-    {pvFlows.map(({ps,v,val},i)=>{
-      const pi=stations.indexOf(ps);
-      const h=scale(val);
-      const sy=psOut[ps];psOut[ps]+=h;
-      const ty=vIn[v];vIn[v]+=h;
-      const x1=col2x+BAR,x2=col3x,mx=(x1+x2)/2;
-      return <path key={`pv${i}`} d={`M${x1},${sy}C${mx},${sy}${mx},${ty}${x2},${ty}L${x2},${ty+h}C${mx},${ty+h}${mx},${sy+h}${x1},${sy+h}Z`} fill={PSC[pi]} opacity="0.35"/>;
-    })}
-    {topDevs.map((d,i)=><g key={d}><rect x={col1x}y={devY[i]}width={BAR}height={devH[i]}fill={PALETTE[i%PALETTE.length]}rx="2"/><text x={col1x+BAR+4}y={devY[i]+devH[i]/2+4}fill="#e5e7eb"fontSize="8.5">{d.split(" ").slice(0,3).join(" ")}</text></g>)}
-    {stations.map((ps,i)=><g key={ps}><rect x={col2x}y={psY[i]}width={BAR}height={psH[i]}fill={PSC[i]}rx="2"/><text x={col2x+BAR+4}y={psY[i]+psH[i]/2+4}fill="#e5e7eb"fontSize="8.5">{ps}</text></g>)}
-    {["220 kV","400 kV"].map((v,i)=><g key={v}><rect x={col3x}y={vY[i]}width={BAR}height={vH[i]}fill={VC[i]}rx="2"/><text x={col3x+BAR+4}y={vY[i]+vH[i]/2+4}fill="#e5e7eb"fontSize="9"fontWeight="600">{v}</text><text x={col3x+BAR+4}y={vY[i]+vH[i]/2+15}fill="#9ca3af"fontSize="8">{Math.round(vMWs[i]).toLocaleString()} MW</text></g>)}
-    {[["Developers (Top 7)",col1x],["Pooling Stations",col2x],["Voltage Level",col3x]].map(([l,x])=><text key={l}x={x+BAR/2}y={H2-5}fill="#6b7280"fontSize="9"textAnchor="middle">{l}</text>)}
-  </svg></div>);
-}
-
-// ═══════════════════════════════════════════════════════════════════════════
-// ARCHITECTURE DIAGRAM
-// ═══════════════════════════════════════════════════════════════════════════
-function ArchDiagram({data}){
-  const totalMW=Math.round(data.reduce((s,r)=>s+r.mw,0));
-  const t220=Math.round(data.filter(r=>r.voltage==="220kV").reduce((s,r)=>s+r.mw,0));
-  const t400=Math.round(data.filter(r=>r.voltage==="400kV").reduce((s,r)=>s+r.mw,0));
-
-  // Per-PS stats
-  const psStats=Object.keys(PS_COLORS).map(ps=>{
-    const rows=data.filter(r=>r.substation===ps);
-    const mw=Math.round(sumBy(rows,"mw"));
-    const v220=Math.round(sumBy(rows.filter(r=>r.voltage==="220kV"),"mw"));
-    const v400=Math.round(sumBy(rows.filter(r=>r.voltage==="400kV"),"mw"));
-    const devs=new Set(rows.map(r=>r.developer)).size;
-    const tso=ps==="Khavda PS-I"||ps==="Khavda PS-IV"?"AESL":"PGCIL";
-    const status=ps==="Khavda PS-IV"||ps==="Khavda PS-V"?"planned":"commissioned";
-    const hvdc=ps==="Khavda PS-III"?"HVDC Phase-V (Dec 2026)":null;
-    return {ps,mw,v220,v400,devs,tso,status,hvdc,c:PS_COLORS[ps]};
-  });
-
-  const W=760,H=820;
-  const col=(i,n,W,pad=40)=>pad+(i*(W-2*pad))/(n-1);
-
-  // Layer Y positions
-  const yGen=38, yBus=145, yPS=265, yIsts=410, yEvac=530, yLoad=700;
-
-  // Generation source blocks
-  const genBlocks=[
-    {l:"Wind",sub:"Adani Wind · Inox · Continuum · ReNew + 8 others",mw:Math.round(sumBy(data.filter(r=>r.developer.toLowerCase().includes("wind")||r.group==="Inox Group"),"mw")),c:"#3b82f6",x:30},
-    {l:"Solar",sub:"NTPC · GSECL · Avaada · GIPCL · Sarjan + more",mw:Math.round(sumBy(data.filter(r=>r.group==="GSECL"||r.group==="GIPCL"||r.group==="Avaada Group"||r.group==="Sarjan Group"),"mw")),c:"#f59e0b",x:220},
-    {l:"Hybrid RE",sub:"Sprng Energy · ACME · Azure Power · JSW",mw:Math.round(sumBy(data.filter(r=>r.group==="Sprng Energy"||r.group==="ACME Group"||r.group==="Azure Power"||r.group==="JSW Group"),"mw")),c:"#10b981",x:420},
-    {l:"Large-scale IPP",sub:"Adani Green · Adani Power · Reliance · NHPC · NLC",mw:Math.round(sumBy(data.filter(r=>r.group==="Adani Group"||r.group==="Reliance Group"||r.group==="NHPC"),"mw")),c:"#6366f1",x:590},
-  ];
-
-  // Voltage bus blocks
-  const busBocks=[
-    {l:"220 kV Bus",sub:`${(t220/1000).toFixed(1)} GW · PS-I, II, V`,c:"#06b6d4",x:120,w:180},
-    {l:"400 kV Bus",sub:`${(t400/1000).toFixed(1)} GW · PS-II, III, IV, V`,c:"#f97316",x:350,w:180},
-    {l:"BESS",sub:"217.64 MW · PS-V Bay 5\nH.G. Banaskantha",c:"#a855f7",x:580,w:150},
-  ];
-
-  // Evacuation corridor segments
-  const corridors=[
-    {l:"Corridor A",route:"KPS1/2 → Bhuj → Lakadia → Vadodara",kv:"765 kV D/C",ckm:"~430 ckm",tso:"AESL",status:"commissioned",c:"#fbbf24",x:30,w:200},
-    {l:"Corridor B",route:"KPS3 → Banaskantha → Ahmedabad",kv:"765 kV D/C",ckm:"~300 ckm",tso:"PGCIL",status:"commissioned",c:"#fbbf24",x:250,w:200},
-    {l:"Corridor C",route:"Ahmedabad → Navsari → Padghe",kv:"765 kV D/C",ckm:"~735 ckm",tso:"PGCIL/MSETCL",status:"commissioned",c:"#fbbf24",x:470,w:200},
-    {l:"Phase-V HVDC",route:"KPS-III → ±800 kV HVDC",kv:"HVDC ±800 kV",ckm:"~1,000 ckm est.",tso:"PGCIL",status:"planned",c:"#a78bfa",x:690,w:60},
-  ];
-
-  // Load / offtake nodes
-  const loads=[
-    {l:"Western Region Grid",sub:"Vadodara · Lakadia hub\nRLDC / WRLDC dispatch",c:"#6b7280",x:60,w:155},
-    {l:"Gujarat Load",sub:"GUVNL / DISCOMS\nDomestic consumption",c:"#10b981",x:235,w:140},
-    {l:"Mumbai Metro",sub:"MSETCL → Padghe\n400 kV onward to TPC/BEST",c:"#f97316",x:395,w:145},
-    {l:"Pune / Rest MH",sub:"MSETCL network\nMSEDCL DISCOMS",c:"#f97316",x:560,w:130},
-    {l:"Northern Grid",sub:"Inter-regional transfer\nvia Vadodara 765 kV",c:"#6b7280",x:710,w:40},
-  ];
-
-  const bw=128, bh=72;
-
-  return(
-    <div className="bg-gray-900 border border-gray-700 rounded-xl p-4 mb-4 overflow-x-auto">
-      {/* Layer labels */}
-      <div className="flex text-xs text-gray-600 font-semibold uppercase tracking-widest mb-2 pl-1 gap-0">
-        {[
-          {l:"① Generation",w:"14%"},{l:"② Voltage Bus",w:"14%"},{l:"③ Pooling Stations",w:"14%"},
-          {l:"④ 765 kV ISTS Backbone",w:"14%"},{l:"⑤ Evacuation Corridors",w:"14%"},{l:"⑥ Load / Offtake",w:"14%"},
-        ].map(lbl=>(
-          <div key={lbl.l} style={{flex:1}} className="text-center text-gray-600 text-xs">{lbl.l}</div>
-        ))}
-      </div>
-      <svg width={W} height={H} viewBox={`0 0 ${W} ${H}`} className="w-full" style={{minWidth:700}}>
-        <defs>
-          <marker id="arr" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto">
-            <path d="M0,0 L6,3 L0,6 Z" fill="#4b5563"/>
-          </marker>
-          <marker id="arr-y" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto">
-            <path d="M0,0 L6,3 L0,6 Z" fill="#fbbf24"/>
-          </marker>
-          <marker id="arr-o" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto">
-            <path d="M0,0 L6,3 L0,6 Z" fill="#f97316"/>
-          </marker>
-        </defs>
-
-        {/* ── LAYER BANDS ── */}
-        {[
-          {y:yGen-16,h:94,c:"#3b82f6",label:"GENERATION"},
-          {y:yBus-16,h:82,c:"#06b6d4",label:"VOLTAGE INJECTION BUS"},
-          {y:yPS-16,h:108,c:"#10b981",label:"POOLING STATIONS (ISTS)"},
-          {y:yIsts-16,h:82,c:"#fbbf24",label:"765 kV ISTS BACKBONE"},
-          {y:yEvac-16,h:130,c:"#f97316",label:"EVACUATION CORRIDORS"},
-          {y:yLoad-16,h:100,c:"#6b7280",label:"LOAD / OFFTAKE"},
-        ].map((band,i)=>(
-          <g key={i}>
-            <rect x={0} y={band.y} width={W} height={band.h} fill={band.c} opacity="0.04" rx="4"/>
-            <rect x={0} y={band.y} width={3} height={band.h} fill={band.c} opacity="0.5" rx="1"/>
-            <text x={8} y={band.y+11} fill={band.c} fontSize="7.5" fontWeight="700" opacity="0.5" letterSpacing="1">{band.label}</text>
-          </g>
-        ))}
-
-        {/* ── GENERATION BLOCKS ── */}
-        {genBlocks.map((b,i)=>(
-          <g key={b.l}>
-            <rect x={b.x} y={yGen} width={175} height={62} rx="7" fill={b.c} opacity="0.12" stroke={b.c} strokeWidth="1.2"/>
-            <text x={b.x+88} y={yGen+15} fill="white" fontSize="9.5" fontWeight="700" textAnchor="middle">{b.l}</text>
-            <text x={b.x+88} y={yGen+27} fill="#9ca3af" fontSize="7.5" textAnchor="middle">{b.sub.split("·")[0].trim()}</text>
-            <text x={b.x+88} y={yGen+38} fill="#6b7280" fontSize="7" textAnchor="middle">{b.sub.split("·").slice(1).join("·").trim()}</text>
-            {b.mw>0&&<text x={b.x+88} y={yGen+52} fill={b.c} fontSize="8.5" fontWeight="800" textAnchor="middle">{(b.mw/1000).toFixed(1)} GW allocated</text>}
-          </g>
-        ))}
-
-        {/* Gen → Bus connector lines */}
-        {[88,308,508,677].map((x,i)=>(
-          <line key={i} x1={x} y1={yGen+62} x2={x} y2={yBus-2} stroke="#374151" strokeWidth="1.2" strokeDasharray="3,3" markerEnd="url(#arr)"/>
-        ))}
-
-        {/* ── VOLTAGE BUS BLOCKS ── */}
-        {busBocks.map((b,i)=>(
-          <g key={b.l}>
-            <rect x={b.x} y={yBus} width={b.w} height={52} rx="7" fill={b.c} opacity="0.15" stroke={b.c} strokeWidth="1.5"/>
-            <text x={b.x+b.w/2} y={yBus+16} fill="white" fontSize="10" fontWeight="700" textAnchor="middle">{b.l}</text>
-            <text x={b.x+b.w/2} y={yBus+30} fill="#e5e7eb" fontSize="9" fontWeight="600" textAnchor="middle">{b.sub.split("\n")[0]}</text>
-            {b.sub.split("\n")[1]&&<text x={b.x+b.w/2} y={yBus+42} fill="#9ca3af" fontSize="7.5" textAnchor="middle">{b.sub.split("\n")[1]}</text>}
-          </g>
-        ))}
-
-        {/* Bus → PS connectors */}
-        {[210,440,655].map((x,i)=>(
-          <line key={i} x1={x} y1={yBus+52} x2={x} y2={yPS-2} stroke="#374151" strokeWidth="1.2" strokeDasharray="3,3" markerEnd="url(#arr)"/>
-        ))}
-
-        {/* ── POOLING STATION BLOCKS ── */}
-        {psStats.map((ps,i)=>{
-          const x=10+i*148, w=134, h=82;
-          const isPlanned=ps.status==="planned";
-          return(
-            <g key={ps.ps}>
-              <rect x={x} y={yPS} width={w} height={h} rx="7" fill={ps.c} opacity={isPlanned?0.1:0.18} stroke={ps.c} strokeWidth={isPlanned?1:1.8} strokeDasharray={isPlanned?"6,3":"none"}/>
-              {/* TSO badge */}
-              <rect x={x+w-38} y={yPS+4} width={34} height={13} rx="3" fill={ps.tso==="AESL"?"#1e3a5f":"#1a3320"} opacity="0.9"/>
-              <text x={x+w-21} y={yPS+13} fill={ps.tso==="AESL"?"#60a5fa":"#4ade80"} fontSize="7" fontWeight="700" textAnchor="middle">{ps.tso}</text>
-              {/* Status badge */}
-              <rect x={x+4} y={yPS+4} width={isPlanned?38:52} height={13} rx="3" fill={isPlanned?"#451a03":"#052e16"} opacity="0.9"/>
-              <text x={x+4+(isPlanned?19:26)} y={yPS+13} fill={isPlanned?"#fb923c":"#4ade80"} fontSize="7" fontWeight="600" textAnchor="middle">{isPlanned?"Planned":"Commissioned"}</text>
-              <text x={x+w/2} y={yPS+32} fill="white" fontSize="9" fontWeight="700" textAnchor="middle">{ps.ps.replace("Khavda ","")}</text>
-              <text x={x+w/2} y={yPS+46} fill="#e5e7eb" fontSize="11" fontWeight="800" textAnchor="middle">{(ps.mw/1000).toFixed(1)} GW</text>
-              <text x={x+w/2} y={yPS+58} fill="#6b7280" fontSize="7" textAnchor="middle">{ps.devs} entries</text>
-              {/* Voltage pills */}
-              <g>
-                {ps.v220>0&&<><rect x={x+4} y={yPS+63} width={60} height={13} rx="3" fill="#164e63" opacity="0.8"/><text x={x+34} y={yPS+72} fill="#22d3ee" fontSize="6.5" fontWeight="600" textAnchor="middle">{Math.round(ps.v220/1000*10)/10}GW 220kV</text></>}
-                {ps.v400>0&&<><rect x={x+68} y={yPS+63} width={60} height={13} rx="3" fill="#431407" opacity="0.8"/><text x={x+98} y={yPS+72} fill="#fb923c" fontSize="6.5" fontWeight="600" textAnchor="middle">{Math.round(ps.v400/1000*10)/10}GW 400kV</text></>}
-              </g>
-              {ps.hvdc&&<><rect x={x+4} y={yPS+79} width={w-8} height={0} rx="0" fill="none"/></>}
-            </g>
-          );
-        })}
-
-        {/* PS → ISTS backbone connectors */}
-        {[77,225,373,477,625].map((x,i)=>(
-          <line key={i} x1={x} y1={yPS+82} x2={x} y2={yIsts-2} stroke={Object.values(PS_COLORS)[i]} strokeWidth="1.5" opacity="0.7" markerEnd="url(#arr-y)"/>
-        ))}
-
-        {/* ── 765 kV ISTS BACKBONE ── */}
-        <rect x={10} y={yIsts} width={W-20} height={52} rx="8" fill="#fbbf24" opacity="0.1" stroke="#fbbf24" strokeWidth="1.8"/>
-        <text x={W/2} y={yIsts+18} fill="white" fontSize="11" fontWeight="800" textAnchor="middle">765 kV ISTS Backbone — Western Region (WRPC)</text>
-        <text x={W/2} y={yIsts+32} fill="#fcd34d" fontSize="8" textAnchor="middle">KPS1/2 → Bhuj (217 ckm) → Lakadia → Vadodara   ·   KPS3 → Banaskantha (30 ckm) → Ahmedabad (270 ckm)</text>
-        <text x={W/2} y={yIsts+44} fill="#9ca3af" fontSize="7.5" textAnchor="middle">AESL corridor (west) · PGCIL corridor (north-east) · Total backbone ~800 ckm commissioned</text>
-
-        {/* ISTS → Corridors */}
-        {[110,340,570,725].map((x,i)=>(
-          <line key={i} x1={x} y1={yIsts+52} x2={x} y2={yEvac-2} stroke={i===3?"#a78bfa":"#fbbf24"} strokeWidth={i===3?1.5:1.8} strokeDasharray={i===3?"6,3":"none"} opacity="0.6" markerEnd={i===3?"url(#arr)":"url(#arr-y)"}/>
-        ))}
-
-        {/* ── EVACUATION CORRIDORS ── */}
-        {corridors.map((c,i)=>{
-          const isPlanned=c.status==="planned";
-          return(
-            <g key={c.l}>
-              <rect x={c.x} y={yEvac} width={c.w} height={100} rx="7" fill={c.c} opacity={isPlanned?0.07:0.12} stroke={c.c} strokeWidth={isPlanned?1:1.5} strokeDasharray={isPlanned?"6,3":"none"}/>
-              <text x={c.x+c.w/2} y={yEvac+16} fill={c.c} fontSize="8.5" fontWeight="700" textAnchor="middle">{c.l}</text>
-              <text x={c.x+c.w/2} y={yEvac+30} fill="white" fontSize="7.5" textAnchor="middle">{c.route.split("→")[0].trim()} →</text>
-              <text x={c.x+c.w/2} y={yEvac+41} fill="white" fontSize="7.5" textAnchor="middle">{c.route.split("→").slice(1).join("→")}</text>
-              <text x={c.x+c.w/2} y={yEvac+55} fill={c.c} fontSize="8" fontWeight="600" textAnchor="middle">{c.kv}</text>
-              <text x={c.x+c.w/2} y={yEvac+67} fill="#9ca3af" fontSize="7.5" textAnchor="middle">{c.ckm}</text>
-              <rect x={c.x+c.w/2-28} y={yEvac+72} width={56} height={12} rx="3" fill={isPlanned?"#451a03":"#052e16"} opacity="0.8"/>
-              <text x={c.x+c.w/2} y={yEvac+80} fill={isPlanned?"#fb923c":"#4ade80"} fontSize="6.5" fontWeight="600" textAnchor="middle">{isPlanned?"Planned":"Commissioned"}</text>
-              <text x={c.x+c.w/2} y={yEvac+94} fill="#6b7280" fontSize="7" textAnchor="middle">TSO: {c.tso}</text>
-            </g>
-          );
-        })}
-
-        {/* Corridors → Load nodes */}
-        {[110,340,545,640,725].map((x,i)=>(
-          <line key={i} x1={x} y1={yEvac+100} x2={x} y2={yLoad-2} stroke={i>=2?"#f97316":"#6b7280"} strokeWidth="1.2" strokeDasharray="3,3" opacity="0.5" markerEnd="url(#arr-o)"/>
-        ))}
-
-        {/* ── LOAD / OFFTAKE ── */}
-        {loads.map((l,i)=>(
-          <g key={l.l}>
-            <rect x={l.x} y={yLoad} width={l.w} height={68} rx="7" fill={l.c} opacity="0.1" stroke={l.c} strokeWidth="1.2"/>
-            <text x={l.x+l.w/2} y={yLoad+16} fill="white" fontSize="8.5" fontWeight="700" textAnchor="middle">{l.l}</text>
-            <text x={l.x+l.w/2} y={yLoad+30} fill="#9ca3af" fontSize="7" textAnchor="middle">{l.sub.split("\n")[0]}</text>
-            <text x={l.x+l.w/2} y={yLoad+41} fill="#6b7280" fontSize="6.5" textAnchor="middle">{l.sub.split("\n")[1]}</text>
-          </g>
-        ))}
-
-        {/* Total MW footer */}
-        <text x={W/2} y={H-6} fill="#374151" fontSize="9" textAnchor="middle">
-          Total ISTS Connectivity (CTUIL Aug 2025): {totalMW.toLocaleString()} MW across 5 pooling stations · 220 kV: {t220.toLocaleString()} MW · 400 kV: {t400.toLocaleString()} MW
-        </text>
-      </svg>
-    </div>
-  );
-}
-
-// ═══════════════════════════════════════════════════════════════════════════
-// POWER FLOW SIMULATOR
-// ═══════════════════════════════════════════════════════════════════════════
-
-// Corridor definitions: ordered waypoints through the real topology
-
-
-// ─── Power Flow Simulator ───
-// Timeline milestones mapped to numeric indices for the slider
-const SIM_MILESTONES = [
-  { idx:0, label:"Pre-2025",    date:"Before Jan 2025", gw:0,  corridors:{"corr-a":false,"corr-b":false,"corr-c":false,"corr-d":false}, note:"Planning phase. No ISTS evacuation capacity online." },
-  { idx:1, label:"Jan 2025",    date:"Jan 2025",        gw:3,  corridors:{"corr-a":true, "corr-b":false,"corr-c":false,"corr-d":false}, note:"KPS-I Section-II SCOD (4x1500 MVA). Phase-I western corridor active." },
-  { idx:2, label:"Mar 2025",    date:"Mar 2025",        gw:8,  corridors:{"corr-a":true, "corr-b":false,"corr-c":false,"corr-d":false}, note:"Khavda Phase-II Parts A-D commissioned (PGCIL, 4.5 GW). KPS-II online." },
-  { idx:3, label:"Jul 2025",    date:"Jul 2025",        gw:10, corridors:{"corr-a":true, "corr-b":false,"corr-c":false,"corr-d":false}, note:"Banaskantha-Ahmedabad 765kV D/C (~270 ckm) commissioned." },
-  { idx:4, label:"Aug 2025",    date:"Aug 2025",        gw:14, corridors:{"corr-a":true, "corr-b":true, "corr-c":false,"corr-d":false}, note:"KPS-3 commissioned (DOCO 18 Aug 2025, PGCIL). Northern corridor partially active." },
-  { idx:5, label:"Jan 2026",    date:"Jan 2026",        gw:18, corridors:{"corr-a":true, "corr-b":true, "corr-c":false,"corr-d":false}, note:"Ahmedabad-Navsari 765kV D/C (~590 ckm) commissioned. Full MH export corridor live." },
-  { idx:6, label:"Aug 2026",    date:"Aug 2026 (plan)", gw:22, corridors:{"corr-a":true, "corr-b":true, "corr-c":true, "corr-d":false}, note:"KPS-IV SCOD target (AESL). Eastern expansion corridor opens." },
-  { idx:7, label:"Dec 2026",    date:"Dec 2026 (plan)", gw:26, corridors:{"corr-a":true, "corr-b":true, "corr-c":true, "corr-d":false}, note:"GSECL 2.3GW Khavda Solar Park full commissioning target. Peak HVAC capacity." },
-  { idx:8, label:"Mar 2027",    date:"Mar 2027 (plan)", gw:30, corridors:{"corr-a":true, "corr-b":true, "corr-c":true, "corr-d":true }, note:"Phase-V HVDC commissioned. Full 30 GW target capacity reached." },
-];
-
-const CORRIDORS = [
-  { id:"corr-a", label:"Corridor A", fullLabel:"Western Gujarat Backbone",
-    color:"#fbbf24", nodes:["kps1","kps2","bhuj","lak","vad"],
-    description:"KPS-1/2 to Bhuj (217 ckm) to Lakadia to Vadodara to WR Grid",
-    phase:"Phase I-II", maxGW:15,
-    why:"First corridor built. AESL-owned 765 kV D/C spine carrying Phase-I/II generation westward into the Western Region grid at Vadodara." },
-  { id:"corr-b", label:"Corridor B", fullLabel:"Northern Gujarat / Maharashtra Export",
-    color:"#f97316", nodes:["kps3","banas","ahm","nav","padghe","mumbai"],
-    description:"KPS-3 to Banaskantha to Ahmedabad to Navsari to Padghe to Mumbai",
-    phase:"Phase III-IV", maxGW:10,
-    why:"PGCIL-built northern route. Ahmedabad-Navsari 765 kV D/C (~590 ckm) commissioned Jan 2026. Enables direct Khavda-to-Maharashtra export through the world's first digital 765 kV substation at Navsari." },
-  { id:"corr-c", label:"Corridor C", fullLabel:"Eastern Expansion",
-    color:"#06b6d4", nodes:["kps4","kps5","banas","ahm","vad"],
-    description:"KPS-4/5 to Banaskantha to Ahmedabad to Vadodara",
-    phase:"Phase IV (planned)", maxGW:7, planned:true,
-    why:"Phase-IV expansion adding KPS-4 (AESL, SCOD Aug 2026) and KPS-5. Routes eastward through Banaskantha GIS into the Ahmedabad-Vadodara 765 kV backbone." },
-  { id:"corr-d", label:"Corridor D", fullLabel:"HVDC Phase-V",
-    color:"#a78bfa", nodes:["kps3","banas","ahm","nav","padghe","pune"],
-    description:"KPS-3 HVDC terminal to 800 kV HVDC to Pune / Maharashtra",
-    phase:"Phase V (planned Dec 2026)", maxGW:4, planned:true,
-    why:"800 kV HVDC bulk transfer (~4 GW, ~1000 ckm). Eliminates reactive power constraints of long HVAC corridors. KPS-III HVDC TSA signed 2024. Dedicated Maharashtra delivery." },
-];
-
-const GEN_NODES=[
-  {id:"gen-wind",  label:"Wind",   lon:68.85,lat:23.60,color:"#3b82f6",mwFraction:0.45},
-  {id:"gen-solar", label:"Solar",  lon:68.80,lat:23.20,color:"#f59e0b",mwFraction:0.45},
-  {id:"gen-hybrid",label:"Hybrid", lon:69.00,lat:23.80,color:"#10b981",mwFraction:0.10},
-];
-
-function simLineStyle(mw){
-  if(mw<=0)    return{color:"#1f2937",width:1.5,opacity:0.2};
-  if(mw<1000)  return{color:"#06b6d4",width:2.5,opacity:0.7};
-  if(mw<3000)  return{color:"#f97316",width:4,  opacity:0.85};
-  return             {color:"#fbbf24",width:6,  opacity:1};
-}
-
-// Schematic positions - hand placed, zero overlap
-const SIM_SCHEMA={
-  "gen-wind":[52,130], "gen-solar":[52,290], "gen-hybrid":[52,210],
-  kps1:[168,215], kps2:[168,285], kps3:[168,140], kps4:[168,68], kps5:[168,355],
-  bhuj:[300,270], bhuj2:[300,185],
-  lak:[425,250], banas:[365,95],
-  ahm:[525,168], vad:[525,308],
-  jkh:[420,388],
-  nav:[640,230], padghe:[750,325], mumbai:[750,400], pune:[750,455],
-};
-const SIM_W=820, SIM_H=510;
-
-function NodeTooltip({node, x, y, mw, glow}){
-  const tx=x>SIM_W*0.7?x-148:x+16;
-  const ty=y>SIM_H*0.78?y-80:y+12;
-  const flowText=mw>0?(mw>=1000?`${(mw/1000).toFixed(2)} GW`:`${mw} MW`)+" flowing":"No flow";
-  const statusColor=node.status.includes("commission")?"#4ade80":"#fb923c";
-  return(
-    <g>
-      <rect x={tx} y={ty} width={144} height={70} rx="5" fill="#0f172a" stroke="#334155" strokeWidth="1" opacity="0.97"/>
-      <text x={tx+8} y={ty+15} fill="white" fontSize="9" fontWeight="700">{node.label}</text>
-      <text x={tx+8} y={ty+27} fill="#6b7280" fontSize="7.5">{node.voltage}</text>
-      <text x={tx+8} y={ty+39} fill="#9ca3af" fontSize="7.5">TSO: {node.tso}</text>
-      <text x={tx+8} y={ty+52} fill={mw>0?glow:"#4b5563"} fontSize="8" fontWeight="600">{flowText}</text>
-      <text x={tx+8} y={ty+63} fill={statusColor} fontSize="6.5">{node.status}</text>
-    </g>
-  );
-}
-
-function PowerFlowSimulator(){
-  const [milestoneIdx,setMilestoneIdx]=useState(5); // Jan 2026 default
-  const [manualGW,setManualGW]=useState(null); // null = use milestone GW
-  const [activeCorridors,setActiveCorridors]=useState(SIM_MILESTONES[5].corridors);
-  const [playing,setPlaying]=useState(true);
-  const [hovNode,setHovNode]=useState(null);
-  const [selCorrId,setSelCorrId]=useState(null);
-  const [tick,setTick]=useState(0);
-  const [mode,setMode]=useState("timeline"); // "timeline" | "manual"
-
-  const milestone=SIM_MILESTONES[milestoneIdx];
-
-  // When timeline mode changes milestone, sync corridors + GW
-  const applyMilestone=idx=>{
-    const m=SIM_MILESTONES[idx];
-    setMilestoneIdx(idx);
-    setActiveCorridors(m.corridors);
-    setManualGW(null);
-  };
-
-  const dispatchGW=manualGW!==null?manualGW:milestone.gw;
-
-  useEffect(()=>{
-    if(!playing)return;
-    let fid,last=0;
-    const loop=ts=>{
-      if(ts-last>50){setTick(t=>(t+1)%1000);last=ts;}
-      fid=requestAnimationFrame(loop);
-    };
-    fid=requestAnimationFrame(loop);
-    return()=>cancelAnimationFrame(fid);
-  },[playing]);
-
-  const totalCap=CORRIDORS.filter(c=>activeCorridors[c.id]).reduce((s,c)=>s+c.maxGW,0)||1;
-
-  const corridorMW=useMemo(()=>{
-    const r={};
-    CORRIDORS.forEach(c=>{
-      r[c.id]=activeCorridors[c.id]?Math.round(dispatchGW*(c.maxGW/totalCap)*1000):0;
-    });
-    return r;
-  },[dispatchGW,activeCorridors,totalCap]);
-
-  const lineMW=useMemo(()=>{
-    const m={};
-    CORRIDORS.forEach(corr=>{
-      const mw=corridorMW[corr.id]||0;
-      if(!mw)return;
-      for(let i=0;i<corr.nodes.length-1;i++){
-        const k=[corr.nodes[i],corr.nodes[i+1]].sort().join("--");
-        m[k]=(m[k]||0)+mw;
-      }
-    });
-    return m;
-  },[corridorMW]);
-
-  const nodeMW=useMemo(()=>{
-    const nm={};
-    CORRIDORS.forEach(corr=>{
-      const mw=corridorMW[corr.id]||0;
-      corr.nodes.forEach(n=>{nm[n]=(nm[n]||0)+mw;});
-    });
-    GEN_NODES.forEach(gn=>{nm[gn.id]=Math.round(dispatchGW*gn.mwFraction*1000);});
-    return nm;
-  },[corridorMW,dispatchGW]);
-
-  function flowDash(mw,idx){
-    const speed=Math.max(0.4,Math.min(4,mw/2500));
-    const offset=((tick*speed*2)+(idx*14))%28;
-    return{strokeDasharray:"14 14",strokeDashoffset:-offset};
-  }
-  function nodeGlow(id){
-    const mw=nodeMW[id]||0;
-    if(mw>5000)return"#fbbf24";
-    if(mw>2000)return"#f97316";
-    if(mw>300) return"#06b6d4";
-    return"#1e293b";
-  }
-
-  const selCorr=selCorrId?CORRIDORS.find(c=>c.id===selCorrId):null;
-  const dispatchMW=Math.round(dispatchGW*1000);
-
-  const activeSegKeys=new Set();
-  if(selCorr){
-    for(let i=0;i<selCorr.nodes.length-1;i++){
-      activeSegKeys.add([selCorr.nodes[i],selCorr.nodes[i+1]].sort().join("--"));
-    }
-  }
-
-  return(
-    <div className="space-y-4">
-
-      {/* Narrative header */}
-      <div className="bg-gray-800 border border-gray-700 rounded-xl p-5">
-        <div className="flex flex-wrap gap-6 items-start">
-          <div className="flex-1 min-w-64">
-            <div className="text-xs text-gray-500 uppercase tracking-wider mb-1">What this shows</div>
-            <p className="text-sm text-gray-300 leading-relaxed">
-              Renewable power generated at Khavda flows through pooling stations into the 765 kV ISTS backbone,
-              then splits across evacuation corridors to serve the Western Region grid and Maharashtra.
-              Use the <span className="text-yellow-400 font-medium">timeline slider</span> to step through actual commissioning milestones,
-              or switch to <span className="text-blue-400 font-medium">manual mode</span> to freely adjust dispatch and active corridors.
-            </p>
-          </div>
-          <div className="grid grid-cols-2 gap-3 text-center shrink-0">
-            {[
-              {label:"Dispatching",  value:`${dispatchGW} GW`, sub:`of 30 GW target`,     color:"#fbbf24"},
-              {label:"Active corr.", value:CORRIDORS.filter(c=>activeCorridors[c.id]).length, sub:"of 4 corridors", color:"#10b981"},
-              {label:"Western flow", value:`${((corridorMW["corr-a"]||0)/1000).toFixed(1)} GW`, sub:"Corridor A", color:"#fbbf24"},
-              {label:"MH export",    value:`${(((corridorMW["corr-b"]||0)+(corridorMW["corr-d"]||0))/1000).toFixed(1)} GW`, sub:"B+D", color:"#f97316"},
-            ].map((s,i)=>(
-              <div key={i} className="bg-gray-900 rounded-lg px-4 py-2 min-w-28">
-                <div className="text-xs text-gray-500 mb-0.5">{s.label}</div>
-                <div className="text-xl font-bold" style={{color:s.color}}>{s.value}</div>
-                <div className="text-xs text-gray-600">{s.sub}</div>
+              <div className="mt-2 pt-2 border-t border-gray-700 text-xs text-gray-600">
+                Target: 30 GW total from Khavda RE Park
               </div>
-            ))}
+            </div>
+          </div>
+
+          {/* Right: parts list + detail */}
+          <div className="lg:col-span-2 space-y-3">
+            <div className="text-xs text-gray-500 uppercase tracking-wider">
+              {phase.parts.length} transmission parts — click any to expand
+            </div>
+            <div className="space-y-2">
+              {phase.parts.map(pt => {
+                const isSel = selPart === pt.id;
+                return (
+                  <div key={pt.id}
+                    className="rounded-xl border cursor-pointer transition-all"
+                    style={{
+                      borderColor: isSel ? phase.color : "#374151",
+                      background: isSel ? phase.color + "0a" : "#111827",
+                    }}
+                    onClick={() => setSelPart(isSel ? null : pt.id)}>
+                    <div className="flex items-start gap-3 p-3">
+                      <div className="w-2 h-2 rounded-full mt-2 shrink-0" style={{ background: STATUS_COLORS[pt.status] }} />
+                      <div className="flex-1 min-w-0">
+                        <div className="flex flex-wrap items-center gap-2">
+                          <span className="font-semibold text-sm text-white">{pt.name}</span>
+                          <Badge status={pt.status} />
+                        </div>
+                        <div className="text-xs text-gray-500 mt-0.5 truncate">{pt.developer} · {pt.spv}</div>
+                      </div>
+                      <div className="text-right shrink-0">
+                        <div className="text-xs text-gray-400">SCOD</div>
+                        <div className="text-sm font-bold" style={{ color: pt.status === "commissioned" ? "#22c55e" : "#f97316" }}>
+                          {pt.doco || pt.scod}
+                        </div>
+                      </div>
+                      <div className="text-gray-500 text-sm">{isSel ? "▲" : "▼"}</div>
+                    </div>
+                    {isSel && (
+                      <div className="px-4 pb-4 space-y-3 border-t border-gray-700 pt-3">
+                        <div>
+                          <div className="text-xs text-gray-500 uppercase tracking-wider mb-1">Scope</div>
+                          <div className="text-sm text-gray-300 leading-relaxed">{pt.scope}</div>
+                        </div>
+                        <div className="grid grid-cols-2 gap-3 text-xs">
+                          <div><span className="text-gray-500">Developer: </span><span className="text-gray-200">{pt.developer}</span></div>
+                          <div><span className="text-gray-500">Cost: </span><span className="text-gray-200">{pt.cost}</span></div>
+                          <div><span className="text-gray-500">Original SCOD: </span><span className="text-gray-200">{pt.scod}</span></div>
+                          <div><span className="text-gray-500">Actual DOCO: </span>
+                            <span className={pt.doco && pt.doco !== "—" ? "text-green-400" : "text-yellow-400"}>
+                              {pt.doco && pt.doco !== "—" ? pt.doco : "Pending"}
+                            </span>
+                          </div>
+                          <div className="col-span-2"><span className="text-gray-500">Note: </span><span className="text-yellow-300">{pt.delay}</span></div>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
           </div>
         </div>
+      )}
+    </div>
+  );
+}
+
+// ══════════════════════════════════════════════════════════════
+// SECTION 2: KPS STATION STATUS & BAY CAPACITY
+// ══════════════════════════════════════════════════════════════
+function StationProfiles() {
+  const [selPS, setSelPS] = useState("KPS-III");
+
+  const station = KPS_PROFILES.find(s => s.id === selPS);
+  const bays = BAY_DATA.filter(b => b.ps === selPS);
+  const totalAllocated = bays.reduce((s, b) => s + b.mw, 0);
+
+  // Group bays by developer group
+  const byGroup = {};
+  bays.forEach(b => {
+    if (!byGroup[b.group]) byGroup[b.group] = 0;
+    byGroup[b.group] += b.mw;
+  });
+  const groupEntries = Object.entries(byGroup).sort((a, b) => b[1] - a[1]);
+
+  return (
+    <div className="space-y-4">
+      {/* Station selector */}
+      <div className="flex gap-2 flex-wrap">
+        {KPS_PROFILES.map(ps => (
+          <button key={ps.id}
+            onClick={() => setSelPS(ps.id)}
+            className="px-4 py-2 rounded-xl border font-semibold text-sm transition-all"
+            style={selPS === ps.id
+              ? { background: ps.color + "25", borderColor: ps.color, color: ps.color }
+              : { background: "#111827", borderColor: "#374151", color: "#6b7280" }}>
+            {ps.id}
+            <span className="ml-2 text-xs font-normal">{STATUS_LABEL[ps.status]}</span>
+          </button>
+        ))}
       </div>
 
-      {/* Mode tabs */}
-      <div className="bg-gray-800 border border-gray-700 rounded-xl overflow-hidden">
-        <div className="flex border-b border-gray-700">
-          {[{v:"timeline",l:"Timeline — step through commissioning history"},{v:"manual",l:"Manual — free dispatch control"}].map(t=>(
-            <button key={t.v} onClick={()=>setMode(t.v)}
-              className="px-4 py-2.5 text-xs font-medium transition-colors"
-              style={mode===t.v?{background:"#1e3a5f",color:"#93c5fd",borderBottom:"2px solid #3b82f6"}:{color:"#6b7280"}}>
-              {t.l}
-            </button>
-          ))}
-          <div className="ml-auto flex items-center px-4">
-            <button onClick={()=>setPlaying(p=>!p)}
-              className={`px-3 py-1.5 rounded text-xs font-medium border transition-colors ${playing?"bg-yellow-500 border-yellow-400 text-gray-900":"bg-gray-700 border-gray-600 text-gray-300"}`}>
-              {playing?"Pause":"Play"}
-            </button>
-          </div>
-        </div>
+      {station && (
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+          {/* Station card */}
+          <div className="space-y-3">
+            <div className="rounded-xl border p-4" style={{ borderColor: station.color + "40", background: station.color + "08" }}>
+              <div className="flex items-start justify-between">
+                <div>
+                  <div className="text-2xl font-black text-white">{station.id}</div>
+                  <div className="text-sm text-gray-400 mt-0.5">{station.voltage}</div>
+                </div>
+                <Badge status={station.status} />
+              </div>
+              <div className="mt-3 grid grid-cols-2 gap-2 text-sm">
+                <div className="bg-gray-900 rounded-lg p-2">
+                  <div className="text-gray-500 text-xs">Owner/TSO</div>
+                  <div className="text-white font-bold text-sm">{station.owner}</div>
+                </div>
+                <div className="bg-gray-900 rounded-lg p-2">
+                  <div className="text-gray-500 text-xs">Coords</div>
+                  <div className="text-white text-xs font-mono">{station.coords}</div>
+                </div>
+              </div>
 
-        <div className="p-4">
-          {mode==="timeline"?(
-            <div>
-              {/* Timeline scrubber */}
-              <div className="mb-4">
-                <input type="range" min={0} max={SIM_MILESTONES.length-1} step={1} value={milestoneIdx}
-                  onChange={e=>applyMilestone(parseInt(e.target.value))}
-                  className="w-full accent-yellow-400"/>
-                {/* Milestone tick labels */}
-                <div className="flex justify-between mt-1">
-                  {SIM_MILESTONES.map((m,i)=>(
-                    <button key={i} onClick={()=>applyMilestone(i)}
-                      className="text-center transition-colors"
-                      style={{minWidth:0,flex:1}}>
-                      <div className={`text-xs font-medium truncate ${i===milestoneIdx?"text-yellow-400":"text-gray-600 hover:text-gray-400"}`}>
-                        {m.label}
+              {/* ICT build-up */}
+              <div className="mt-3">
+                <div className="text-xs text-gray-500 uppercase tracking-wider mb-2">ICT Build-Up (1,500 MVA each)</div>
+                <div className="flex gap-1 flex-wrap">
+                  {Array.from({ length: station.icts_total || station.icts_commissioned + station.icts_planned }).map((_, i) => (
+                    <div key={i}
+                      className="w-7 h-7 rounded flex items-center justify-center text-xs font-bold"
+                      style={i < station.icts_commissioned
+                        ? { background: station.color + "30", border: `1.5px solid ${station.color}`, color: station.color }
+                        : i < (station.icts_commissioned + station.icts_planned)
+                          ? { background: "#431407", border: "1.5px solid #f97316", color: "#f97316" }
+                          : { background: "#111827", border: "1px solid #374151", color: "#374151" }}>
+                      {i + 1}
+                    </div>
+                  ))}
+                </div>
+                <div className="flex gap-3 mt-2 text-xs">
+                  <div className="flex items-center gap-1">
+                    <div className="w-3 h-3 rounded" style={{ background: station.color + "30", border: `1px solid ${station.color}` }} />
+                    <span className="text-gray-500">Commissioned ({station.icts_commissioned})</span>
+                  </div>
+                  {station.icts_planned > 0 && (
+                    <div className="flex items-center gap-1">
+                      <div className="w-3 h-3 rounded" style={{ background: "#431407", border: "1px solid #f97316" }} />
+                      <span className="text-gray-500">Planned ({station.icts_planned})</span>
+                    </div>
+                  )}
+                </div>
+                <div className="mt-2 text-xs text-gray-400">
+                  Commissioned: <span className="text-white font-bold">{station.capacity_commissioned_mva.toLocaleString()} MVA</span>
+                  {station.capacity_total_mva > station.capacity_commissioned_mva && (
+                    <> → Total: <span className="text-yellow-400 font-bold">{station.capacity_total_mva.toLocaleString()} MVA</span></>
+                  )}
+                </div>
+              </div>
+
+              {station.hvdc && (
+                <div className="mt-3 p-2 rounded-lg border border-purple-700 bg-purple-900 bg-opacity-20">
+                  <div className="text-xs font-bold text-purple-400 mb-1">⚡ HVDC Terminal</div>
+                  <div className="text-xs text-purple-300">{station.hvdc_note}</div>
+                </div>
+              )}
+            </div>
+
+            {/* Bay margin indicator */}
+            <div className="bg-gray-800 border border-gray-700 rounded-xl p-4">
+              <div className="text-xs text-gray-500 uppercase tracking-wider mb-2">Bay Margin Available</div>
+              <div className="flex items-baseline gap-2">
+                <div className="text-2xl font-black"
+                  style={{ color: station.margin_mw > 1000 ? "#22c55e" : station.margin_mw > 200 ? "#f59e0b" : "#ef4444" }}>
+                  {station.margin_mw > 0 ? `~${station.margin_mw.toLocaleString()} MW` : "None"}
+                </div>
+              </div>
+              <div className="text-xs text-gray-400 mt-2 leading-relaxed">{station.margin_note}</div>
+            </div>
+
+            <div className="bg-gray-800 border border-gray-700 rounded-xl p-4">
+              <div className="text-xs text-gray-500 uppercase tracking-wider mb-2">Notes</div>
+              <div className="text-xs text-gray-400 leading-relaxed">{station.notes}</div>
+            </div>
+          </div>
+
+          {/* Bay allocation table */}
+          <div className="lg:col-span-2 space-y-3">
+            <div className="bg-gray-800 border border-gray-700 rounded-xl overflow-hidden">
+              <div className="px-4 py-3 border-b border-gray-700 flex items-center justify-between">
+                <div className="text-sm font-semibold text-white">
+                  Bay Allocation Register — {selPS}
+                  <span className="ml-2 text-xs text-gray-500">CTUIL May 2025</span>
+                </div>
+                <div className="text-sm font-bold" style={{ color: PS_COLORS[selPS] }}>
+                  {totalAllocated.toLocaleString()} MW total
+                </div>
+              </div>
+              {bays.length > 0 ? (
+                <table className="w-full text-sm">
+                  <thead className="bg-gray-900">
+                    <tr>
+                      <th className="px-3 py-2 text-left text-xs text-gray-500 uppercase">Bay</th>
+                      <th className="px-3 py-2 text-left text-xs text-gray-500 uppercase">Section</th>
+                      <th className="px-3 py-2 text-left text-xs text-gray-500 uppercase">Developer</th>
+                      <th className="px-3 py-2 text-left text-xs text-gray-500 uppercase">Group</th>
+                      <th className="px-3 py-2 text-right text-xs text-gray-500 uppercase">MW</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {bays.map((b, i) => (
+                      <tr key={i} className="border-t border-gray-700 hover:bg-gray-700">
+                        <td className="px-3 py-2 font-mono text-xs text-gray-300 font-bold">{b.bay}</td>
+                        <td className="px-3 py-2 text-xs text-gray-500">{b.section}</td>
+                        <td className="px-3 py-2 text-xs text-gray-300 max-w-48 truncate">{b.developer}</td>
+                        <td className="px-3 py-2">
+                          <span className="text-xs px-2 py-0.5 rounded font-medium"
+                            style={{ background: (GROUP_COLORS[b.group] || "#6b7280") + "20", color: GROUP_COLORS[b.group] || "#6b7280" }}>
+                            {b.group}
+                          </span>
+                        </td>
+                        <td className="px-3 py-2 text-right font-mono font-bold text-white">{b.mw.toLocaleString()}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                  <tfoot className="bg-gray-900">
+                    <tr>
+                      <td className="px-3 py-2 text-xs text-gray-500" colSpan={4}>Total allocated</td>
+                      <td className="px-3 py-2 text-right font-mono font-black text-white">{totalAllocated.toLocaleString()}</td>
+                    </tr>
+                  </tfoot>
+                </table>
+              ) : (
+                <div className="p-8 text-center text-gray-500 text-sm">No bay allocations recorded yet for {selPS}</div>
+              )}
+            </div>
+
+            {/* Group bar chart */}
+            {groupEntries.length > 0 && (
+              <div className="bg-gray-800 border border-gray-700 rounded-xl p-4">
+                <div className="text-xs text-gray-500 uppercase tracking-wider mb-3">By Group — MW Share</div>
+                <div className="space-y-2">
+                  {groupEntries.map(([g, mw]) => (
+                    <div key={g} className="flex items-center gap-2">
+                      <div className="w-28 text-xs truncate" style={{ color: GROUP_COLORS[g] || "#9ca3af" }}>{g}</div>
+                      <div className="flex-1 h-4 bg-gray-900 rounded overflow-hidden">
+                        <div className="h-full rounded transition-all"
+                          style={{ width: `${(mw / totalAllocated) * 100}%`, background: GROUP_COLORS[g] || "#6b7280" }} />
                       </div>
-                    </button>
+                      <div className="w-20 text-right text-xs font-mono text-gray-400">{mw.toLocaleString()} MW</div>
+                      <div className="w-10 text-right text-xs text-gray-600">{((mw / totalAllocated) * 100).toFixed(0)}%</div>
+                    </div>
                   ))}
                 </div>
               </div>
-              {/* Selected milestone context */}
-              <div className="bg-gray-900 rounded-lg p-3 border border-gray-700">
-                <div className="flex items-start gap-3">
-                  <div className={`text-xs font-bold px-2 py-1 rounded shrink-0 ${milestone.corridors["corr-b"]||milestone.corridors["corr-c"]?"bg-green-900 text-green-300":"bg-yellow-900 text-yellow-300"}`}>
-                    {milestone.date}
-                  </div>
-                  <div>
-                    <div className="text-sm text-white font-medium mb-0.5">{milestone.gw} GW dispatched</div>
-                    <div className="text-xs text-gray-400 leading-relaxed">{milestone.note}</div>
-                  </div>
-                  <div className="ml-auto shrink-0 flex gap-1">
-                    <button onClick={()=>applyMilestone(Math.max(0,milestoneIdx-1))} disabled={milestoneIdx===0}
-                      className="bg-gray-800 hover:bg-gray-700 disabled:opacity-30 text-white px-2 py-1 rounded text-xs">Prev</button>
-                    <button onClick={()=>applyMilestone(Math.min(SIM_MILESTONES.length-1,milestoneIdx+1))} disabled={milestoneIdx===SIM_MILESTONES.length-1}
-                      className="bg-gray-800 hover:bg-gray-700 disabled:opacity-30 text-white px-2 py-1 rounded text-xs">Next</button>
-                  </div>
-                </div>
-                {/* Corridor status at this milestone */}
-                <div className="flex flex-wrap gap-2 mt-3">
-                  {CORRIDORS.map(c=>{
-                    const isActive=milestone.corridors[c.id];
-                    return(
-                      <div key={c.id} className="flex items-center gap-1.5 text-xs px-2 py-1 rounded border"
-                        style={isActive?{background:c.color+"15",borderColor:c.color+"60",color:c.color}:{background:"#0f172a",borderColor:"#1f2937",color:"#374151"}}>
-                        <span className="w-2 h-2 rounded-full" style={{background:isActive?c.color:"#374151"}}/>
-                        {c.label}
-                        <span className="opacity-60">{isActive?"online":"not yet"}</span>
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-            </div>
-          ):(
-            <div className="space-y-3">
-              {/* Manual dispatch slider */}
-              <div>
-                <div className="flex justify-between items-baseline mb-1">
-                  <span className="text-sm font-semibold text-white">Generation Dispatch</span>
-                  <span className="text-2xl font-bold text-yellow-400">{dispatchGW} <span className="text-sm text-gray-400">GW</span></span>
-                </div>
-                <input type="range" min={0} max={30} step={0.5} value={dispatchGW}
-                  onChange={e=>setManualGW(parseFloat(e.target.value))}
-                  className="w-full accent-yellow-400"/>
-                <div className="flex justify-between text-xs text-gray-600 mt-1">
-                  {["0","5","10","15","20","25","30 GW"].map(v=><span key={v}>{v}</span>)}
-                </div>
-              </div>
-              {/* Corridor toggles */}
-              <div>
-                <div className="text-xs text-gray-500 uppercase tracking-wider mb-2">Active corridors — click to toggle</div>
-                <div className="flex flex-wrap gap-2">
-                  {CORRIDORS.map(c=>{
-                    const isActive=activeCorridors[c.id];
-                    const isSel=selCorrId===c.id;
-                    const mw=corridorMW[c.id]||0;
-                    return(
-                      <button key={c.id}
-                        onClick={()=>setSelCorrId(isSel?null:c.id)}
-                        className="flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-lg border transition-all"
-                        style={isSel
-                          ?{background:c.color+"30",borderColor:c.color,color:"white"}
-                          :isActive
-                          ?{background:c.color+"12",borderColor:c.color+"70",color:c.color}
-                          :{background:"#0f172a",borderColor:"#1f2937",color:"#374151"}}>
-                        <span className="w-2 h-2 rounded-full" style={{background:isActive?c.color:"#374151"}}/>
-                        <span className="font-semibold">{c.label}</span>
-                        {c.planned&&<span className="opacity-50">(planned)</span>}
-                        {isActive&&mw>0&&<span className="font-bold ml-1">{(mw/1000).toFixed(1)} GW</span>}
-                        <span className="opacity-40 ml-1"
-                          onClick={e=>{e.stopPropagation();setActiveCorridors(p=>({...p,[c.id]:!p[c.id]}));}}>
-                          {isActive?"x":"+"}
-                        </span>
-                      </button>
-                    );
-                  })}
-                </div>
-              </div>
-            </div>
-          )}
-        </div>
-      </div>
-
-      {/* Selected corridor explainer */}
-      {selCorr&&(
-        <div className="rounded-xl border p-4" style={{borderColor:selCorr.color+"50",background:selCorr.color+"08"}}>
-          <div className="flex items-start justify-between gap-4 flex-wrap">
-            <div className="flex-1 min-w-64">
-              <div className="font-semibold mb-1" style={{color:selCorr.color}}>
-                {selCorr.label} — {selCorr.fullLabel}
-                <span className="ml-2 text-xs font-normal text-gray-500">{selCorr.phase}</span>
-              </div>
-              <div className="text-xs text-gray-500 font-mono mb-2">{selCorr.description}</div>
-              <p className="text-xs text-gray-400 leading-relaxed">{selCorr.why}</p>
-            </div>
-            <div className="shrink-0 text-right">
-              <div className="text-xs text-gray-500 mb-1">Simulated flow</div>
-              <div className="text-2xl font-bold" style={{color:selCorr.color}}>
-                {((corridorMW[selCorr.id]||0)/1000).toFixed(1)} GW
-              </div>
-              <div className="text-xs text-gray-600">of {selCorr.maxGW} GW max</div>
-              <div className="mt-2 h-1.5 w-24 bg-gray-700 rounded-full overflow-hidden ml-auto">
-                <div className="h-full rounded-full transition-all duration-300" style={{width:`${Math.min(100,(corridorMW[selCorr.id]||0)/1000/selCorr.maxGW*100)}%`,background:selCorr.color}}/>
-              </div>
-            </div>
-          </div>
-          <div className="mt-3 flex flex-wrap gap-1.5 items-center">
-            {selCorr.nodes.map((nid,i)=>{
-              const node=MAP_NODES[nid];
-              const mw=nodeMW[nid]||0;
-              return(
-                <div key={nid} className="flex items-center gap-1.5">
-                  <div className="bg-gray-900 border border-gray-700 rounded px-2 py-1 text-xs">
-                    <span className="text-white font-medium">{node?node.label:nid}</span>
-                    {mw>0&&<span className="ml-1 font-bold" style={{color:selCorr.color}}>{(mw/1000).toFixed(1)} GW</span>}
-                  </div>
-                  {i<selCorr.nodes.length-1&&<span className="text-gray-600 text-xs">&#x2192;</span>}
-                </div>
-              );
-            })}
+            )}
           </div>
         </div>
       )}
+    </div>
+  );
+}
 
-      {/* Map + right panel */}
+// ══════════════════════════════════════════════════════════════
+// SECTION 3: BAY MARGINS DASHBOARD
+// ══════════════════════════════════════════════════════════════
+function BayMargins() {
+  // ── MARGIN METHODOLOGY NOTE ──────────────────────────────────────────────
+  // "Phase design capacity" = NCT-approved MW target for the phase(s) that
+  // a given KPS primarily serves. This is the only MW ceiling that has a
+  // published source (CERC/CTUIL scheme documents).
+  //
+  // allocated_mw  → summed from CTUIL Bay Allocation Register (May 2025) via BAY_DATA
+  // phase_design_mw → NCT-approved capacity for the phases feeding this station
+  // margin_mw     → phase_design_mw − allocated_mw  (computed, not hardcoded)
+  // fill gauge    → allocated_mw / phase_design_mw
+  //
+  // KPS-I  : Phase I (3 GW) + Phase II partial contribution → 10,500 MW designed
+  //          (Phases I–III collectively sized KPS-I for 10,500 MW CTUIL bays)
+  //          CTUIL register has 8 bays totalling 10,500 MW → fill = 100%
+  // KPS-II : Phase I + II + III → 9,250 MW allocated across 6 CTUIL bays
+  //          NCT sized KPS-II for ~9,250 MW at Phases I–III → fill = 100%
+  // KPS-III: Phase I–III establishes 3×1500 MVA Sec-A; Phase IV-A adds Sec-B
+  //          (3+5 = 8 ICTs = 12,000 MVA nameplate). CTUIL shows 8,935 MW bays.
+  //          Phase IV design target for KPS-III = 12,000 MW (8 ICTs × 1500 MVA)
+  // KPS-IV : Phase IV design = 9,000 MW (6×1500 MVA ICTs in CERC IV-A scope);
+  //          CTUIL shows 8,750 MW allocated → margin = 250 MW
+  // KPS-V  : Phase V planning stage. NCT-sized capacity not yet published.
+  //          CTUIL shows 3 bays = 3,750 MW. Design target assumed = 5,250 MW
+  //          (3,750 + ~1,500 MW expected from connectivity applications in progress)
+  //          Margin = 1,500 MW (indicative only — flagged as estimate)
+  // ─────────────────────────────────────────────────────────────────────────
+
+  const buildMarginData = () => {
+    const alloc = (ps) => BAY_DATA.filter(b => b.ps === ps).reduce((s, b) => s + b.mw, 0);
+    const bayCount = (ps) => BAY_DATA.filter(b => b.ps === ps).length;
+
+    // phase_design_mw: the MW ceiling against which fill is computed
+    // For KPS-I and KPS-II: CTUIL-registered bays themselves define the ceiling
+    //   (all bays taken → 100% fill). Use allocated_mw as ceiling so gauge = 100%.
+    // For KPS-III onward: use NCT/CERC scheme capacity as the forward-looking ceiling.
+    const rows = [
+      {
+        ps: "KPS-I", color: "#22c55e", status: "commissioned",
+        phase_design_mw: alloc("KPS-I"), // 10,500 MW — all 8 CTUIL bays taken; ceiling = allocated
+        phase_design_src: "CTUIL register (8 bays, all allocated — ceiling = allocated MW)",
+        bays_ctuil: bayCount("KPS-I"),
+        bays_open: 0,
+        next_capacity: "9th ICT via Ph V-B1 (Feb 2027) — expected to be taken by existing Adani entities.",
+        margin_note: "All 8 CTUIL bays allocated to Adani Group. Zero open bays. 9th ICT (V-B1) yet to be notified.",
+      },
+      {
+        ps: "KPS-II", color: "#3b82f6", status: "commissioned",
+        phase_design_mw: alloc("KPS-II"), // 9,250 MW — all 6 CTUIL bays taken
+        phase_design_src: "CTUIL register (6 bays, all allocated — ceiling = allocated MW)",
+        bays_ctuil: bayCount("KPS-II"),
+        bays_open: 0,
+        next_capacity: "9th ICT via Ph V-B2 (Feb 2027). ±800kV HVDC terminal (6 GW) under construction alongside.",
+        margin_note: "All 6 CTUIL bays allocated — GSECL, GIPCL, NTPC. Zero open bays. HVDC corridor adds separate 6 GW pathway.",
+      },
+      {
+        ps: "KPS-III", color: "#f59e0b", status: "partially active",
+        phase_design_mw: 12000, // 8 ICTs × 1500 MVA — NCT/CERC Phase IV-A scheme scope
+        phase_design_src: "NCT Phase IV-A scheme: 8 ICTs × 1,500 MVA = 12,000 MVA nameplate",
+        bays_ctuil: bayCount("KPS-III"),
+        bays_open: 0, // all 8 listed bays allocated; new Sec-B bays from Ph IV-A not yet notified
+        next_capacity: "Ph IV-A adds KPS-3 Sec-B (AESL, Aug 2026). Ph V-B3 adds 8th ICT. VSC HVDC terminal (Dec 2029).",
+        margin_note: "8 CTUIL bays all allocated. Residual 3,065 MW gap vs 12,000 MW nameplate reflects Sec-B bays not yet in register — not freely available headroom.",
+      },
+      {
+        ps: "KPS-IV", color: "#f97316", status: "under-construction",
+        phase_design_mw: 9000, // Phase IV-A: 6 ICTs × 1500 MVA = 9,000 MVA (CERC IV-A licence)
+        phase_design_src: "CERC IV-A licence: KPS-3 Sec-B — 3×1500 MVA + Phase IV-E2: 2×1500 MVA at KPS-1 & KPS-2 augmentation (separate). KPS-IV itself: 6×1500 MVA in CTUIL Phase IV-B South Olpad scope",
+        bays_ctuil: bayCount("KPS-IV"),
+        bays_open: 0,
+        next_capacity: "Phase IV-B South Olpad GIS (PGCIL, Sep 2026) is the associated ISTS output element.",
+        margin_note: "8 CTUIL bays, all Adani Power Ltd (8,750 MW). Phase design = 9,000 MW → 250 MW unallocated. Station under construction (SCOD Aug 2026). No third-party developer access.",
+      },
+      {
+        ps: "KPS-V", color: "#8b5cf6", status: "planned",
+        phase_design_mw: 5250, // 3 allocated bays (3,750 MW) + ~1,500 MW indicative estimate for open applications
+        phase_design_src: "CTUIL register: 3 bays (3,750 MW) + ~1,500 MW indicative open-application estimate (not from published source)",
+        bays_ctuil: bayCount("KPS-V"),
+        bays_open: 0,
+        next_capacity: "Subject to Phase V formal tender. HVDC V-C feeds South Olpad, not KPS-V directly.",
+        margin_note: "3 CTUIL bays all Adani Power (3,750 MW). ~1,500 MW indicative — station not formally tendered; estimate only.",
+      },
+    ];
+
+    return rows.map(r => ({
+      ...r,
+      allocated_mw: alloc(r.ps),
+      margin_mw: Math.max(0, r.phase_design_mw - alloc(r.ps)),
+      fill_pct: r.phase_design_mw > 0
+        ? Math.min(100, alloc(r.ps) / r.phase_design_mw * 100)
+        : 100,
+    }));
+  };
+
+  const MARGIN_DATA = buildMarginData();
+
+  return (
+    <div className="space-y-4">
+      <div className="bg-gray-800 border border-yellow-900 rounded-xl p-4">
+        <div className="text-yellow-400 font-semibold text-sm mb-1">Reading Bay Margins</div>
+        <div className="text-sm text-gray-400 leading-relaxed">
+          "Margin" refers to transformation capacity at a KPS bus that is not yet allocated to a developer. 
+          A developer seeking ISTS connectivity at Khavda needs: (a) an open or upcoming bus bay, (b) associated ISTS evacuation element in the same phase, and (c) LTOA/MTOA application to CTUIL. 
+          KPS-I and KPS-II are <span className="text-red-400 font-medium">effectively full</span>. KPS-III Sec-B is <span className="text-yellow-400 font-medium">partially open post Phase IV-A commissioning (Aug 2026)</span>. KPS-IV/V are predominantly Adani Power.
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-5 gap-3">
+        {MARGIN_DATA.map(m => {
+          const marginColor = m.margin_mw > 1000 ? "#22c55e" : m.margin_mw > 200 ? "#f59e0b" : "#ef4444";
+          const isEstimate = m.ps === "KPS-V";
+          return (
+            <div key={m.ps} className="bg-gray-800 border border-gray-700 rounded-xl p-4"
+              style={{ borderTopColor: m.color, borderTopWidth: 3 }}>
+              <div className="font-bold text-white text-sm">{m.ps}</div>
+              <div className="text-xs mt-0.5" style={{ color: m.color }}>{STATUS_LABEL[m.status] || m.status}</div>
+
+              {/* Fill gauge — width from pre-computed fill_pct */}
+              <div className="mt-3">
+                <div className="text-xs text-gray-500 mb-1">
+                  Allocation vs phase design
+                </div>
+                <div className="h-3 bg-gray-900 rounded-full overflow-hidden">
+                  <div className="h-full rounded-full" style={{ width: `${m.fill_pct}%`, background: m.color }} />
+                </div>
+                <div className="flex justify-between text-xs mt-0.5">
+                  <span className="text-gray-500">{m.bays_ctuil} CTUIL bays</span>
+                  <span className="text-gray-400 font-mono">{m.allocated_mw.toLocaleString()} MW</span>
+                </div>
+              </div>
+
+              <div className="mt-3">
+                <div className="text-xs text-gray-500 mb-1">Available margin</div>
+                <div className="text-xl font-black" style={{ color: marginColor }}>
+                  {m.margin_mw > 0
+                    ? `${isEstimate ? "~" : ""}${m.margin_mw.toLocaleString()} MW${isEstimate ? " *" : ""}`
+                    : "None"}
+                </div>
+                {isEstimate && (
+                  <div className="text-xs text-gray-600 mt-0.5">* indicative estimate only</div>
+                )}
+              </div>
+
+              <div className="mt-2 text-xs text-gray-500 leading-relaxed">{m.margin_note}</div>
+
+              <div className="mt-3 p-2 rounded-lg bg-gray-900 text-xs text-gray-600">
+                <span className="text-gray-500 font-medium">Ceiling: </span>{m.phase_design_src}
+              </div>
+
+              <div className="mt-2 p-2 rounded-lg bg-gray-900 text-xs text-gray-500">
+                <span className="text-gray-400 font-medium">Next capacity: </span>{m.next_capacity}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      {/* Cross-all-stations bar */}
+      <div className="bg-gray-800 border border-gray-700 rounded-xl p-5">
+        <div className="text-sm font-semibold text-white mb-4">All-Stations Developer Concentration</div>
+        <div className="space-y-2">
+          {Object.entries(
+            BAY_DATA.reduce((acc, b) => { acc[b.group] = (acc[b.group] || 0) + b.mw; return acc; }, {})
+          ).sort((a, b) => b[1] - a[1]).map(([g, mw]) => {
+            const total = BAY_DATA.reduce((s, b) => s + b.mw, 0);
+            return (
+              <div key={g} className="flex items-center gap-3">
+                <div className="w-32 text-xs truncate" style={{ color: GROUP_COLORS[g] || "#9ca3af" }}>{g}</div>
+                <div className="flex-1 h-4 bg-gray-900 rounded overflow-hidden">
+                  <div className="h-full rounded" style={{ width: `${(mw / total) * 100}%`, background: GROUP_COLORS[g] || "#6b7280" }} />
+                </div>
+                <div className="w-20 text-right text-xs font-mono text-gray-400">{mw.toLocaleString()} MW</div>
+                <div className="w-10 text-right text-xs text-gray-600">{((mw / total) * 100).toFixed(1)}%</div>
+              </div>
+            );
+          })}
+        </div>
+        <div className="mt-3 text-xs text-gray-600">Source: CTUIL Bay Allocation Register, May 2025. Total: {BAY_DATA.reduce((s,b) => s+b.mw,0).toLocaleString()} MW across all stations.</div>
+      </div>
+    </div>
+  );
+}
+
+// ══════════════════════════════════════════════════════════════
+// SECTION 4: HVDC DEEP DIVE
+// ══════════════════════════════════════════════════════════════
+function HVDCSection() {
+  const [selHVDC, setSelHVDC] = useState("va");
+
+  const proj = HVDC_PROJECTS.find(h => h.id === selHVDC);
+
+  return (
+    <div className="space-y-5">
+      {/* HVDC overview banner */}
+      <div className="bg-gray-800 border border-purple-700 rounded-xl p-4">
+        <div className="text-purple-400 font-bold text-base mb-2">Khavda HVDC Transmission — India's First HVDC Projects Under TBCB</div>
+        <div className="text-sm text-gray-300 leading-relaxed">
+          Khavda Phase V introduced HVDC technology to India's TBCB transmission bidding for the first time. 
+          Two separate HVDC systems are under development: a <span className="text-purple-300 font-medium">±800kV LCC link</span> (6,000 MW, KPS2→Nagpur, PGCIL) and a <span className="text-pink-300 font-medium">±500kV VSC link</span> (2,500 MW, KPS3→South Olpad, AESL). 
+          Combined they will add <span className="text-white font-bold">8,500 MW</span> of direct-current transmission capacity from Khavda — complementing the existing HVAC network.
+        </div>
+        <div className="flex gap-3 mt-3 flex-wrap text-xs">
+          {[
+            { l:"Total HVDC capacity", v:"8,500 MW" },
+            { l:"Combined project cost", v:"~₹37,000 cr" },
+            { l:"V-A tariff (record)", v:"₹40,829 M/yr" },
+            { l:"Full HVDC commissioning", v:"Dec 2029" },
+          ].map((s, i) => (
+            <div key={i} className="bg-gray-900 rounded-lg px-3 py-2">
+              <div className="text-gray-500">{s.l}</div>
+              <div className="text-white font-bold">{s.v}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Project selector */}
+      <div className="flex gap-3">
+        {HVDC_PROJECTS.map(h => (
+          <button key={h.id}
+            onClick={() => setSelHVDC(h.id)}
+            className="flex-1 text-left rounded-xl border p-4 transition-all"
+            style={selHVDC === h.id
+              ? { borderColor: h.color, background: h.color + "15" }
+              : { borderColor: "#374151", background: "#111827" }}>
+            <div className="text-xs font-bold mb-1" style={{ color: h.color }}>{h.label}</div>
+            <div className="text-sm font-bold text-white leading-tight">{h.name}</div>
+            <div className="text-xs text-gray-500 mt-1">{h.capacity_mw.toLocaleString()} MW · {h.developer}</div>
+            <div className="mt-2"><Badge status={h.status} /></div>
+          </button>
+        ))}
+      </div>
+
+      {proj && (
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+          {/* Left: key facts */}
+          <div className="space-y-3">
+            <div className="rounded-xl border p-4 space-y-3" style={{ borderColor: proj.color + "40", background: proj.color + "07" }}>
+              <div className="text-lg font-black" style={{ color: proj.color }}>{proj.label}</div>
+              <div className="text-3xl font-black text-white">{(proj.capacity_mw / 1000).toFixed(0)} GW</div>
+
+              {[
+                { k: "Technology", v: proj.technology },
+                { k: "Route", v: proj.route },
+                { k: "Line length", v: `${proj.length_km} km / ${proj.ckm} ckm` },
+                { k: "Developer", v: proj.developer },
+                { k: "SPV", v: proj.spv },
+                { k: "SPV Acquired", v: proj.awarded },
+                { k: "Project Cost", v: `₹${proj.cost_cr.toLocaleString()} cr` },
+                { k: "Annual Tariff", v: `₹${proj.tariff_m_yr.toLocaleString()} M/yr` },
+              ].map(({ k, v }) => (
+                <div key={k} className="flex gap-2 text-sm">
+                  <span className="text-gray-500 w-28 shrink-0 text-xs">{k}</span>
+                  <span className="text-gray-200 text-xs">{v}</span>
+                </div>
+              ))}
+            </div>
+
+            {/* Timeline */}
+            <div className="bg-gray-800 border border-gray-700 rounded-xl p-4">
+              <div className="text-xs text-gray-500 uppercase tracking-wider mb-3">Commissioning Schedule</div>
+              <div className="space-y-2">
+                <div className="flex items-center gap-3">
+                  <div className="w-2 h-2 rounded-full" style={{ background: proj.color }} />
+                  <div className="text-xs text-gray-400">SPV Awarded</div>
+                  <div className="ml-auto text-xs font-bold text-white">{proj.awarded}</div>
+                </div>
+                <div className="ml-1 border-l border-gray-700 pl-4 py-1">
+                  <div className="text-xs text-gray-600">Engineering, survey, land acquisition, EPC packages</div>
+                </div>
+                <div className="flex items-center gap-3">
+                  <div className="w-2 h-2 rounded-full bg-yellow-400" />
+                  <div className="text-xs text-gray-400">Pole 1 / Initial commissioning</div>
+                  <div className="ml-auto text-xs font-bold text-yellow-400">{proj.pole1_scod}</div>
+                </div>
+                {proj.pole2_scod !== proj.pole1_scod && (
+                  <>
+                    <div className="ml-1 border-l border-gray-700 pl-4 py-1">
+                      <div className="text-xs text-gray-600">Bipole testing & second pole construction</div>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <div className="w-2 h-2 rounded-full bg-green-400" />
+                      <div className="text-xs text-gray-400">Full commissioning (Pole 2)</div>
+                      <div className="ml-auto text-xs font-bold text-green-400">{proj.pole2_scod}</div>
+                    </div>
+                  </>
+                )}
+              </div>
+            </div>
+          </div>
+
+          {/* Right: packages + constraints + significance */}
+          <div className="lg:col-span-2 space-y-3">
+            <div className="bg-gray-800 border border-gray-700 rounded-xl p-4">
+              <div className="text-sm font-semibold text-white mb-3">EPC Packages Awarded</div>
+              <div className="space-y-3">
+                {proj.packages.map((pkg, i) => (
+                  <div key={i} className="rounded-lg p-3 bg-gray-900 border border-gray-700">
+                    <div className="flex items-start justify-between gap-2">
+                      <div className="font-medium text-sm text-white">{pkg.name}</div>
+                      <div className="text-xs font-bold text-gray-300 shrink-0">{pkg.value}</div>
+                    </div>
+                    <div className="text-xs text-gray-400 mt-1">{pkg.contractor}</div>
+                    <div className="text-xs text-gray-500 mt-1 leading-relaxed">{pkg.note}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="bg-gray-800 border border-gray-700 rounded-xl p-4">
+              <div className="text-sm font-semibold text-white mb-3">Key Constraints & Risks</div>
+              <div className="space-y-2">
+                {proj.constraints.map((c, i) => (
+                  <div key={i} className="flex gap-2 text-xs">
+                    <span className="text-yellow-400 shrink-0">⚠</span>
+                    <span className="text-gray-400 leading-relaxed">{c}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="rounded-xl border p-4" style={{ borderColor: proj.color + "40", background: proj.color + "06" }}>
+              <div className="text-sm font-semibold mb-2" style={{ color: proj.color }}>Strategic Significance</div>
+              <div className="text-sm text-gray-300 leading-relaxed">{proj.significance}</div>
+            </div>
+
+            {/* Comparison table */}
+            <div className="bg-gray-800 border border-gray-700 rounded-xl p-4">
+              <div className="text-xs text-gray-500 uppercase tracking-wider mb-3">HVDC Link Comparison</div>
+              <div className="overflow-x-auto">
+                <table className="w-full text-xs">
+                  <thead>
+                    <tr className="border-b border-gray-700">
+                      {["", "V-A (±800kV LCC)", "V-C (±500kV VSC)"].map(h => (
+                        <th key={h} className="px-2 py-2 text-left text-gray-400 font-semibold">{h}</th>
+                      ))}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {[
+                      ["Developer", "PGCIL", "AESL"],
+                      ["Technology", "LCC (thyristor)", "VSC (IGBT)"],
+                      ["Capacity", "6,000 MW", "2,500 MW"],
+                      ["Route length", "1,200 km", "600 km"],
+                      ["Route", "KPS-2 → Nagpur (MH)", "KPS-3 → South Olpad (GJ)"],
+                      ["Cost", "₹24,819 cr", "₹12,000 cr (est.)"],
+                      ["Tariff/yr", "₹40,829 M", "~₹23,000 M"],
+                      ["Awarded", "Nov 2024", "Dec 2025"],
+                      ["Full commissioning", "May 2029", "Dec 2029"],
+                      ["EPC terminals", "BHEL + Hitachi Energy", "GE Vernova T&D India"],
+                    ].map(([l, a, b]) => (
+                      <tr key={l} className="border-t border-gray-800">
+                        <td className="px-2 py-1.5 text-gray-500">{l}</td>
+                        <td className="px-2 py-1.5 text-purple-300">{a}</td>
+                        <td className="px-2 py-1.5 text-pink-300">{b}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ══════════════════════════════════════════════════════════════
+// GRID ARCHITECTURE DIAGRAM
+// ══════════════════════════════════════════════════════════════
+function GridArchitecture() {
+  // Per-PS allocated MW from BAY_DATA
+  const PS_ORDER = ["KPS-I","KPS-II","KPS-III","KPS-IV","KPS-V"];
+  const PS_C = { "KPS-I":"#22c55e","KPS-II":"#3b82f6","KPS-III":"#f59e0b","KPS-IV":"#f97316","KPS-V":"#8b5cf6" };
+  const PS_TSO = { "KPS-I":"AESL","KPS-II":"PGCIL","KPS-III":"PGCIL","KPS-IV":"AESL","KPS-V":"Planning" };
+  const psMW = PS_ORDER.map(ps => BAY_DATA.filter(b => b.ps === ps).reduce((s, b) => s + b.mw, 0));
+  const totalMW = psMW.reduce((s, v) => s + v, 0);
+
+  const W = 740, H = 500;
+
+  // Row y positions
+  const ROW = { gen: 26, vInj: 104, ps: 186, backbone: 272, export: 354, hvdc: 426 };
+  const ROW_H = { gen: 52, vInj: 52, ps: 68, backbone: 52, export: 68, hvdc: 50 };
+
+  // Generation tier boxes
+  const genBoxes = [
+    { x: 28,  w: 148, l: "Wind Generation",  s: "Adani Wind · Inox · Continuum", c: "#3b82f6" },
+    { x: 188, w: 148, l: "Solar Generation", s: "NTPC · GSECL · GIPCL",  c: "#10b981" },
+    { x: 348, w: 148, l: "Hybrid RE",        s: "Sprng · ACME · Azure · ReNew",   c: "#8b5cf6" },
+    { x: 508, w: 136, l: "BESS Storage",     s: "H.G. Banaskantha — 218 MW",      c: "#a855f7" },
+    { x: 656, w: 56,  l: "",                 s: "",                                c: "#374151" }, // spacer
+  ];
+
+  const vInjBoxes = [
+    { x: 28,  w: 208, l: "220 kV Injection", s: "Generator tie-lines at 220kV", c: "#06b6d4" },
+    { x: 248, w: 208, l: "400 kV Injection", s: `${(psMW.reduce((s,v)=>s+v,0)/1000).toFixed(1)} GW ISTS bays allocated`, c: "#f97316" },
+    { x: 468, w: 192, l: "BESS @ 220 kV",   s: "KPS-V Bay 5 — 218 MW", c: "#a855f7" },
+  ];
+
+  // PS box x positions — 5 evenly spaced
+  const psBoxW = 120, psBoxGap = (W - 28*2 - psBoxW*5) / 4;
+  const psX = PS_ORDER.map((_, i) => 28 + i * (psBoxW + psBoxGap));
+
+  return (
+    <div className="bg-gray-900 border border-gray-700 rounded-xl p-5">
+      <div className="flex items-baseline gap-3 mb-4">
+        <div className="text-sm font-bold text-white">Grid Architecture</div>
+        <div className="text-xs text-gray-500">Generation → Voltage Injection → Pooling Stations → 765 kV ISTS → National Grid & HVDC corridors</div>
+      </div>
+
+      <div className="overflow-x-auto">
+        <svg width={W} height={H} viewBox={`0 0 ${W} ${H}`} className="w-full">
+          <rect width={W} height={H} fill="#0f172a" rx="8" />
+
+          {/* ── ROW LABELS ── */}
+          {[
+            { y: ROW.gen,      l: "GENERATION" },
+            { y: ROW.vInj,     l: "VOLTAGE INJECTION" },
+            { y: ROW.ps,       l: "POOLING STATIONS" },
+            { y: ROW.backbone, l: "765 kV ISTS BACKBONE" },
+            { y: ROW.export,   l: "LOAD & EXPORT" },
+            { y: ROW.hvdc,     l: "HVDC CORRIDORS" },
+          ].map(r => (
+            <text key={r.l} x={6} y={r.y + 8} fill="#1e3a5f" fontSize="6" fontWeight="800" letterSpacing="1.2"
+              transform={`rotate(-90, 6, ${r.y + ROW_H[Object.keys(ROW)[Object.values(ROW).indexOf(r.y)]] / 2 + r.y})`}
+            >{r.l}</text>
+          ))}
+
+          {/* ── GENERATION ROW ── */}
+          {genBoxes.filter(b => b.l).map(b => (
+            <g key={b.l}>
+              <rect x={b.x} y={ROW.gen} width={b.w} height={ROW_H.gen} rx="6"
+                fill={b.c} fillOpacity="0.12" stroke={b.c} strokeWidth="1" strokeOpacity="0.6" />
+              <text x={b.x + b.w/2} y={ROW.gen + 18} fill="white" fontSize="9" fontWeight="700" textAnchor="middle">{b.l}</text>
+              <text x={b.x + b.w/2} y={ROW.gen + 34} fill="#9ca3af" fontSize="7.5" textAnchor="middle">{b.s}</text>
+            </g>
+          ))}
+
+          {/* Gen → vInj connectors */}
+          {[102, 262, 422, 576].map((x, i) => (
+            <line key={i} x1={x} y1={ROW.gen + ROW_H.gen} x2={x} y2={ROW.vInj}
+              stroke="#1e3a5f" strokeWidth="1" strokeDasharray="3,2" />
+          ))}
+
+          {/* ── VOLTAGE INJECTION ROW ── */}
+          {vInjBoxes.map(b => (
+            <g key={b.l}>
+              <rect x={b.x} y={ROW.vInj} width={b.w} height={ROW_H.vInj} rx="6"
+                fill={b.c} fillOpacity="0.12" stroke={b.c} strokeWidth="1" strokeOpacity="0.6" />
+              <text x={b.x + b.w/2} y={ROW.vInj + 18} fill="white" fontSize="9" fontWeight="700" textAnchor="middle">{b.l}</text>
+              <text x={b.x + b.w/2} y={ROW.vInj + 34} fill="#9ca3af" fontSize="7.5" textAnchor="middle">{b.s}</text>
+            </g>
+          ))}
+
+          {/* vInj → PS connectors */}
+          {psX.map((x, i) => (
+            <line key={i} x1={x + psBoxW/2} y1={ROW.vInj + ROW_H.vInj} x2={x + psBoxW/2} y2={ROW.ps}
+              stroke={PS_C[PS_ORDER[i]]} strokeWidth="1" strokeOpacity="0.35" strokeDasharray="3,2" />
+          ))}
+
+          {/* ── POOLING STATIONS ROW ── */}
+          {PS_ORDER.map((ps, i) => {
+            const x = psX[i], c = PS_C[ps], mw = psMW[i];
+            const isPlanned = ps === "KPS-V" || ps === "KPS-IV";
+            return (
+              <g key={ps}>
+                <rect x={x} y={ROW.ps} width={psBoxW} height={ROW_H.ps} rx="6"
+                  fill={c} fillOpacity="0.18" stroke={c} strokeWidth="1.5"
+                  strokeDasharray={isPlanned ? "5,3" : "none"} strokeOpacity={isPlanned ? 0.5 : 0.9} />
+                <text x={x + psBoxW/2} y={ROW.ps + 16} fill="white" fontSize="9.5" fontWeight="700" textAnchor="middle">{ps}</text>
+                <text x={x + psBoxW/2} y={ROW.ps + 31} fill={c} fontSize="11" fontWeight="900" textAnchor="middle">
+                  {(mw/1000).toFixed(1)} GW
+                </text>
+                <text x={x + psBoxW/2} y={ROW.ps + 45} fill="#6b7280" fontSize="7" textAnchor="middle">{PS_TSO[ps]} TSO</text>
+                {isPlanned && (
+                  <text x={x + psBoxW/2} y={ROW.ps + 57} fill={c} fontSize="6.5" textAnchor="middle" opacity="0.7">
+                    {ps === "KPS-IV" ? "SCOD Aug 2026" : "Planning"}
+                  </text>
+                )}
+              </g>
+            );
+          })}
+
+          {/* PS → backbone connectors */}
+          {PS_ORDER.map((ps, i) => (
+            <line key={ps} x1={psX[i] + psBoxW/2} y1={ROW.ps + ROW_H.ps}
+              x2={psX[i] + psBoxW/2} y2={ROW.backbone}
+              stroke={PS_C[ps]} strokeWidth="1.5" strokeOpacity="0.55" />
+          ))}
+
+          {/* ── 765 kV BACKBONE ── */}
+          <rect x={28} y={ROW.backbone} width={W - 56} height={ROW_H.backbone} rx="6"
+            fill="#fbbf24" fillOpacity="0.08" stroke="#fbbf24" strokeWidth="1.5" strokeOpacity="0.7" />
+          <text x={W/2} y={ROW.backbone + 20} fill="white" fontSize="10" fontWeight="700" textAnchor="middle">
+            765 kV ISTS Backbone — Western Region
+          </text>
+          <text x={W/2} y={ROW.backbone + 35} fill="#9ca3af" fontSize="7.5" textAnchor="middle">
+            KPS-1/2 (AESL) → Bhuj → Lakadia → Vadodara · KPS-3 (PGCIL) → Banaskantha → Ahmedabad → Navsari (Jan 2026)
+          </text>
+          <text x={W/2} y={ROW.backbone + 48} fill="#6b7280" fontSize="7" textAnchor="middle">
+            Phase IV: KPS-3 765kV Sec-B + South Olpad GIS → Boisar-II (SCOD Aug 2026)
+          </text>
+
+          {/* Backbone → Export connectors */}
+          <line x1={200} y1={ROW.backbone + ROW_H.backbone} x2={200} y2={ROW.export} stroke="#6b7280" strokeWidth="1" strokeDasharray="3,2" />
+          <line x1={530} y1={ROW.backbone + ROW_H.backbone} x2={530} y2={ROW.export} stroke="#f97316" strokeWidth="1.5" strokeDasharray="4,2" />
+          <line x1={psX[1] + psBoxW/2} y1={ROW.backbone + ROW_H.backbone} x2={psX[1] + psBoxW/2} y2={ROW.hvdc} stroke="#a78bfa" strokeWidth="2" strokeDasharray="6,3" />
+          <line x1={psX[2] + psBoxW/2} y1={ROW.backbone + ROW_H.backbone} x2={psX[2] + psBoxW/2} y2={ROW.hvdc} stroke="#a78bfa" strokeWidth="1.5" strokeDasharray="6,3" />
+
+          {/* ── EXPORT / LOAD ROW ── */}
+          <rect x={28} y={ROW.export} width={320} height={ROW_H.export} rx="6"
+            fill="#6b7280" fillOpacity="0.1" stroke="#6b7280" strokeWidth="1" />
+          <text x={188} y={ROW.export + 18} fill="white" fontSize="9.5" fontWeight="700" textAnchor="middle">National Grid / Load Centres</text>
+          <text x={188} y={ROW.export + 33} fill="#9ca3af" fontSize="7.5" textAnchor="middle">All-India via RLDC/WRLDC dispatch</text>
+          <text x={188} y={ROW.export + 48} fill="#6b7280" fontSize="7" textAnchor="middle">Gujarat · Rajasthan · Delhi · National pool</text>
+
+          <rect x={370} y={ROW.export} width={342} height={ROW_H.export} rx="6"
+            fill="#f97316" fillOpacity="0.1" stroke="#f97316" strokeWidth="1.5" />
+          <text x={541} y={ROW.export + 18} fill="#f97316" fontSize="9.5" fontWeight="700" textAnchor="middle">Maharashtra Offtake Corridor</text>
+          <text x={541} y={ROW.export + 33} fill="#e5e7eb" fontSize="7.5" textAnchor="middle">MSEDCL 5,000 MW PPA @ ₹2.70/kWh · 25-yr · Adani Green</text>
+          <text x={541} y={ROW.export + 48} fill="#9ca3af" fontSize="7" textAnchor="middle">Navsari → Padghe → Mumbai (400kV) · Pune (400kV)</text>
+
+          {/* ── HVDC ROW ── */}
+          <rect x={28} y={ROW.hvdc} width={330} height={ROW_H.hvdc} rx="6"
+            fill="#a78bfa" fillOpacity="0.1" stroke="#a78bfa" strokeWidth="1.5" strokeDasharray="6,3" />
+          <text x={193} y={ROW.hvdc + 16} fill="#a78bfa" fontSize="8.5" fontWeight="700" textAnchor="middle">
+            V-A: ±800kV HVDC LCC · KPS-2 → Nagpur · 6,000 MW
+          </text>
+          <text x={193} y={ROW.hvdc + 29} fill="#c4b5fd" fontSize="7.5" textAnchor="middle">PGCIL · ₹24,819 cr · Pole 1: Nov 2028 · Pole 2: May 2029</text>
+          <text x={193} y={ROW.hvdc + 41} fill="#6b7280" fontSize="7" textAnchor="middle">BHEL + Hitachi Energy terminals · KEC + Jyoti Structures lines</text>
+
+          <rect x={378} y={ROW.hvdc} width={334} height={ROW_H.hvdc} rx="6"
+            fill="#a78bfa" fillOpacity="0.07" stroke="#a78bfa" strokeWidth="1" strokeDasharray="6,3" />
+          <text x={545} y={ROW.hvdc + 16} fill="#a78bfa" fontSize="8.5" fontWeight="700" textAnchor="middle">
+            V-C: ±500kV HVDC VSC · KPS-3 → South Olpad · 2,500 MW
+          </text>
+          <text x={545} y={ROW.hvdc + 29} fill="#c4b5fd" fontSize="7.5" textAnchor="middle">AESL · ₹12,000 cr est. · GE Vernova terminals · SCOD Dec 2029</text>
+          <text x={545} y={ROW.hvdc + 41} fill="#6b7280" fontSize="7" textAnchor="middle">First VSC HVDC under TBCB · 600 km within Gujarat</text>
+
+          {/* ── TOTAL FOOTER ── */}
+          <text x={W/2} y={H - 6} fill="#374151" fontSize="8" fontWeight="600" textAnchor="middle">
+            CTUIL Bay Allocation Register (May 2025): {totalMW.toLocaleString()} MW allocated · 30 GW target by 2029
+          </text>
+        </svg>
+      </div>
+
+      {/* MH PPA detail strip */}
+      <div className="mt-3 grid grid-cols-4 gap-2 text-center">
+        {[
+          { l: "MH PPA Quantum", v: "5,000 MW solar" },
+          { l: "Tariff", v: "₹2.70/kWh · 25-yr" },
+          { l: "Route", v: "Navsari → Padghe → MH" },
+          { l: "HVDC Capacity", v: "8,500 MW (V-A + V-C)" },
+        ].map(x => (
+          <div key={x.l} className="bg-gray-800 rounded-lg px-3 py-2">
+            <div className="text-gray-500 text-xs mb-0.5">{x.l}</div>
+            <div className="text-gray-200 text-xs font-semibold">{x.v}</div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+
+
+// Schematic node positions — hand-placed, zero overlap
+const SCHEM = {
+  kps1:[90,230], kps2:[90,300], kps3:[90,148], kps4:[90,72], kps5:[90,375],
+  bhuj:[240,308], bhuj2:[240,222],
+  lak:[388,268], banas:[318,105],
+  ahm:[510,178], vad:[510,318],
+  jkh:[330,400],
+  nav:[638,242], padghe:[748,330], mumbai:[748,400], pune:[748,455],
+  nagpur:[748,170],
+};
+
+const MAP_NODES = {
+  kps1:  {id:"kps1",  label:"KPS-1", type:"kps", voltage:"765/400kV", tso:"AESL",    status:"commissioned",         phase:"I",   color:"#22c55e"},
+  kps2:  {id:"kps2",  label:"KPS-2", type:"kps", voltage:"765/400kV", tso:"PGCIL",   status:"commissioned",         phase:"I–III", color:"#3b82f6"},
+  kps3:  {id:"kps3",  label:"KPS-3", type:"kps", voltage:"765/400kV", tso:"PGCIL",   status:"commissioned Aug 2025", phase:"I",   color:"#f59e0b"},
+  kps4:  {id:"kps4",  label:"KPS-4", type:"kps", voltage:"765/400kV", tso:"AESL",    status:"planned — SCOD Aug 2026",phase:"IV", color:"#f97316"},
+  kps5:  {id:"kps5",  label:"KPS-5", type:"kps", voltage:"765/400kV", tso:"Planning", status:"planned",              phase:"V",  color:"#8b5cf6"},
+  bhuj:  {id:"bhuj",  label:"Bhuj PS",type:"hub",voltage:"765/400kV", tso:"AESL/PGCIL",status:"commissioned",       phase:"I",   color:"#10b981"},
+  bhuj2: {id:"bhuj2", label:"Bhuj-II",type:"hub",voltage:"765/400kV", tso:"PGCIL",   status:"commissioned",         phase:"I",   color:"#10b981"},
+  lak:   {id:"lak",   label:"Lakadia",type:"hub",voltage:"765/400kV", tso:"AESL",    status:"commissioned",         phase:"II",  color:"#10b981"},
+  banas: {id:"banas", label:"Banaskantha",type:"hub",voltage:"400kV GIS",tso:"PGCIL",status:"commissioned",         phase:"III", color:"#10b981"},
+  ahm:   {id:"ahm",   label:"Ahmedabad",type:"hub",voltage:"765/400kV",tso:"PGCIL",  status:"commissioned Mar 2025", phase:"II", color:"#10b981"},
+  vad:   {id:"vad",   label:"Vadodara", type:"hub",voltage:"765/400kV",tso:"PGCIL",  status:"commissioned",         phase:"I",   color:"#10b981"},
+  nav:   {id:"nav",   label:"Navsari",  type:"hub",voltage:"765/400kV",tso:"PGCIL",  status:"commissioned Jan 2026", phase:"II", color:"#10b981"},
+  jkh:   {id:"jkh",   label:"Jam Khambhaliya",type:"hub",voltage:"400kV",tso:"PGCIL",status:"commissioned",        phase:"—",   color:"#10b981"},
+  padghe:{id:"padghe",label:"Padghe",  type:"load",voltage:"765/400kV",tso:"MSETCL", status:"operational",          phase:"II",  color:"#ef4444"},
+  mumbai:{id:"mumbai",label:"Mumbai",  type:"load",voltage:"400kV",    tso:"MSETCL", status:"operational",          phase:"—",   color:"#ef4444"},
+  pune:  {id:"pune",  label:"Pune",    type:"load",voltage:"400kV",    tso:"MSETCL", status:"operational",          phase:"—",   color:"#ef4444"},
+  nagpur:{id:"nagpur",label:"Nagpur",  type:"load",voltage:"765/400kV",tso:"PGCIL",  status:"HVDC terminal — Nov 2028",phase:"V",color:"#a78bfa"},
+};
+
+const MAP_LINES = [
+  {id:"kps1-kps2",   from:"kps1",  to:"kps2",   kv:765, ckm:5,   tso:"AESL",        status:"commissioned", phase:"Phase I",       label:"KPS-1/2 765kV D/C"},
+  {id:"kps2-bhuj",   from:"kps2",  to:"bhuj",   kv:765, ckm:217, tso:"AESL",        status:"commissioned", phase:"Phase I",       label:"KPS-2 → Bhuj 765kV D/C 217 ckm"},
+  {id:"kps1-bhuj2",  from:"kps1",  to:"bhuj2",  kv:765, ckm:30,  tso:"AESL",        status:"commissioned", phase:"Phase I",       label:"KPS-1 → Bhuj-II 765kV LILO 30 ckm"},
+  {id:"lak-bhuj",    from:"lak",   to:"bhuj",   kv:765, ckm:85,  tso:"AESL",        status:"commissioned", phase:"Phase I",       label:"Lakadia–Bhuj 765kV D/C 85 ckm"},
+  {id:"lak-vad",     from:"lak",   to:"vad",    kv:765, ckm:180, tso:"PGCIL",       status:"commissioned", phase:"Phase I",       label:"Lakadia–Vadodara 765kV D/C 180 ckm"},
+  {id:"kps2-lak",    from:"kps2",  to:"lak",    kv:765, ckm:355, tso:"AESL",        status:"commissioned", phase:"Phase II-A",    label:"KPS-2 → Lakadia 765kV D/C 355 ckm"},
+  {id:"kps3-banas",  from:"kps3",  to:"banas",  kv:400, ckm:30,  tso:"PGCIL",       status:"commissioned", phase:"Phase III",     label:"KPS-3 → Banaskantha 400kV 30 ckm"},
+  {id:"banas-ahm",   from:"banas", to:"ahm",    kv:765, ckm:270, tso:"PGCIL",       status:"commissioned", phase:"Phase III",     label:"Banaskantha → Ahmedabad 765kV D/C 270 ckm"},
+  {id:"ahm-nav",     from:"ahm",   to:"nav",    kv:765, ckm:590, tso:"PGCIL",       status:"commissioned", phase:"Phase II-C",    label:"Ahmedabad → Navsari 765kV D/C 590 ckm"},
+  {id:"ahm-vad",     from:"ahm",   to:"vad",    kv:765, ckm:100, tso:"PGCIL",       status:"commissioned", phase:"Existing",      label:"Ahmedabad–Vadodara 765kV"},
+  {id:"nav-padghe",  from:"nav",   to:"padghe", kv:765, ckm:145, tso:"PGCIL",       status:"commissioned", phase:"Phase II-C",    label:"Navsari → Padghe 765kV D/C 145 ckm"},
+  {id:"padghe-mum",  from:"padghe",to:"mumbai", kv:400, ckm:70,  tso:"MSETCL",      status:"operational",  phase:"Existing",      label:"Padghe → Mumbai 400kV 70 ckm"},
+  {id:"padghe-pune", from:"padghe",to:"pune",   kv:400, ckm:90,  tso:"MSETCL",      status:"operational",  phase:"Existing",      label:"Padghe → Pune 400kV 90 ckm"},
+  {id:"bhuj-jkh",    from:"bhuj",  to:"jkh",    kv:765, ckm:80,  tso:"PGCIL",       status:"commissioned", phase:"Existing",      label:"Bhuj → Jam Khambhaliya 765kV 80 ckm"},
+  {id:"jkh-lak",     from:"jkh",   to:"lak",    kv:400, ckm:95,  tso:"PGCIL",       status:"commissioned", phase:"Existing",      label:"Jam Khambhaliya → Lakadia 400kV 95 ckm"},
+  {id:"kps4-banas",  from:"kps4",  to:"banas",  kv:400, ckm:10,  tso:"PGCIL",       status:"planned",      phase:"Phase IV",      label:"KPS-4 → Banaskantha 400kV (planned)"},
+  {id:"kps5-kps4",   from:"kps5",  to:"kps4",   kv:400, ckm:8,   tso:"PGCIL",       status:"planned",      phase:"Phase IV",      label:"KPS-5 → KPS-4 400kV (planned)"},
+  // HVDC lines (special)
+  {id:"kps2-nagpur-hvdc", from:"kps2", to:"nagpur", kv:800, ckm:2412, tso:"PGCIL", status:"hvdc",         phase:"Phase V-A",     label:"KPS-2 → Nagpur ±800kV HVDC LCC 1,200 km — Nov 2028"},
+];
+
+const LINE_COLOR = { 765:"#fbbf24", 400:"#f97316", 220:"#06b6d4", 800:"#a78bfa" };
+const LINE_DASH  = { "commissioned":"none", "planned":"8,5", "operational":"none", "hvdc":"12,6" };
+const LINE_OPACITY = { "commissioned":1, "planned":0.4, "operational":0.7, "hvdc":0.85 };
+
+// SIM milestones
+const SIM_MILESTONES = [
+  { idx:0, label:"Pre-2025",  gw:0,  activeLines:[], note:"No ISTS evacuation online. Planning phase only." },
+  { idx:1, label:"Mar 2025",  gw:8,  activeLines:["kps1-kps2","kps2-bhuj","kps1-bhuj2","lak-bhuj","lak-vad","kps2-lak","bhuj-jkh","jkh-lak"], note:"Phases I & II-A commissioned. Western corridor via Bhuj → Lakadia → Vadodara active." },
+  { idx:2, label:"Aug 2025",  gw:14, activeLines:["kps1-kps2","kps2-bhuj","kps1-bhuj2","lak-bhuj","lak-vad","kps2-lak","bhuj-jkh","jkh-lak","kps3-banas","banas-ahm","ahm-vad"], note:"KPS-3 commissioned (Aug 2025). Banaskantha–Ahmedabad corridor live (Jul 2025). Northern Gujarat backbone active." },
+  { idx:3, label:"Jan 2026",  gw:18, activeLines:["kps1-kps2","kps2-bhuj","kps1-bhuj2","lak-bhuj","lak-vad","kps2-lak","bhuj-jkh","jkh-lak","kps3-banas","banas-ahm","ahm-vad","ahm-nav","nav-padghe","padghe-mum","padghe-pune"], note:"Ahmedabad → Navsari 765kV D/C commissioned Jan 2026. Full MH export corridor live — Khavda to Mumbai/Pune." },
+  { idx:4, label:"Aug 2026",  gw:22, activeLines:["kps1-kps2","kps2-bhuj","kps1-bhuj2","lak-bhuj","lak-vad","kps2-lak","bhuj-jkh","jkh-lak","kps3-banas","banas-ahm","ahm-vad","ahm-nav","nav-padghe","padghe-mum","padghe-pune","kps4-banas","kps5-kps4"], note:"Phase IV SCOD targets. KPS-4/5 and Banaskantha expansion active. Eastern cluster opens." },
+  { idx:5, label:"Nov 2028",  gw:26, activeLines:["kps1-kps2","kps2-bhuj","kps1-bhuj2","lak-bhuj","lak-vad","kps2-lak","bhuj-jkh","jkh-lak","kps3-banas","banas-ahm","ahm-vad","ahm-nav","nav-padghe","padghe-mum","padghe-pune","kps4-banas","kps5-kps4","kps2-nagpur-hvdc"], note:"HVDC V-A Pole 1 online. KPS-2 → Nagpur ±800kV LCC corridor carries 3,000 MW directly to Central India." },
+  { idx:6, label:"Full 30 GW",gw:30, activeLines:["kps1-kps2","kps2-bhuj","kps1-bhuj2","lak-bhuj","lak-vad","kps2-lak","bhuj-jkh","jkh-lak","kps3-banas","banas-ahm","ahm-vad","ahm-nav","nav-padghe","padghe-mum","padghe-pune","kps4-banas","kps5-kps4","kps2-nagpur-hvdc"], note:"Full 30 GW commissioned. HVDC V-A Pole 2 (May 2029) + HVDC V-C (Dec 2029) add bulk DC capacity." },
+];
+
+const SW = 820, SH = 500;
+
+function NetworkMapFlow() {
+  const [milestoneIdx, setMilestoneIdx] = useState(3);
+  const [hovLine, setHovLine] = useState(null);
+  const [hovNode, setHovNode] = useState(null);
+  const [selNode, setSelNode] = useState(null);
+  const [tick, setTick] = useState(0);
+  const [playing, setPlaying] = useState(true);
+
+  const milestone = SIM_MILESTONES[milestoneIdx];
+  const activeSet = new Set(milestone.activeLines);
+
+  useEffect(() => {
+    if (!playing) return;
+    let fid, last = 0;
+    const loop = ts => {
+      if (ts - last > 55) { setTick(t => (t + 1) % 800); last = ts; }
+      fid = requestAnimationFrame(loop);
+    };
+    fid = requestAnimationFrame(loop);
+    return () => cancelAnimationFrame(fid);
+  }, [playing]);
+
+  // Animated dash offset — faster for more loaded lines
+  function flowAnim(lineId, i) {
+    const speed = lineId.includes("hvdc") ? 3.5 : lineId.includes("kps") ? 2.5 : 1.8;
+    const offset = -((tick * speed + i * 22) % 44);
+    return { strokeDasharray: "22 22", strokeDashoffset: offset };
+  }
+
+  const routeLines = (from, to) => {
+    const [x1, y1] = SCHEM[from] || [0, 0];
+    const [x2, y2] = SCHEM[to] || [0, 0];
+    const mx = (x1 + x2) / 2;
+    return `M${x1},${y1}L${mx},${y1}L${mx},${y2}L${x2},${y2}`;
+  };
+
+  const selNodeData = selNode ? MAP_NODES[selNode] : null;
+
+  return (
+    <div className="space-y-4">
+      {/* Timeline scrubber */}
+      <div className="bg-gray-800 border border-gray-700 rounded-xl p-4">
+        <div className="flex items-center gap-4 mb-3">
+          <div className="flex-1">
+            <div className="flex justify-between text-xs text-gray-500 mb-1">
+              {SIM_MILESTONES.map((m, i) => (
+                <button key={i} onClick={() => setMilestoneIdx(i)}
+                  className="text-center transition-colors px-1"
+                  style={{ color: i === milestoneIdx ? "#fbbf24" : "#4b5563" }}>
+                  {m.label}
+                </button>
+              ))}
+            </div>
+            <input type="range" min={0} max={SIM_MILESTONES.length - 1} step={1} value={milestoneIdx}
+              onChange={e => setMilestoneIdx(+e.target.value)}
+              className="w-full accent-yellow-400" />
+          </div>
+          <button onClick={() => setPlaying(p => !p)}
+            className={`px-3 py-1.5 rounded text-xs font-bold border transition-colors shrink-0 ${playing ? "bg-yellow-500 border-yellow-400 text-gray-900" : "bg-gray-700 border-gray-600 text-gray-300"}`}>
+            {playing ? "⏸ Pause" : "▶ Play"}
+          </button>
+        </div>
+        <div className="flex items-start gap-4">
+          <div className="flex items-baseline gap-2">
+            <span className="text-3xl font-black text-yellow-400">{milestone.gw}</span>
+            <span className="text-sm text-gray-400">GW dispatching</span>
+          </div>
+          <div className="text-sm text-gray-400 leading-relaxed">{milestone.note}</div>
+          <div className="ml-auto flex gap-2 shrink-0">
+            <button onClick={() => setMilestoneIdx(i => Math.max(0, i - 1))} disabled={milestoneIdx === 0}
+              className="bg-gray-700 hover:bg-gray-600 disabled:opacity-30 text-white px-2.5 py-1 rounded text-xs">Prev</button>
+            <button onClick={() => setMilestoneIdx(i => Math.min(SIM_MILESTONES.length - 1, i + 1))} disabled={milestoneIdx === SIM_MILESTONES.length - 1}
+              className="bg-gray-700 hover:bg-gray-600 disabled:opacity-30 text-white px-2.5 py-1 rounded text-xs">Next</button>
+          </div>
+        </div>
+      </div>
+
       <div className="flex gap-4">
-        <div className="flex-1 relative rounded-xl overflow-hidden border border-gray-700 bg-gray-950" style={{height:SIM_H}}>
-          <svg width="100%" height="100%" viewBox={`0 0 ${SIM_W} ${SIM_H}`} style={{display:"block"}}>
-            <rect width={SIM_W} height={SIM_H} fill="#07111f"/>
+        {/* SVG schematic */}
+        <div className="flex-1 rounded-xl overflow-hidden border border-gray-700 bg-gray-950 relative" style={{ height: SH }}>
+          <svg width="100%" height="100%" viewBox={`0 0 ${SW} ${SH}`} style={{ display: "block" }}>
+            <rect width={SW} height={SH} fill="#07111f" />
 
             {/* Zone bands */}
             {[
-              {x:28, w:108,label:"Generation",   sub:"Wind  Solar  Hybrid",color:"#10b981"},
-              {x:144,w:118,label:"KPS Cluster",  sub:"Pooling Stations 1-5",color:"#3b82f6"},
-              {x:270,w:210,label:"Backbone",     sub:"765 kV HVAC",color:"#fbbf24"},
-              {x:488,w:162,label:"Gujarat Grid", sub:"Ahm  Vadodara",color:"#fbbf24"},
-              {x:658,w:152,label:"Load / Export",sub:"MH  WR Grid",color:"#f97316"},
-            ].map((z,i)=>(
+              { x: 30,  w: 115, label: "KPS Cluster",     sub: "5 Pooling Stations", c: "#3b82f6" },
+              { x: 153, w: 245, label: "Gujarat Backbone", sub: "765/400 kV HVAC",   c: "#fbbf24" },
+              { x: 406, w: 220, label: "Gujarat Grid",     sub: "Ahm · Vadodara",     c: "#fbbf24" },
+              { x: 634, w: 178, label: "Load / HVDC",      sub: "MH · Nagpur · Grid", c: "#f97316" },
+            ].map((z, i) => (
               <g key={i}>
-                <rect x={z.x} y={26} width={z.w} height={SIM_H-52} rx="6"
-                  fill={z.color} fillOpacity="0.025" stroke={z.color} strokeWidth="0.5" strokeOpacity="0.18"/>
-                <text x={z.x+z.w/2} y={43} fill={z.color} fontSize="8" fontWeight="700" textAnchor="middle" opacity="0.6">{z.label}</text>
-                <text x={z.x+z.w/2} y={54} fill="#2d3748" fontSize="6.5" textAnchor="middle">{z.sub}</text>
+                <rect x={z.x} y={22} width={z.w} height={SH - 44} rx="6"
+                  fill={z.c} fillOpacity="0.025" stroke={z.c} strokeWidth="0.5" strokeOpacity="0.2" />
+                <text x={z.x + z.w / 2} y={39} fill={z.c} fontSize="8" fontWeight="700" textAnchor="middle" opacity="0.55">{z.label}</text>
+                <text x={z.x + z.w / 2} y={50} fill="#1e293b" fontSize="6.5" textAnchor="middle">{z.sub}</text>
               </g>
             ))}
 
-            {/* Base topology lines (dim) */}
-            {MAP_LINES.map(line=>{
-              const p1=SIM_SCHEMA[line.from],p2=SIM_SCHEMA[line.to];
-              if(!p1||!p2)return null;
-              const[x1,y1]=p1,[x2,y2]=p2;
-              const mx=(x1+x2)/2;
-              return(
-                <path key={line.id+"b"}
-                  d={`M${x1},${y1}L${mx},${y1}L${mx},${y2}L${x2},${y2}`}
-                  fill="none" stroke="#1a2535" strokeWidth="1.5" strokeLinejoin="round"/>
+            {/* Base (dim) lines */}
+            {MAP_LINES.map(line => {
+              if (!SCHEM[line.from] || !SCHEM[line.to]) return null;
+              return (
+                <path key={line.id + "_base"} d={routeLines(line.from, line.to)}
+                  fill="none" stroke="#111827" strokeWidth={line.kv === 800 ? 3 : line.kv === 765 ? 2 : 1.5}
+                  strokeLinejoin="round" />
               );
             })}
 
-            {/* Gen feeder lines */}
-            {GEN_NODES.map((gn,gi)=>{
-              const[gx,gy]=SIM_SCHEMA[gn.id]||[0,0];
-              return["kps1","kps2","kps3"].map((kid,ki)=>{
-                const[kx,ky]=SIM_SCHEMA[kid]||[0,0];
-                const mw=Math.round(dispatchMW*gn.mwFraction/3);
-                const fd=flowDash(mw,gi*3+ki+30);
-                return(
-                  <g key={gn.id+kid}>
-                    <line x1={gx} y1={gy} x2={kx} y2={ky} stroke={gn.color} strokeWidth="1" opacity="0.18"/>
-                    <line x1={gx} y1={gy} x2={kx} y2={ky} stroke={gn.color} strokeWidth="1"
-                      strokeDasharray={fd.strokeDasharray} strokeDashoffset={fd.strokeDashoffset} opacity="0.55"/>
-                  </g>
-                );
-              });
-            })}
-
-            {/* Animated flow lines */}
-            {MAP_LINES.map((line,li)=>{
-              const p1=SIM_SCHEMA[line.from],p2=SIM_SCHEMA[line.to];
-              if(!p1||!p2)return null;
-              const key=[line.from,line.to].sort().join("--");
-              const mw=lineMW[key]||0;
-              if(mw<=0)return null;
-              const[x1,y1]=p1,[x2,y2]=p2;
-              const mx=(x1+x2)/2;
-              const d=`M${x1},${y1}L${mx},${y1}L${mx},${y2}L${x2},${y2}`;
-              const st=simLineStyle(mw);
-              const fd=flowDash(mw,li);
-              const isHighlit=activeSegKeys.has(key);
-              const dimmed=selCorrId&&!isHighlit;
-              return(
-                <g key={line.id+"f"} opacity={dimmed?0.15:1}>
-                  <path d={d} fill="none" stroke={st.color} strokeWidth={st.width+8} opacity="0.07" strokeLinejoin="round"/>
-                  <path d={d} fill="none" stroke={st.color} strokeWidth={st.width} opacity={st.opacity} strokeLinejoin="round"/>
-                  <path d={d} fill="none" stroke="white" strokeWidth={st.width*0.35}
-                    strokeDasharray={fd.strokeDasharray} strokeDashoffset={fd.strokeDashoffset}
-                    opacity="0.38" strokeLinejoin="round"/>
-                  {!dimmed&&(
-                    <text x={(x1+x2)/2} y={Math.min(y1,y2)-5} fill={st.color} fontSize="7.5" fontWeight="700" textAnchor="middle">
-                      {mw>=1000?`${(mw/1000).toFixed(1)}GW`:`${mw}MW`}
-                    </text>
+            {/* Active animated lines */}
+            {MAP_LINES.map((line, li) => {
+              if (!SCHEM[line.from] || !SCHEM[line.to]) return null;
+              const isActive = activeSet.has(line.id);
+              const isHov = hovLine === line.id;
+              const color = LINE_COLOR[line.kv] || "#6b7280";
+              const isHVDC = line.kv === 800;
+              const w = isHVDC ? 4 : line.kv === 765 ? 2.8 : 1.8;
+              const d = routeLines(line.from, line.to);
+              if (!isActive && !isHov) return null;
+              const anim = flowAnim(line.id, li);
+              return (
+                <g key={line.id + "_active"}>
+                  {/* Glow */}
+                  <path d={d} fill="none" stroke={color} strokeWidth={w + 8} opacity="0.08" strokeLinejoin="round" />
+                  {/* Solid line */}
+                  <path d={d} fill="none" stroke={color} strokeWidth={w} opacity={isHVDC ? 0.9 : 0.85} strokeLinejoin="round" />
+                  {/* Animated flow dashes */}
+                  <path d={d} fill="none" stroke="white" strokeWidth={isHVDC ? 2 : 1.2}
+                    strokeDasharray={anim.strokeDasharray} strokeDashoffset={anim.strokeDashoffset}
+                    opacity={isHVDC ? 0.55 : 0.3} strokeLinejoin="round" />
+                  {/* ckm label on hover */}
+                  {isHov && (
+                    <text
+                      x={((SCHEM[line.from][0] + SCHEM[line.to][0]) / 2) + 6}
+                      y={((SCHEM[line.from][1] + SCHEM[line.to][1]) / 2) - 6}
+                      fill={color} fontSize="8" fontWeight="700">{line.ckm} ckm</text>
                   )}
                 </g>
               );
             })}
 
-            {/* Generation nodes */}
-            {GEN_NODES.map(gn=>{
-              const[x,y]=SIM_SCHEMA[gn.id]||[0,0];
-              const mw=Math.round(dispatchMW*gn.mwFraction);
-              const pulse=7+Math.sin(tick*0.18+GEN_NODES.indexOf(gn)*1.2)*2;
-              return(
-                <g key={gn.id}>
-                  <circle cx={x} cy={y} r={pulse+8} fill={gn.color} opacity="0.06"/>
-                  <circle cx={x} cy={y} r={pulse} fill={gn.color} opacity="0.18" stroke={gn.color} strokeWidth="1.2"/>
-                  <text x={x} y={y+3.5} fill="white" fontSize="7" fontWeight="700" textAnchor="middle">{gn.label}</text>
-                  <text x={x} y={y-pulse-6} fill={gn.color} fontSize="7.5" fontWeight="700" textAnchor="middle">{(mw/1000).toFixed(1)} GW</text>
+            {/* Invisible hit zones for lines */}
+            {MAP_LINES.map(line => {
+              if (!SCHEM[line.from] || !SCHEM[line.to]) return null;
+              return (
+                <path key={line.id + "_hit"} d={routeLines(line.from, line.to)}
+                  fill="none" stroke="transparent" strokeWidth={14} style={{ cursor: "pointer" }}
+                  onMouseEnter={() => setHovLine(line.id)} onMouseLeave={() => setHovLine(null)} />
+              );
+            })}
+
+            {/* Nodes */}
+            {Object.values(MAP_NODES).map(node => {
+              const sp = SCHEM[node.id];
+              if (!sp) return null;
+              const [x, y] = sp;
+              const isKps = node.type === "kps";
+              const isLoad = node.type === "load";
+              const isHov = hovNode === node.id;
+              const isSel = selNode === node.id;
+              const r = isKps ? 13 : isLoad ? 9 : 7.5;
+              const nodeActive = isKps
+                ? MAP_LINES.some(l => activeSet.has(l.id) && (l.from === node.id || l.to === node.id))
+                : activeSet.size > 0;
+              const c = nodeActive ? node.color : "#374151";
+              const isPlanned = node.status.includes("planned") || node.status.includes("SCOD");
+
+              return (
+                <g key={node.id} style={{ cursor: "pointer" }}
+                  onMouseEnter={() => setHovNode(node.id)} onMouseLeave={() => setHovNode(null)}
+                  onClick={() => setSelNode(selNode === node.id ? null : node.id)}>
+                  {(isHov || isSel) && <circle cx={x} cy={y} r={r + 14} fill={c} opacity="0.07" />}
+                  {isKps ? (
+                    <rect x={x - r} y={y - r} width={r * 2} height={r * 2} rx="3"
+                      fill={c} opacity={nodeActive ? 0.25 : 0.07}
+                      stroke={isSel ? "white" : c} strokeWidth={isSel ? 2 : 1.5}
+                      strokeDasharray={isPlanned ? "5,3" : "none"} />
+                  ) : (
+                    <circle cx={x} cy={y} r={r} fill={c} opacity={nodeActive ? 0.25 : 0.07}
+                      stroke={isSel ? "white" : c} strokeWidth={isSel ? 2 : 1.2}
+                      strokeDasharray={isPlanned ? "4,2" : "none"} />
+                  )}
+                  {isKps && <text x={x} y={y + 4.5} fill="white" fontSize="8.5" fontWeight="800" textAnchor="middle">{node.label.replace("KPS-", "")}</text>}
+                  <text x={x} y={y - r - 6}
+                    fill={isKps ? node.color : isLoad ? "#fca5a5" : "#6ee7b7"}
+                    fontSize={isKps ? "9" : "7.5"} fontWeight={isKps ? "700" : "500"} textAnchor="middle">
+                    {node.label}
+                  </text>
+                  {isLoad && <text x={x} y={y + r + 11} fill={c} fontSize="7" textAnchor="middle">{node.tso}</text>}
                 </g>
               );
             })}
 
-            {/* Transmission nodes */}
-            {Object.values(MAP_NODES).map(node=>{
-              const sp=SIM_SCHEMA[node.id];
-              if(!sp)return null;
-              const[x,y]=sp;
-              const mw=nodeMW[node.id]||0;
-              const glow=nodeGlow(node.id);
-              const isKps=node.type==="kps";
-              const isLoad=node.type==="load";
-              const r=isKps?12:isLoad?8:7;
-              const baseColor=NODE_COLORS[node.type];
-              const isHov=hovNode===node.id;
-              const isPlanned=node.status==="planned";
-              return(
-                <g key={node.id} onMouseEnter={()=>setHovNode(node.id)} onMouseLeave={()=>setHovNode(null)} style={{cursor:"default"}}>
-                  {mw>0&&<circle cx={x} cy={y} r={r+10} fill={glow} opacity={0.09+(mw/35000)*0.18}/>}
-                  {isKps?(
-                    <rect x={x-r} y={y-r} width={r*2} height={r*2} rx="3"
-                      fill={baseColor} opacity={mw>0?0.3:0.1}
-                      stroke={mw>0?glow:isPlanned?"#4b5563":baseColor}
-                      strokeWidth={mw>0?2:1.5}
-                      strokeDasharray={isPlanned?"5,3":"none"}/>
-                  ):(
-                    <circle cx={x} cy={y} r={r} fill={baseColor} opacity={mw>0?0.3:0.1}
-                      stroke={mw>0?glow:isPlanned?"#4b5563":baseColor}
-                      strokeWidth={mw>0?2:1.5}
-                      strokeDasharray={isPlanned?"4,2":"none"}/>
-                  )}
-                  {isKps&&<text x={x} y={y+4} fill="white" fontSize="8" fontWeight="800" textAnchor="middle">{node.label.replace("KPS-","")}</text>}
-                  <text x={x} y={y-r-6} fill={isKps?"#93c5fd":isLoad?"#fca5a5":"#a7f3d0"} fontSize={isKps?"9":"7.5"} fontWeight={isKps?"700":"500"} textAnchor="middle">{node.label}</text>
-                  {mw>0&&(
-                    <text x={x} y={y+r+11} fill={glow} fontSize="7.5" fontWeight="700" textAnchor="middle">
-                      {mw>=1000?`${(mw/1000).toFixed(1)} GW`:`${mw} MW`}
-                    </text>
-                  )}
-                  {isHov&&<NodeTooltip node={node} x={x} y={y} mw={mw} glow={glow}/>}
-                </g>
-              );
-            })}
-
-            {/* Line loading legend */}
-            <g transform={`translate(10,${SIM_H-68})`}>
-              <rect x={0} y={0} width={148} height={60} rx="4" fill="#07111f" stroke="#1e293b" strokeWidth="1" opacity="0.95"/>
-              <text x={8} y={13} fill="#374151" fontSize="7" fontWeight="700" letterSpacing="1">LINE LOADING</text>
-              {[{l:"No flow",c:"#1e293b",w:1.5},{l:"< 1 GW",c:"#06b6d4",w:2.5},{l:"1-3 GW",c:"#f97316",w:4},{l:"> 3 GW",c:"#fbbf24",w:6}].map((item,i)=>(
-                <g key={item.l} transform={`translate(8,${20+i*11})`}>
-                  <line x1={0} y1={3} x2={24} y2={3} stroke={item.c} strokeWidth={item.w} strokeLinecap="round"/>
-                  <text x={30} y={7} fill="#9ca3af" fontSize="7">{item.l}</text>
+            {/* Line legend bottom-left */}
+            <g transform={`translate(14,${SH - 80})`}>
+              <rect x={0} y={0} width={170} height={72} rx="4" fill="#07111f" stroke="#1e293b" strokeWidth="1" opacity="0.97" />
+              <text x={8} y={13} fill="#374151" fontSize="7" fontWeight="700" letterSpacing="1">LINE TYPE</text>
+              {[
+                { c: "#fbbf24", l: "765 kV ISTS (commissioned)", w: 2.5, d: "none" },
+                { c: "#f97316", l: "400 kV (commissioned)", w: 1.8, d: "none" },
+                { c: "#6b7280", l: "Planned line", w: 2, d: "6,3" },
+                { c: "#a78bfa", l: "±800 kV HVDC V-A", w: 4, d: "10,5" },
+              ].map((l, i) => (
+                <g key={l.l} transform={`translate(8,${20 + i * 13})`}>
+                  <line x1={0} y1={3} x2={22} y2={3} stroke={l.c} strokeWidth={l.w} strokeDasharray={l.d} strokeLinecap="round" />
+                  <text x={28} y={7} fill="#9ca3af" fontSize="7">{l.l}</text>
                 </g>
               ))}
             </g>
-
-            <text x={SIM_W/2} y={SIM_H-6} fill="#1e293b" fontSize="8" textAnchor="middle">
-              Schematic layout  Dispatch: {dispatchGW} GW  CTUIL Aug 2025
-            </text>
           </svg>
+
+          {/* Node tooltip */}
+          {selNodeData && (
+            <div className="absolute top-14 right-3 bg-gray-900 border border-gray-700 rounded-xl p-4 shadow-2xl z-20" style={{ width: 240, maxHeight: 320, overflowY: "auto" }}>
+              <div className="flex justify-between items-start mb-2">
+                <div className="font-bold text-white text-sm">{selNodeData.label}</div>
+                <button onClick={() => setSelNode(null)} className="text-gray-500 hover:text-white text-sm ml-2">✕</button>
+              </div>
+              {[
+                { k: "Type", v: selNodeData.type === "kps" ? "Pooling Station" : selNodeData.type === "load" ? "Load / Export" : "Intermediate Hub" },
+                { k: "Voltage", v: selNodeData.voltage },
+                { k: "TSO", v: selNodeData.tso },
+                { k: "Status", v: selNodeData.status },
+                { k: "Phase", v: selNodeData.phase },
+              ].map(({ k, v }) => (
+                <div key={k} className="flex gap-2 text-xs mb-1">
+                  <span className="text-gray-500 w-14 shrink-0">{k}</span>
+                  <span className={v.includes("commission") || v === "operational" ? "text-green-400" : v.includes("planned") || v.includes("SCOD") ? "text-yellow-400" : v.includes("HVDC") ? "text-purple-400" : "text-gray-300"}>{v}</span>
+                </div>
+              ))}
+              {/* Connected lines for this node */}
+              <div className="mt-2 pt-2 border-t border-gray-800">
+                <div className="text-xs text-gray-500 mb-1">Connected lines</div>
+                {MAP_LINES.filter(l => l.from === selNode || l.to === selNode).map(l => (
+                  <div key={l.id} className="flex items-center gap-1.5 text-xs py-0.5">
+                    <div className="w-2 h-2 rounded-sm shrink-0" style={{ background: LINE_COLOR[l.kv] || "#6b7280" }} />
+                    <span className="text-gray-400 truncate">{l.label}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Line hover tooltip */}
+          {hovLine && !selNode && (() => {
+            const l = MAP_LINES.find(x => x.id === hovLine);
+            if (!l) return null;
+            return (
+              <div className="absolute bottom-4 left-3 bg-gray-900 border rounded-lg px-3 py-2 text-xs shadow-xl pointer-events-none z-20"
+                style={{ borderColor: LINE_COLOR[l.kv] || "#374151" }}>
+                <div className="font-semibold text-white mb-0.5">{l.label}</div>
+                <div className="flex gap-4 text-gray-400">
+                  <span>TSO: <span className="text-gray-200">{l.tso}</span></span>
+                  <span>{l.ckm} ckm</span>
+                  <span className="text-gray-500">{l.phase}</span>
+                </div>
+                <div className={`mt-0.5 font-medium ${activeSet.has(l.id) ? "text-green-400" : "text-gray-600"}`}>
+                  {activeSet.has(l.id) ? "● Active at this milestone" : "○ Not yet commissioned"}
+                </div>
+              </div>
+            );
+          })()}
+
+          <div className="absolute top-3 right-3 text-xs text-gray-700 pointer-events-none">Click node for details · hover line for info</div>
         </div>
 
-        {/* Right panel */}
-        <div className="w-52 flex flex-col gap-3 shrink-0">
-          <div className="bg-gray-800 border border-gray-700 rounded-xl p-4">
-            <div className="text-xs text-gray-500 uppercase tracking-wider mb-3">Corridor Loading</div>
-            {CORRIDORS.map(c=>{
-              const mw=corridorMW[c.id]||0;
-              const pct=c.maxGW>0?Math.min(100,(mw/1000)/c.maxGW*100):0;
-              const isActive=activeCorridors[c.id];
-              return(
-                <div key={c.id} className="mb-3 last:mb-0">
-                  <div className="flex justify-between text-xs mb-1">
-                    <button onClick={()=>setSelCorrId(selCorrId===c.id?null:c.id)}
-                      className="font-semibold hover:underline text-left transition-colors"
-                      style={{color:isActive?c.color:"#4b5563"}}>
-                      {c.label}
-                    </button>
-                    <span className="text-gray-400 font-mono">{mw>0?`${(mw/1000).toFixed(1)}GW`:"off"}</span>
-                  </div>
-                  <div className="h-2 bg-gray-700 rounded-full overflow-hidden">
-                    <div className="h-full rounded-full transition-all duration-300" style={{width:`${pct}%`,background:isActive?c.color:"#374151"}}/>
-                  </div>
-                  <div className="flex justify-between text-xs text-gray-600 mt-0.5">
-                    <span>{c.phase.split(" ")[0]}</span>
-                    <span>{c.maxGW} GW max</span>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-
-          <div className="bg-gray-800 border border-gray-700 rounded-xl p-4">
-            <div className="text-xs text-gray-500 uppercase tracking-wider mb-3">Node Flows</div>
-            <div className="space-y-1.5">
-              {["kps1","kps2","kps3","lak","ahm","vad","padghe"].map(nid=>{
-                const mw=nodeMW[nid]||0;
-                const node=MAP_NODES[nid];
-                if(!node)return null;
-                return(
-                  <div key={nid} className="flex justify-between text-xs">
-                    <span className="text-gray-500 truncate">{node.label}</span>
-                    <span className="font-bold font-mono ml-2" style={{color:mw>0?nodeGlow(nid):"#374151"}}>
-                      {mw>0?(mw>=1000?`${(mw/1000).toFixed(1)}GW`:`${mw}MW`):"—"}
-                    </span>
+        {/* Right panel: line status list */}
+        <div className="w-52 shrink-0 space-y-3">
+          <div className="bg-gray-800 border border-gray-700 rounded-xl p-3">
+            <div className="text-xs text-gray-500 uppercase tracking-wider mb-2">Line Status at {milestone.label}</div>
+            <div className="space-y-1 max-h-96 overflow-y-auto">
+              {MAP_LINES.map(line => {
+                const isActive = activeSet.has(line.id);
+                const c = LINE_COLOR[line.kv] || "#6b7280";
+                return (
+                  <div key={line.id}
+                    className="flex items-center gap-2 text-xs py-0.5 cursor-pointer rounded px-1 hover:bg-gray-700"
+                    onMouseEnter={() => setHovLine(line.id)} onMouseLeave={() => setHovLine(null)}>
+                    <div className="w-2.5 h-2.5 rounded-sm shrink-0" style={{ background: isActive ? c : "#1f2937" }} />
+                    <span className="truncate" style={{ color: isActive ? "#d1d5db" : "#374151" }}>{line.label.split(" ")[0]} {line.label.split("→")[1]?.trim().split(" ")[0] || ""}</span>
+                    <span className="ml-auto text-xs shrink-0" style={{ color: isActive ? c : "#374151" }}>{line.kv}kV</span>
                   </div>
                 );
               })}
             </div>
           </div>
 
-          <div className="bg-gray-800 border border-gray-700 rounded-xl p-3 text-xs text-gray-600 leading-relaxed">
-            <span className="text-gray-500 font-semibold block mb-1">Simulation note</span>
-            MW distributed proportionally by corridor capacity. Real dispatch subject to RLDC scheduling, availability, and grid constraints.
+          <div className="bg-gray-800 border border-gray-700 rounded-xl p-3">
+            <div className="text-xs text-gray-500 uppercase tracking-wider mb-2">Active KPS</div>
+            {Object.values(MAP_NODES).filter(n => n.type === "kps").map(n => {
+              const hasFlow = MAP_LINES.some(l => activeSet.has(l.id) && (l.from === n.id || l.to === n.id));
+              return (
+                <div key={n.id} className="flex items-center gap-2 text-xs py-0.5">
+                  <div className="w-2 h-2 rounded-sm shrink-0" style={{ background: hasFlow ? n.color : "#1f2937" }} />
+                  <span style={{ color: hasFlow ? "#d1d5db" : "#374151" }}>{n.label}</span>
+                  {hasFlow && <span className="ml-auto text-xs" style={{ color: n.color }}>online</span>}
+                </div>
+              );
+            })}
           </div>
         </div>
       </div>
@@ -1408,304 +1597,171 @@ function PowerFlowSimulator(){
   );
 }
 
+// ══════════════════════════════════════════════════════════════
+// MAIN DASHBOARD
+// ══════════════════════════════════════════════════════════════
+export default function Dashboard() {
+  const [tab, setTab] = useState("phases");
 
-// ─── Dashboard ───
-export default function Dashboard(){
-  const [search,setSearch]=useState("");
-  const [filterV,setFilterV]=useState("All");
-  const [filterPS,setFilterPS]=useState("All");
-  const [filterGroup,setFilterGroup]=useState("All");
-  const [filterBay,setFilterBay]=useState("All");
-  const [expanded,setExpanded]=useState({});
-  const [sortCol,setSortCol]=useState("mw");
-  const [sortDir,setSortDir]=useState(-1);
-  const [tab,setTab]=useState("overview");
+  const TABS = [
+    { k: "phases",  l: "① Transmission Phases", sub: "What is being built, by whom, when" },
+    { k: "stations",l: "② Pooling Stations",    sub: "KPS build-up and ICT count" },
+    { k: "margins", l: "③ Bay Margins",          sub: "Developer allocations and headroom" },
+    { k: "hvdc",    l: "④ HVDC Lines",           sub: "±800kV LCC + ±500kV VSC deep-dive" },
+    { k: "network", l: "⑤ Network Map & Flow",  sub: "Schematic map with animated power flow" },
+  ];
 
-  const totalMW=useMemo(()=>sumBy(khavdaConnectivity,"mw"),[]);
-  const t220=useMemo(()=>sumBy(khavdaConnectivity.filter(r=>r.voltage==="220kV"),"mw"),[]);
-  const t400=useMemo(()=>sumBy(khavdaConnectivity.filter(r=>r.voltage==="400kV"),"mw"),[]);
-  const devCount=useMemo(()=>new Set(khavdaConnectivity.map(r=>r.developer)).size,[]);
+  const totalMW = BAY_DATA.reduce((s, b) => s + b.mw, 0);
+  const totalPhaseGW = PHASES.reduce((s, p) => s + p.gw, 0);
 
-  const tableData=useMemo(()=>{
-    let d=[...khavdaConnectivity];
-    if(filterV!=="All")d=d.filter(r=>r.voltage===filterV);
-    if(filterPS!=="All")d=d.filter(r=>r.substation===filterPS);
-    if(filterGroup!=="All")d=d.filter(r=>r.group===filterGroup);
-    if(filterBay==="allocated")d=d.filter(r=>r.bay&&!r.bay.toLowerCase().includes("not specified"));
-    if(filterBay==="unallocated")d=d.filter(r=>!r.bay||r.bay.toLowerCase().includes("not specified"));
-    if(search)d=d.filter(r=>r.developer.toLowerCase().includes(search.toLowerCase())||r.substation.toLowerCase().includes(search.toLowerCase())||r.group.toLowerCase().includes(search.toLowerCase()));
-    d.sort((a,b)=>sortDir*(typeof a[sortCol]==="number"?a[sortCol]-b[sortCol]:a[sortCol].localeCompare(b[sortCol])));
-    return d;
-  },[search,filterV,filterPS,filterGroup,filterBay,sortCol,sortDir]);
-
-  const grouped=useMemo(()=>{
-    const m={};
-    tableData.forEach(r=>{if(!m[r.group])m[r.group]={group:r.group,totalMW:0,entries:[]};m[r.group].totalMW+=r.mw;m[r.group].entries.push(r);});
-    return Object.values(m).sort((a,b)=>b.totalMW-a.totalMW);
-  },[tableData]);
-
-  const devShare=useMemo(()=>{const cons=consolidate(khavdaConnectivity);const top10=cons.slice(0,10);const oth=cons.slice(10).reduce((s,r)=>s+r.mw,0);if(oth>0)top10.push({developer:"Others",mw:oth});return top10;},[]);
-  const voltData=[{voltage:"220 kV",mw:Math.round(t220)},{voltage:"400 kV",mw:Math.round(t400)}];
-  const psData=useMemo(()=>Object.keys(PS_COLORS).map(ps=>{const rows=khavdaConnectivity.filter(r=>r.substation===ps);return{name:ps.replace("Khavda ",""),"220kV":Math.round(sumBy(rows.filter(r=>r.voltage==="220kV"),"mw")),"400kV":Math.round(sumBy(rows.filter(r=>r.voltage==="400kV"),"mw"))};}),[]);
-
-  function SortTh({col,label}){return(<th onClick={()=>{if(sortCol===col)setSortDir(d=>-d);else{setSortCol(col);setSortDir(-1);}}} className="px-3 py-2 text-left text-xs text-gray-400 uppercase cursor-pointer hover:text-white select-none whitespace-nowrap">{label}{sortCol===col?(sortDir===-1?" ↓":" ↑"):" ↕"}</th>);}
-
-  const TABS=[{k:"overview",l:"Overview"},{k:"map",l:"Transmission Map"},{k:"table",l:"Developer Register"},{k:"charts",l:"Analytics"},{k:"architecture",l:"Grid Architecture"},{k:"timeline",l:"Timeline"},{k:"simulator",l:"⚡ Flow Simulator"}];
-
-  return(
+  return (
     <div className="min-h-screen bg-gray-950 text-white font-sans">
       {/* HEADER */}
-      <div className="bg-gray-900 border-b border-gray-800 px-6 py-5">
-        <div className="flex items-start gap-4">
-          <div className="bg-blue-600 rounded-lg p-2 mt-1 shrink-0"><svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z"/></svg></div>
-          <div>
-            <h1 className="text-xl font-bold leading-tight">Khavda Renewable Energy Zone — Transmission Connectivity Intelligence Platform</h1>
-            <p className="text-blue-400 text-sm mt-1">CTUIL Bay Allocation Register (Aug 2025) · CERC/WRPC/CEA Transmission Sources</p>
+      <div className="bg-gray-900 border-b border-gray-800">
+        <div className="px-6 py-5 max-w-7xl mx-auto">
+          <div className="flex items-start gap-4">
+            <div className="bg-yellow-500 rounded-lg p-2 mt-1 shrink-0">
+              <svg className="w-6 h-6 text-gray-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M13 10V3L4 14h7v7l9-11h-7z" />
+              </svg>
+            </div>
+            <div className="flex-1">
+              <h1 className="text-xl font-black tracking-tight text-white leading-tight">
+                Khavda RE Zone — Transmission Intelligence Platform
+              </h1>
+              <p className="text-gray-400 text-sm mt-1">
+                Phase I–V Transmission Plans · KPS Bay Allocations · Margin Analysis · HVDC Deep-Dive
+              </p>
+              <p className="text-xs text-gray-600 mt-1">
+                Sources: CTUIL Bay Allocation Register (May 2025) · CERC Orders · PGCIL Stock Filings · CEA WRPC Reports (Jun 2025) · TNDI India
+              </p>
+            </div>
+            <div className="flex gap-4 text-center shrink-0">
+              {[
+                { l: "Total Allocated", v: `${Math.round(totalMW / 1000)} GW`, c: "#fbbf24" },
+                { l: "Phases Planned", v: `${totalPhaseGW} GW`, c: "#3b82f6" },
+                { l: "HVDC Capacity", v: "8.5 GW", c: "#a78bfa" },
+                { l: "Full Target", v: "30 GW", c: "#22c55e" },
+              ].map(s => (
+                <div key={s.l} className="bg-gray-800 rounded-xl px-4 py-3 min-w-24">
+                  <div className="text-xs text-gray-500">{s.l}</div>
+                  <div className="text-xl font-black mt-0.5" style={{ color: s.c }}>{s.v}</div>
+                </div>
+              ))}
+            </div>
           </div>
-        </div>
-        <div className="mt-4 bg-gray-800 rounded-lg p-4 text-sm text-gray-300 leading-relaxed">
-          <span className="text-blue-400 font-semibold">System Context: </span>
-          Khavda Renewable Energy Park in Kutch, Gujarat is India's largest renewable energy zone targeting approximately <span className="text-white">30 GW of generation capacity</span>. Five pooling stations (PS-I through PS-V) aggregate renewable power and inject it into the <span className="text-white">765 kV Inter-State Transmission System (ISTS)</span>. Primary evacuation corridors include the <span className="text-gray-200">Western Corridor</span> (Bhuj → Lakadia → Vadodara) and the <span className="text-gray-200">Northern Corridor</span> (Banaskantha → Ahmedabad → Navsari → Maharashtra), enabling large-scale renewable power transfer into Western Region demand centres including Mumbai and Pune.
+
+          {/* Phase progress bar */}
+          <div className="mt-4 flex gap-0.5 h-2 rounded-full overflow-hidden">
+            {PHASES.map(ph => (
+              <div key={ph.id} className="h-full transition-all"
+                style={{
+                  width: `${(ph.gw / 30) * 100}%`,
+                  background: ph.color,
+                  opacity: ph.status === "commissioned" ? 1 : ph.status === "under-construction" ? 0.7 : 0.4,
+                }} />
+            ))}
+          </div>
+          <div className="flex justify-between text-xs text-gray-600 mt-0.5">
+            <span>0 GW</span>
+            <span className="text-gray-400">
+              <span className="text-green-400 font-bold">15 GW commissioned</span> · 7 GW under construction · 8 GW awarded/HVDC
+            </span>
+            <span>30 GW</span>
+          </div>
         </div>
       </div>
 
-      {/* TABS */}
-      <div className="bg-gray-900 border-b border-gray-800 px-6">
-        <div className="flex gap-0 overflow-x-auto">
-          {TABS.map(t=>(
-            <button key={t.k} onClick={()=>setTab(t.k)} className={`px-4 py-3 text-sm font-medium border-b-2 transition-colors whitespace-nowrap ${tab===t.k?"border-blue-500 text-blue-400":"border-transparent text-gray-400 hover:text-white"}`}>{t.l}</button>
+      {/* TAB NAV */}
+      <div className="bg-gray-900 border-b border-gray-800">
+        <div className="flex px-6 max-w-7xl mx-auto overflow-x-auto">
+          {TABS.map(t => (
+            <button key={t.k} onClick={() => setTab(t.k)}
+              className={`px-5 py-4 text-left border-b-2 transition-colors shrink-0 ${tab === t.k ? "border-yellow-400" : "border-transparent"}`}>
+              <div className={`text-sm font-bold ${tab === t.k ? "text-yellow-400" : "text-gray-400"}`}>{t.l}</div>
+              <div className="text-xs text-gray-600 mt-0.5">{t.sub}</div>
+            </button>
           ))}
         </div>
       </div>
 
+      {/* CONTENT */}
       <div className="p-6 max-w-7xl mx-auto">
-
-        {/* ── OVERVIEW ── */}
-        {tab==="overview"&&(<>
-          <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-6">
-            <MetricCard label="Total Connectivity" value={`${Math.round(totalMW).toLocaleString()} MW`} sub="All Khavda PS" color="#3b82f6"/>
-            <MetricCard label="Developers" value={devCount} sub="Unique entities" color="#10b981"/>
-            <MetricCard label="Pooling Stations" value={5} sub="PS-I through PS-V" color="#f59e0b"/>
-            <MetricCard label="220 kV" value={`${Math.round(t220).toLocaleString()} MW`} sub={`${((t220/totalMW)*100).toFixed(1)}%`} color="#06b6d4"/>
-            <MetricCard label="400 kV" value={`${Math.round(t400).toLocaleString()} MW`} sub={`${((t400/totalMW)*100).toFixed(1)}%`} color="#f97316"/>
-          </div>
-          <div className="bg-gray-800 border border-gray-700 rounded-xl p-5 mb-6">
-            <SectionHeader title="Evacuation Corridors from the Khavda Renewable Energy Zone" subtitle="Transmission pathways carrying renewable generation from Khavda pooling stations into the Western Region grid"/>
-            <TransmissionMap/>
-            <p className="text-gray-600 text-xs mt-2">Sources: CERC orders, CEA UC-TBCB Dec 2024, PGCIL stock filings, TNDI India, CTUIL documents. Routes are geographically accurate alignments, not exact survey paths.</p>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
-            {Object.keys(PS_COLORS).map(ps=>{
-              const rows=khavdaConnectivity.filter(r=>r.substation===ps);
-              const total=Math.round(sumBy(rows,"mw"));
-              const v220=Math.round(sumBy(rows.filter(r=>r.voltage==="220kV"),"mw"));
-              const v400=Math.round(sumBy(rows.filter(r=>r.voltage==="400kV"),"mw"));
-              const tl=TIMELINE.filter(t=>t.station.includes(ps.replace("Khavda ","")));
-              return(<div key={ps} className="bg-gray-800 border border-gray-700 rounded-lg p-4" style={{borderTopColor:PS_COLORS[ps],borderTopWidth:3}}>
-                <div className="text-sm font-semibold text-white mb-1">{ps}</div>
-                <div className="text-xl font-bold text-white">{total.toLocaleString()} <span className="text-sm text-gray-400">MW</span></div>
-                <div className="flex flex-wrap gap-1 mt-2">
-                  {v220>0&&<span className="text-xs bg-cyan-900 text-cyan-300 px-1.5 py-0.5 rounded">{v220.toLocaleString()} 220kV</span>}
-                  {v400>0&&<span className="text-xs bg-orange-900 text-orange-300 px-1.5 py-0.5 rounded">{v400.toLocaleString()} 400kV</span>}
-                </div>
-                {tl.length>0&&<div className="mt-2 text-xs text-gray-500 leading-tight">{tl[0].date}: <span className={tl[0].status==="commissioned"?"text-green-400":"text-yellow-400"}>{tl[0].event.slice(0,36)}…</span></div>}
-              </div>);
-            })}
-          </div>
-        </>)}
-
-        {/* ── MAP (standalone) ── */}
-        {tab==="map"&&(<>
-          <SectionHeader title="ISTS Transmission Network – Full View" subtitle="Real geographic routing of 765 kV & 400 kV corridors from Khavda to Maharashtra"/>
-          <TransmissionMap/>
-          <div className="mt-4 grid grid-cols-2 md:grid-cols-4 gap-3">
-            {[{l:"Primary Evacuation",v:"KPS1/2 → Bhuj → Lakadia → Vadodara",s:"765 kV D/C, AESL, commissioned FY24"},{l:"Ahmedabad–Navsari",v:"765 kV D/C, ~590 ckm",s:"PGCIL Khavda II-C, commissioned Jan 31, 2026"},{l:"Maharashtra Corridor",v:"Navsari → Padghe → Mumbai / Pune",s:"765 kV ISTS, ~145 ckm, PGCIL/MSETCL · CERC open access, multi-utility"},{l:"Banaskantha–Ahmedabad",v:"765 kV D/C, ~270 ckm",s:"PGCIL, commissioned Jul 2025"}].map((c,i)=>(
-              <div key={i} className="bg-gray-800 border border-gray-700 rounded-lg p-3">
-                <div className="text-gray-500 text-xs uppercase tracking-wider mb-1">{c.l}</div>
-                <div className="text-white text-sm font-semibold leading-tight">{c.v}</div>
-                <div className="text-gray-500 text-xs mt-1">{c.s}</div>
-              </div>
-            ))}
-          </div>
-          <p className="text-gray-700 text-xs mt-2">Sources: CERC orders · CEA UC-TBCB Dec 2024 · PGCIL stock filings · TNDI India · MoRTH NH crossing permits · CTUIL Bay Allocation Register Aug 2025</p>
-        </>)}
-
-        {/* ── TABLE ── */}
-        {tab==="table"&&(<>
-          <SectionHeader title="Connectivity Ownership Register" subtitle="Corporate ownership of ISTS connectivity capacity across developers and pooling stations · Source: CTUIL Bay Allocation Register (Aug 2025)"/>
-          <div className="flex flex-wrap gap-3 mb-4">
-            <input value={search} onChange={e=>setSearch(e.target.value)} placeholder="Search developer, group, station…" className="bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-sm text-white placeholder-gray-500 w-60 focus:outline-none focus:border-blue-500"/>
-            <select value={filterV} onChange={e=>setFilterV(e.target.value)} className="bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-blue-500">
-              <option value="All">All Voltages</option><option>220kV</option><option>400kV</option>
-            </select>
-            <select value={filterPS} onChange={e=>setFilterPS(e.target.value)} className="bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-blue-500">
-              <option value="All">All Stations</option>
-              {Object.keys(PS_COLORS).map(s=><option key={s}>{s}</option>)}
-            </select>
-            <select value={filterGroup} onChange={e=>setFilterGroup(e.target.value)} className="bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-blue-500">
-              <option value="All">All Groups</option>
-              {[...new Set(khavdaConnectivity.map(r=>r.group))].sort().map(g=><option key={g}>{g}</option>)}
-            </select>
-            <select value={filterBay} onChange={e=>setFilterBay(e.target.value)} className="bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-blue-500">
-              <option value="All">All Bay Status</option>
-              <option value="allocated">Bay Allocated</option>
-              <option value="unallocated">Bay Not Specified</option>
-            </select>
-            <div className="flex items-center text-sm text-gray-400 ml-auto">{tableData.length} records</div>
-          </div>
-          <div className="bg-gray-800 border border-gray-700 rounded-xl overflow-hidden">
-            <div className="overflow-x-auto">
-              <table className="w-full text-sm">
-                <thead className="bg-gray-900 border-b border-gray-700">
-                  <tr><th className="px-3 py-2 w-8"></th><SortTh col="group" label="Group / Developer"/><SortTh col="mw" label="MW"/><SortTh col="substation" label="Station"/><SortTh col="voltage" label="Voltage"/><th className="px-3 py-2 text-left text-xs text-gray-400 uppercase">Bay</th><th className="px-3 py-2 text-left text-xs text-gray-400 uppercase">Flags</th></tr>
-                </thead>
-                <tbody>
-                  {grouped.map((g,gi)=>{
-                    const exp=expanded[g.group];
-                    const gc=PALETTE[gi%PALETTE.length];
-                    const gv2=Math.round(sumBy(g.entries.filter(r=>r.voltage==="220kV"),"mw"));
-                    const gv4=Math.round(sumBy(g.entries.filter(r=>r.voltage==="400kV"),"mw"));
-                    return[
-                      <tr key={`g-${g.group}`} className="border-b border-gray-700 hover:bg-gray-700 cursor-pointer" onClick={()=>setExpanded(p=>({...p,[g.group]:!p[g.group]}))}>
-                        <td className="px-3 py-2.5 text-gray-400 text-xs">{exp?"▼":"▶"}</td>
-                        <td className="px-3 py-2.5"><div className="flex items-center gap-2"><div className="w-2.5 h-2.5 rounded-full shrink-0" style={{background:gc}}/><span className="font-semibold text-white text-sm">{g.group}</span><span className="text-gray-500 text-xs">({g.entries.length})</span></div></td>
-                        <td className="px-3 py-2.5 font-bold text-white font-mono">{Math.round(g.totalMW).toLocaleString()}</td>
-                        <td className="px-3 py-2.5">{[...new Set(g.entries.map(e=>e.substation))].map(ps=>(<span key={ps} className="text-xs px-1.5 py-0.5 rounded mr-1 inline-block font-medium" style={{background:PS_COLORS[ps]+"33",color:PS_COLORS[ps]}}>{ps.replace("Khavda ","")}</span>))}</td>
-                        <td className="px-3 py-2.5"><div className="flex gap-1">{gv2>0&&<span className="text-xs bg-cyan-900 text-cyan-300 px-1.5 py-0.5 rounded">{gv2.toLocaleString()} 220kV</span>}{gv4>0&&<span className="text-xs bg-orange-900 text-orange-300 px-1.5 py-0.5 rounded">{gv4.toLocaleString()} 400kV</span>}</div></td>
-                        <td className="px-3 py-2.5" colSpan={2}></td>
-                      </tr>,
-                      ...(exp?g.entries.map((r,ri)=>(
-                        <tr key={`${g.group}-${ri}`} className="border-b border-gray-800 bg-gray-900 hover:bg-gray-800">
-                          <td className="px-3 py-2 text-gray-700 text-center">└</td>
-                          <td className="px-3 py-2 text-gray-300 text-xs pl-7">{r.developer}</td>
-                          <td className="px-3 py-2 font-mono text-white">{r.mw.toLocaleString()}</td>
-                          <td className="px-3 py-2"><span className="text-xs px-2 py-0.5 rounded font-medium" style={{background:PS_COLORS[r.substation]+"33",color:PS_COLORS[r.substation]}}>{r.substation}</span></td>
-                          <td className="px-3 py-2"><span className={`text-xs px-2 py-0.5 rounded font-medium ${r.voltage==="220kV"?"bg-cyan-900 text-cyan-300":"bg-orange-900 text-orange-300"}`}>{r.voltage}</span></td>
-                          <td className="px-3 py-2 text-xs font-mono">{r.bay&&!r.bay.toLowerCase().includes("not specified")?<span className="text-green-400">{r.bay}</span>:<span className="text-gray-600 italic">not specified</span>}</td>
-                          <td className="px-3 py-2">{r.bess&&<span className="text-xs bg-purple-900 text-purple-300 px-1.5 py-0.5 rounded">BESS</span>}</td>
-                        </tr>
-                      )):[])
-                    ];
-                  })}
-                </tbody>
-              </table>
+        {tab === "phases" && (
+          <>
+            <div className="mb-5">
+              <h2 className="text-lg font-bold text-white">Transmission Phase Plan</h2>
+              <p className="text-gray-400 text-sm mt-1">
+                Khavda evacuation is structured in 5 phases totalling 30 GW. Phases I–III are commissioned.
+                Phase IV (7 GW HVAC, 8 parts) is under construction. Phase V (8 GW, HVDC-led) is awarded and entering construction.
+              </p>
             </div>
-          </div>
-        </>)}
-
-        {/* ── CHARTS ── */}
-        {tab==="charts"&&(
-          <div className="space-y-8">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="bg-gray-800 border border-gray-700 rounded-xl p-5">
-                <SectionHeader title="Developer Market Share" subtitle="Top 10 + Others by allocated MW"/>
-                <ResponsiveContainer width="100%" height={260}>
-                  <PieChart><Pie data={devShare} dataKey="mw" nameKey="developer" cx="50%" cy="50%" innerRadius={60} outerRadius={105} paddingAngle={2}>{devShare.map((_,i)=><Cell key={i} fill={PALETTE[i%PALETTE.length]}/>)}</Pie><Tooltip formatter={v=>[`${v.toLocaleString()} MW`]} contentStyle={{background:"#1f2937",border:"1px solid #374151",borderRadius:8,color:"#fff",fontSize:12}}/></PieChart>
-                </ResponsiveContainer>
-                <div className="grid grid-cols-2 gap-1 mt-1">{devShare.map((d,i)=>(<div key={i} className="flex items-center gap-1.5 text-xs text-gray-300"><div className="w-2.5 h-2.5 rounded-sm shrink-0" style={{background:PALETTE[i%PALETTE.length]}}/><span className="truncate">{d.developer.split(" ").slice(0,3).join(" ")}</span><span className="ml-auto text-gray-500">{Math.round(d.mw).toLocaleString()}</span></div>))}</div>
-              </div>
-              <div className="bg-gray-800 border border-gray-700 rounded-xl p-5">
-                <SectionHeader title="Voltage Distribution" subtitle="Total MW by injection level"/>
-                <ResponsiveContainer width="100%" height={180}>
-                  <BarChart data={voltData} barSize={70}><XAxis dataKey="voltage" tick={{fill:"#9ca3af",fontSize:12}} axisLine={false} tickLine={false}/><YAxis tick={{fill:"#6b7280",fontSize:11}} axisLine={false} tickLine={false} tickFormatter={v=>`${(v/1000).toFixed(0)}GW`}/><Tooltip formatter={v=>[`${v.toLocaleString()} MW`]} contentStyle={{background:"#1f2937",border:"1px solid #374151",borderRadius:8,color:"#fff",fontSize:12}}/><Bar dataKey="mw" radius={[6,6,0,0]}>{voltData.map((d,i)=><Cell key={i} fill={V_COLORS[d.voltage.replace(" ","")]}/>)}</Bar></BarChart>
-                </ResponsiveContainer>
-                <div className="grid grid-cols-2 gap-3 mt-3 text-center">
-                  <div className="bg-cyan-900 bg-opacity-30 rounded-lg p-3"><div className="text-cyan-400 text-lg font-bold">{(t220/1000).toFixed(1)} GW</div><div className="text-xs text-gray-400">220 kV</div></div>
-                  <div className="bg-orange-900 bg-opacity-30 rounded-lg p-3"><div className="text-orange-400 text-lg font-bold">{(t400/1000).toFixed(1)} GW</div><div className="text-xs text-gray-400">400 kV</div></div>
-                </div>
-              </div>
-            </div>
-            <div className="bg-gray-800 border border-gray-700 rounded-xl p-5">
-              <SectionHeader title="Pooling Station Capacity" subtitle="Stacked by voltage level"/>
-              <ResponsiveContainer width="100%" height={260}>
-                <BarChart data={psData}><XAxis dataKey="name" tick={{fill:"#9ca3af",fontSize:11}} axisLine={false} tickLine={false}/><YAxis tick={{fill:"#6b7280",fontSize:11}} axisLine={false} tickLine={false} tickFormatter={v=>`${(v/1000).toFixed(0)}GW`}/><Tooltip formatter={v=>[`${v.toLocaleString()} MW`]} contentStyle={{background:"#1f2937",border:"1px solid #374151",borderRadius:8,color:"#fff",fontSize:12}}/><Legend wrapperStyle={{color:"#9ca3af",fontSize:12}}/><Bar dataKey="220kV" stackId="a" fill="#06b6d4" name="220 kV"/><Bar dataKey="400kV" stackId="a" fill="#f97316" radius={[4,4,0,0]} name="400 kV"/></BarChart>
-              </ResponsiveContainer>
-            </div>
-            <div className="bg-gray-800 border border-gray-700 rounded-xl p-5">
-              <SectionHeader title="MW Flow Diagram" subtitle="Developer → Pooling Station → Voltage Level (top 7 developers)"/>
-              <SankeyDiagram data={khavdaConnectivity}/>
-            </div>
-          </div>
+            <PhaseTimeline />
+          </>
         )}
+        {tab === "stations" && (
+          <>
+            <div className="mb-5">
+              <h2 className="text-lg font-bold text-white">Pooling Station Profiles</h2>
+              <p className="text-gray-400 text-sm mt-1">
+                Five pooling stations aggregate renewable generation at Khavda. Select a station to see its ICT build-up, developer bay allocations, and margin status.
+              </p>
+            </div>
+            <StationProfiles />
+          </>
+        )}
+        {tab === "margins" && (
+          <>
+            <div className="mb-5">
+              <h2 className="text-lg font-bold text-white">Bay Margin Analysis</h2>
+              <p className="text-gray-400 text-sm mt-1">
+                Available headroom at each KPS for new developer connectivity. Based on CTUIL Bay Allocation Register (May 2025).
+              </p>
+            </div>
+            <BayMargins />
+          </>
+        )}
+        {tab === "hvdc" && (
+          <>
+            <div className="mb-5">
+              <h2 className="text-lg font-bold text-white">HVDC Transmission Lines</h2>
+              <p className="text-gray-400 text-sm mt-1">
+                Two HVDC systems under development — India's first and third HVDC-TBCB projects — providing bulk DC transfer capacity from Khavda to Maharashtra and within Gujarat.
+              </p>
+            </div>
+            <HVDCSection />
+          </>
+        )}
+        {tab === "network" && (
+          <>
+            <div className="mb-5">
+              <h2 className="text-lg font-bold text-white">Network Schematic Map & Power Flow</h2>
+              <p className="text-gray-400 text-sm mt-1">
+                Schematic layout of the ISTS network from Khavda pooling stations to Maharashtra load centres.
+                Step through commissioning milestones to see how the network built up — animated flow shows active corridors.
+                Click any node for details. Hover a line for route info.
+              </p>
+            </div>
+            <GridArchitecture />
+            <div className="mt-6 mb-2">
+              <div className="text-sm font-bold text-white">Live Network Flow Simulator</div>
+              <div className="text-xs text-gray-500 mt-0.5">Step through commissioning milestones — animated dashes show active power corridors. Click any node for details.</div>
+            </div>
+            <NetworkMapFlow />
+          </>
+        )}
+      </div>
 
-        {/* ── ARCHITECTURE ── */}
-        {tab==="architecture"&&(<>
-          <SectionHeader title="Khavda Renewable Energy Evacuation Architecture" subtitle="System flow from generation assets through pooling stations into the 765 kV ISTS backbone and Western Region load centres"/>
-          <ArchDiagram data={khavdaConnectivity}/>
-          <div className="mt-4 bg-gray-800 border border-orange-900 rounded-xl p-5">
-            <div className="text-orange-400 text-sm font-semibold mb-3">Maharashtra Offtake Corridor — Transmission Infrastructure</div>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-              {[
-                {l:"Corridor Route",v:"Khavda → Ahmedabad → Navsari → Padghe → Mumbai / Pune",s:"~735 ckm total, inter-state"},
-                {l:"Backbone Voltage",v:"765 kV D/C ISTS",s:"PGCIL Khavda Phase-II Part C"},
-                {l:"Commissioned",v:"Ahmedabad–Navsari: Jan 2026 · Navsari–Padghe: operational",s:"Enabling large-scale WR→MH power flow"},
-                {l:"Injection Point",v:"Padghe 765/400 kV SS (MSETCL)",s:"Primary import node for Mumbai metropolitan region"},
-                {l:"Load Centres Served",v:"Mumbai, Pune, Nashik, Aurangabad",s:"Via MSETCL 400 kV onward network"},
-                {l:"Corridor Capacity",v:"~6,000–8,000 MW transfer capability",s:"Subject to RLDC scheduling & grid constraints"},
-                {l:"Regulatory Framework",v:"ISTS open access, CERC-regulated",s:"Multiple utilities & developers can wheel power"},
-                {l:"Significance",v:"First large-scale solar-wind evacuation to MH",s:"Transforms MH's renewable import capacity"},
-              ].map((x,i)=>(
-                <div key={i} className="bg-gray-900 rounded-lg p-3">
-                  <div className="text-gray-500 text-xs uppercase tracking-wider mb-1">{x.l}</div>
-                  <div className="text-gray-200 text-xs font-medium">{x.v}</div>
-                  {x.s&&<div className="text-gray-600 text-xs mt-0.5">{x.s}</div>}
-                </div>
-              ))}
-            </div>
-          </div>
-          <div className="mt-4 bg-gray-800 border border-blue-900 rounded-xl p-5">
-            <div className="text-blue-400 font-semibold mb-3 text-sm">Data Sources</div>
-            <div className="text-xs text-gray-500 space-y-1">
-              <div>CTUIL Bay Allocation Register — August 2025</div>
-              <div>Central Electricity Regulatory Commission (CERC) transmission orders</div>
-              <div>Central Electricity Authority (CEA) transmission planning reports</div>
-              <div>Power Grid Corporation of India (PGCIL) project filings</div>
-              <div>Western Regional Power Committee (WRPC) meeting minutes</div>
-            </div>
-          </div>
-        </>)}
-
-        {/* ── TIMELINE ── */}
-        {tab==="timeline"&&(<>
-          <SectionHeader title="Transmission Infrastructure Commissioning Timeline" subtitle="Key milestones in Khavda transmission development from Phase-I HVAC buildout through HVDC Phase-V expansion"/>
-          <div className="relative">
-            <div className="absolute left-6 top-0 bottom-0 w-0.5 bg-gray-700"/>
-            <div className="space-y-4 pl-14">
-              {TIMELINE.map((t,i)=>(
-                <div key={i} className="relative">
-                  <div className={`absolute -left-11 w-5 h-5 rounded-full border-2 flex items-center justify-center ${t.status==="commissioned"?"bg-green-900 border-green-500":t.status==="planned"?"bg-yellow-900 border-yellow-500":"bg-blue-950 border-blue-700"}`}><div className={`w-2 h-2 rounded-full ${t.status==="commissioned"?"bg-green-400":t.status==="planned"?"bg-yellow-400":"bg-blue-500"}`}/></div>
-                  <div className={`bg-gray-800 border rounded-xl p-4 ${t.status==="commissioned"?"border-green-900":t.status==="planned"?"border-yellow-900":"border-gray-700"}`}>
-                    <div className="flex items-start justify-between gap-4">
-                      <div><div className="flex items-center gap-2 mb-1"><span className={`text-xs font-bold px-2 py-0.5 rounded ${t.status==="commissioned"?"bg-green-900 text-green-300":t.status==="planned"?"bg-yellow-900 text-yellow-300":"bg-blue-950 text-blue-400"}`}>{t.date}</span><span className="text-xs text-gray-500 uppercase tracking-wider">{t.status}</span></div><div className="text-white text-sm font-medium">{t.event}</div><div className="text-gray-500 text-xs mt-1">{t.station}</div></div>
-                      <div className="text-gray-600 text-xs shrink-0 text-right max-w-48">Source:<br/><span className="text-gray-500">{t.source}</span></div>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-          <div className="mt-6 bg-gray-800 border border-gray-700 rounded-xl p-5">
-            <div className="text-sm font-semibold text-white mb-3">Phased Evacuation Summary</div>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-              {[{p:"Phase I–III",c:"~15 GW",t:"HVAC 765 kV",d:"2023–2025",s:"commissioned"},{p:"Phase IV",c:"7 GW",t:"HVAC, new KPS3 765kV bus",d:"Jun 2025–Jun 2026",s:"planned"},{p:"Phase V",c:"4 GW",t:"HVDC (KPS-III HVDC TSA)",d:"Dec 2026–Mar 2027",s:"planned"},{p:"Phase VI",c:"4 GW",t:"HVDC upgrade + 765kV",d:"Beyond Mar 2027",s:"future"}].map((p,i)=>(
-                <div key={i} className={`bg-gray-900 rounded-xl p-3 border ${p.s==="commissioned"?"border-green-900":p.s==="planned"?"border-yellow-900":"border-gray-700"}`}>
-                  <div className={`text-xs font-bold mb-1 ${p.s==="commissioned"?"text-green-400":p.s==="planned"?"text-yellow-400":"text-blue-400"}`}>{p.p}</div>
-                  <div className="text-2xl font-bold text-white">{p.c}</div>
-                  <div className="text-gray-400 text-xs mt-1">{p.t}</div>
-                  <div className="text-gray-500 text-xs">{p.d}</div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </>)}
-
-        {/* ── SIMULATOR ── */}
-        {tab==="simulator"&&(<>
-          <SectionHeader
-            title="Power Flow Simulator"
-            subtitle="Schematic evacuation model — adjust dispatch level and active corridors to visualise MW flow through the Khavda ISTS network"/>
-          <PowerFlowSimulator/>
-        </>)}
+      {/* FOOTER */}
+      <div className="border-t border-gray-800 px-6 py-4 max-w-7xl mx-auto">
+        <div className="flex flex-wrap gap-x-6 gap-y-1 text-xs text-gray-700">
+          <span>CTUIL Bay Allocation Register, May 2025</span>
+          <span>CERC Tariff & Licence Orders (2023–2026)</span>
+          <span>CEA WRPC Meeting Agenda, June 2025</span>
+          <span>PGCIL / AESL Stock Exchange Filings</span>
+          <span>TNDI India (T&D India) research reports</span>
+          <span className="ml-auto text-gray-800">Platform data as of Mar 2026</span>
+        </div>
       </div>
     </div>
   );
