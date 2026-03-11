@@ -1,5 +1,12 @@
 import React, { useState, useMemo, useEffect, useRef } from "react";
-// recharts imported for potential future use — currently all charts use CSS/SVG
+
+// Inject Tailwind CDN if not already present (ensures styles load in all render environments)
+if (typeof document !== "undefined" && !document.getElementById("tw-cdn")) {
+  const s = document.createElement("script");
+  s.id = "tw-cdn";
+  s.src = "https://cdn.tailwindcss.com";
+  document.head.appendChild(s);
+}
 
 // ══════════════════════════════════════════════════════════════
 // DATA
@@ -1602,6 +1609,30 @@ function NetworkMapFlow() {
 // ══════════════════════════════════════════════════════════════
 export default function Dashboard() {
   const [tab, setTab] = useState("phases");
+  const [twLoaded, setTwLoaded] = useState(false);
+
+  useEffect(() => {
+    const existing = document.getElementById("tw-cdn");
+    if (existing && window.tailwind) { setTwLoaded(true); return; }
+    const check = setInterval(() => {
+      if (window.tailwind || document.querySelector("[data-tw-root]") ||
+          getComputedStyle(document.documentElement).getPropertyValue("--tw-checked") ||
+          document.querySelector(".bg-gray-950")) {
+        setTwLoaded(true); clearInterval(check);
+      }
+    }, 50);
+    // Fallback: show after 600ms regardless
+    const fallback = setTimeout(() => { setTwLoaded(true); clearInterval(check); }, 600);
+    return () => { clearInterval(check); clearTimeout(fallback); };
+  }, []);
+
+  if (!twLoaded) {
+    return (
+      <div style={{ background: "#030712", minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center" }}>
+        <div style={{ color: "#fbbf24", fontFamily: "monospace", fontSize: 14 }}>Loading Khavda Dashboard…</div>
+      </div>
+    );
+  }
 
   const TABS = [
     { k: "phases",  l: "① Transmission Phases", sub: "What is being built, by whom, when" },
